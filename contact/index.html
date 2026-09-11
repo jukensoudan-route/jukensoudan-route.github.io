@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <title>お問い合わせ｜進路相談室ROUTE</title>
+  <meta name="robots" content="index,follow">
+  <meta name="theme-color" content="#267EE6">
+  <link rel="icon" type="image/webp" href="../assets/route-logo.webp">
+  <style>
+    *{box-sizing:border-box}html,body{margin:0;min-height:100%;font-family:"Noto Sans JP","Yu Gothic",sans-serif;background:#edf6ff;color:#203947}body{padding-bottom:86px}.bar{position:sticky;top:0;z-index:20;display:flex;align-items:center;justify-content:space-between;gap:14px;padding:10px 16px;background:linear-gradient(135deg,#267ee6,#22b89a);color:#fff;box-shadow:0 4px 18px rgba(25,92,154,.2)}.bar strong{font-size:1rem}.close{appearance:none;border:2px solid #fff;border-radius:10px;background:#fff;color:#176ed2;padding:9px 14px;font:900 .9rem inherit;cursor:pointer}.main{width:min(840px,100%);margin:auto;padding:18px}.intro{text-align:center;margin-bottom:12px}.intro h1{margin:0 0 4px;font-size:clamp(1.35rem,4vw,1.8rem)}.intro p{margin:0;color:#58717d;font-size:.86rem}.form-frame{display:block;width:100%;min-height:780px;border:1px solid #b9d7f4;border-radius:18px;background:#fff;box-shadow:0 10px 28px rgba(38,126,230,.13)}.bottom{position:fixed;left:0;right:0;bottom:0;z-index:20;padding:10px 16px calc(10px + env(safe-area-inset-bottom));background:rgba(255,255,255,.96);border-top:1px solid #bfd9f3;text-align:center;backdrop-filter:blur(10px)}.bottom .close{width:min(420px,100%);background:#267ee6;color:#fff;border-color:#267ee6;min-height:48px}@media(max-width:600px){.main{padding:12px 8px}.bar{padding:8px 10px}.bar strong{font-size:.82rem}.form-frame{min-height:820px;border-radius:12px}.intro{padding-inline:10px}}
+  </style>
+</head>
+<body>
+  <header class="bar"><strong>進路相談室ROUTE｜お問い合わせ</strong><button class="close" type="button" onclick="closePage()">ページを閉じる</button></header>
+  <main class="main">
+    <div class="intro"><h1>お問い合わせフォーム</h1><p>送信後は、下の「ページを閉じる」ボタンで終了できます。</p></div>
+    <iframe class="form-frame" title="進路相談室ROUTE お問い合わせフォーム" src="https://docs.google.com/forms/d/e/1FAIpQLSfoAwgF7R8g0dS-kvDEokPDR3XSdvfPpT0fZPmjscf1YKrNbw/viewform?embedded=true" loading="eager">読み込めない場合は<a href="https://docs.google.com/forms/d/e/1FAIpQLSfoAwgF7R8g0dS-kvDEokPDR3XSdvfPpT0fZPmjscf1YKrNbw/viewform" target="_blank" rel="noopener">こちらからフォームを開いてください</a>。</iframe>
+  </main>
+  <div class="bottom"><button class="close" type="button" onclick="closePage()">ページを閉じる</button></div>
+  <script>
+    function closePage(){window.close();setTimeout(()=>{if(!window.closed){if(history.length>1){history.back()}else{location.href='../'}}},180)}
+  </script>
+</body>
+</html>
