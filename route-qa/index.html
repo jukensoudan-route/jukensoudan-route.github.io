@@ -3,8 +3,21 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
   <title>ROUTE 受験Q&A</title>
   <meta name="robots" content="index,follow">
+  <script>
+    if ("serviceWorker" in navigator) {
+      navigator.serviceWorker.getRegistrations().then(registrations => {
+        registrations.forEach(registration => registration.unregister());
+      });
+    }
+    if ("caches" in window) {
+      caches.keys().then(keys => keys.forEach(key => caches.delete(key)));
+    }
+  </script>
   <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
   <style>
     #loadingText {
