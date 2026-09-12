@@ -289,7 +289,12 @@
         text-align: center;
       }
       .qa-overview {
+        order: 1;
         padding: 20px;
+        border: 3px solid var(--blue);
+        border-bottom: 0;
+        border-radius: 18px 18px 0 0;
+        box-shadow: none;
       }
       .qa-copy h2,
       .consult h2,
@@ -357,12 +362,17 @@
         font-weight: 800;
       }
       .qa-screens-wrap {
-        margin-top: 14px;
+        order: 4;
+        margin-top: 0;
         padding: 14px;
+        border: 3px solid var(--blue);
+        border-top-width: 2px;
+        border-radius: 0 0 18px 18px;
+        box-shadow: none;
       }
       .screens-title {
         text-align: center;
-        margin: 0 0 10px;
+        margin: 8px 0 10px;
         color: var(--ink);
         font-size: 1rem;
         font-weight: 1000;
@@ -395,12 +405,17 @@
         height: 290px;
       }
       .qa-example {
+        order: 2;
         display: grid;
         grid-template-columns: 0.82fr 1.18fr;
         gap: 18px;
-        margin-top: 14px;
+        margin-top: 0;
         padding: 18px;
         align-items: center;
+        border: 3px solid var(--blue);
+        border-top-width: 2px;
+        border-radius: 0 0 18px 18px;
+        box-shadow: none;
       }
       .example-question h3 {
         margin: 5px 0 8px;
@@ -488,12 +503,17 @@
         font-weight: 800;
       }
       .qa-process-wrap {
+        order: 3;
         margin-top: 14px;
         padding: 15px;
+        border: 3px solid var(--blue);
+        border-bottom: 0;
+        border-radius: 18px 18px 0 0;
+        box-shadow: none;
       }
       .process-title {
         text-align: center;
-        margin: 0 0 11px;
+        margin: 8px 0 11px;
         color: var(--ink);
         font-size: 1rem;
         font-weight: 1000;
@@ -753,6 +773,10 @@
           #2ca6e8 100%
         );
         border-bottom: 6px solid #267ee6;
+      }
+      .qa-detail > .wrap {
+        display: flex;
+        flex-direction: column;
       }
       .qa-detail .eyebrow {
         background: #267ee6;
@@ -1173,6 +1197,7 @@
             </div>
           </div>
           <div class="qa-process-wrap card" aria-label="Q&A利用の流れ">
+            <span class="eyebrow">ご利用の流れ</span>
             <h3 class="process-title">質問してからLINEに回答が届くまで</h3>
             <img
               class="qa-process-image"
@@ -1187,6 +1212,7 @@
             </p>
           </div>
           <div class="qa-screens-wrap card">
+            <span class="eyebrow">実際の画面を確認</span>
             <h3 class="screens-title">実際のQ&A画面</h3>
             <div class="qa-screens" aria-label="ROUTE Q&Aの実際の画面">
               <figure class="screen-shot">
