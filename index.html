@@ -330,6 +330,8 @@
       .qa-copy > .eyebrow {
         grid-area: label;
         justify-self: start;
+        align-self: start;
+        margin-bottom: 7px;
       }
       .qa-copy > h2 {
         grid-area: title;
@@ -414,9 +416,9 @@
       .qa-screens-wrap {
         order: 3;
         display: grid;
-        grid-template-columns: auto 1fr;
+        grid-template-columns: 1fr;
         align-items: center;
-        gap: 8px 16px;
+        gap: 7px;
         margin-top: 14px;
         padding: 14px;
         border: 3px solid var(--blue);
@@ -424,9 +426,14 @@
         border-radius: 18px 0 0 18px;
         box-shadow: none;
       }
+      .qa-screens-wrap > .eyebrow {
+        justify-self: start;
+        align-self: start;
+        margin-bottom: 2px;
+      }
       .screens-title {
         text-align: center;
-        margin: 0;
+        margin: 0 0 3px;
         color: var(--ink);
         font-size: 1rem;
         font-weight: 1000;
@@ -878,8 +885,13 @@
         grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
       }
       .qa-detail .eyebrow {
+        min-height: 27px;
+        padding: 5px 13px;
+        align-items: center;
         background: #267ee6;
         color: #fff;
+        line-height: 1.2;
+        white-space: nowrap;
       }
       .support-service-label {
         display: inline-flex;
