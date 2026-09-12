@@ -292,8 +292,8 @@
         order: 1;
         padding: 20px;
         border: 3px solid var(--blue);
-        border-bottom: 0;
-        border-radius: 18px 18px 0 0;
+        border-right: 0;
+        border-radius: 18px 0 0 18px;
         box-shadow: none;
       }
       .qa-copy h2,
@@ -363,6 +363,7 @@
       }
       .qa-screens-wrap {
         order: 4;
+        grid-column: 1 / -1;
         margin-top: 0;
         padding: 14px;
         border: 3px solid var(--blue);
@@ -413,8 +414,8 @@
         padding: 18px;
         align-items: center;
         border: 3px solid var(--blue);
-        border-top-width: 2px;
-        border-radius: 0 0 18px 18px;
+        border-left-width: 2px;
+        border-radius: 0 18px 18px 0;
         box-shadow: none;
       }
       .example-question h3 {
@@ -504,6 +505,7 @@
       }
       .qa-process-wrap {
         order: 3;
+        grid-column: 1 / -1;
         margin-top: 14px;
         padding: 15px;
         border: 3px solid var(--blue);
@@ -759,10 +761,26 @@
         border: 3px solid #22b89a;
       }
       .qa-main-button {
-        min-width: 260px;
-        background: #ffe23f;
-        color: #174e90;
-        font-size: 1rem;
+        min-width: 310px;
+        min-height: 58px;
+        gap: 10px;
+        background: #06c755;
+        border-color: #fff;
+        color: #fff;
+        font-size: 1.08rem;
+      }
+      .qa-main-button::before {
+        content: "LINE";
+        display: grid;
+        place-items: center;
+        flex: 0 0 34px;
+        width: 34px;
+        height: 34px;
+        border-radius: 50%;
+        background: #fff;
+        color: #06c755;
+        font-size: 0.58rem;
+        font-weight: 1000;
       }
       .qa-detail {
         padding-top: 0;
@@ -775,8 +793,8 @@
         border-bottom: 6px solid #267ee6;
       }
       .qa-detail > .wrap {
-        display: flex;
-        flex-direction: column;
+        display: grid;
+        grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
       }
       .qa-detail .eyebrow {
         background: #267ee6;
@@ -894,6 +912,19 @@
           border: 1px solid var(--line);
           border-radius: 14px;
           box-shadow: var(--shadow);
+        }
+        .qa-detail > .wrap {
+          grid-template-columns: 1fr;
+        }
+        .qa-overview {
+          border-right: 3px solid var(--blue);
+          border-bottom: 0;
+          border-radius: 18px 18px 0 0;
+        }
+        .qa-example {
+          border-left: 3px solid var(--blue);
+          border-top-width: 2px;
+          border-radius: 0 0 18px 18px;
         }
         .qa-example,
         .consult {
@@ -1154,14 +1185,14 @@
               <h3>3問チケット</h3>
               <div class="amount">1,000<small>円</small></div>
               <div class="per">1問あたり約333円</div>
-              <div class="payment-note">クレジット決済</div>
+              <div class="payment-note">クレジットカード・電子決済</div>
             </article>
             <article class="price recommended card">
               <span class="badge">おすすめ</span>
               <h3>10問チケット</h3>
               <div class="amount">3,000<small>円</small></div>
               <div class="per">1問あたり300円</div>
-              <div class="payment-note">クレジット決済</div>
+              <div class="payment-note">クレジットカード・電子決済</div>
             </article>
           </div>
           <div class="price-bar">
