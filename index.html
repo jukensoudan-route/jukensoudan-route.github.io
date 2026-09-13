@@ -323,7 +323,7 @@
           "label speed"
           "title speed"
           "description hours"
-          "topics hours";
+          "topics topics";
         column-gap: 34px;
         align-items: start;
       }
@@ -335,9 +335,11 @@
       }
       .qa-copy > h2 {
         grid-area: title;
+        white-space: nowrap;
       }
       .qa-copy > p:not(.business-hours) {
         grid-area: description;
+        white-space: nowrap;
       }
       .qa-copy > .reply-speed {
         grid-area: speed;
@@ -379,7 +381,7 @@
         font-weight: 900;
       }
       .reply-speed {
-        width: min(100%, 290px);
+        width: min(100%, 360px);
         justify-self: center;
         margin: 14px 0 10px;
         padding: 14px 15px;
@@ -391,14 +393,16 @@
       }
       .reply-speed strong {
         display: block;
-        font-size: clamp(1.15rem, 2.5vw, 1.55rem);
+        font-size: clamp(0.95rem, 1.65vw, 1.16rem);
         line-height: 1.35;
+        white-space: nowrap;
       }
       .reply-speed span {
         display: block;
         margin-top: 3px;
-        font-size: 0.82rem;
+        font-size: 0.72rem;
         font-weight: 800;
+        white-space: nowrap;
       }
       .business-hours {
         justify-self: center;
@@ -407,6 +411,7 @@
         font-size: 0.84rem;
         font-weight: 900;
         text-align: center;
+        white-space: nowrap;
       }
       .topic-inline {
         margin-top: 12px;
@@ -415,6 +420,8 @@
         color: var(--ink);
         font-size: 0.8rem;
         font-weight: 800;
+        text-align: center;
+        white-space: nowrap;
       }
       .qa-screens-wrap {
         order: 3;
@@ -1051,6 +1058,17 @@
             "topics";
           column-gap: 0;
         }
+        .qa-copy > h2,
+        .qa-copy > p:not(.business-hours),
+        .reply-speed strong,
+        .reply-speed span,
+        .business-hours,
+        .topic-inline {
+          white-space: normal;
+        }
+        .reply-speed {
+          width: 100%;
+        }
         .qa-process-wrap {
           grid-template-columns: 1fr;
         }
@@ -1379,7 +1397,7 @@
                 画面の項目に沿って選ぶだけ。自由入力もでき、回答はLINEに届きます。
               </p>
               <div class="reply-speed">
-                <strong>営業時間内なら<br />目安5～30分で返信</strong
+                <strong>営業時間内なら　目安5～30分で返信</strong
                 ><span>営業時間外のご質問は、翌営業日に返信します</span>
               </div>
               <p class="business-hours">営業時間 12:00～24:00 ／ 月曜日休業</p>
