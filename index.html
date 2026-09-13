@@ -441,17 +441,18 @@
         box-shadow: none;
       }
       .qa-screens-wrap > .eyebrow {
+        grid-column: 1 / -1;
         justify-self: start;
         align-self: start;
         margin-bottom: 0;
       }
       .qa-screens-wrap::after {
-        content: "";
-        width: 112px;
+        display: none;
       }
       .screens-title {
+        grid-column: 1 / -1;
         text-align: center;
-        margin: 0 0 3px;
+        margin: 0 0 5px;
         color: var(--ink);
         font-size: 1rem;
         font-weight: 1000;
