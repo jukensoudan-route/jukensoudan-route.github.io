@@ -318,7 +318,7 @@
       }
       .qa-copy {
         display: grid;
-        grid-template-columns: minmax(0, 1.2fr) minmax(220px, 0.8fr);
+        grid-template-columns: minmax(0, 1.3fr) minmax(220px, 1fr);
         grid-template-areas:
           "label speed"
           "title speed"
@@ -416,9 +416,9 @@
       .qa-screens-wrap {
         order: 3;
         display: grid;
-        grid-template-columns: 1fr;
+        grid-template-columns: auto 1fr auto;
         align-items: center;
-        gap: 7px;
+        gap: 8px 16px;
         margin-top: 14px;
         padding: 14px;
         border: 3px solid var(--blue);
@@ -429,7 +429,11 @@
       .qa-screens-wrap > .eyebrow {
         justify-self: start;
         align-self: start;
-        margin-bottom: 2px;
+        margin-bottom: 0;
+      }
+      .qa-screens-wrap::after {
+        content: "";
+        width: 112px;
       }
       .screens-title {
         text-align: center;
@@ -486,9 +490,13 @@
       }
       .example-question {
         display: grid;
-        grid-template-columns: auto 1fr;
+        grid-template-columns: auto 1fr auto;
         align-items: center;
         gap: 8px 16px;
+      }
+      .example-question::after {
+        content: "";
+        width: 118px;
       }
       .example-question p {
         grid-column: 1 / -1;
@@ -604,14 +612,6 @@
         width: 100%;
         height: auto;
         border-radius: 12px;
-      }
-      .process-note {
-        grid-column: 1 / -1;
-        text-align: center;
-        margin: 9px 0 0;
-        color: var(--blue-strong);
-        font-size: 0.82rem;
-        font-weight: 900;
       }
       .consult-pricing {
         background: linear-gradient(
@@ -882,7 +882,7 @@
       }
       .qa-detail > .wrap {
         display: grid;
-        grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+        grid-template-columns: repeat(2, minmax(0, 1fr));
       }
       .qa-detail .eyebrow {
         min-height: 27px;
@@ -1059,9 +1059,17 @@
           justify-self: start;
         }
         .qa-screens-wrap {
+          grid-template-columns: 1fr;
           border-right: 3px solid var(--blue);
           border-bottom: 0;
           border-radius: 18px 18px 0 0;
+        }
+        .qa-screens-wrap::after,
+        .example-question::after {
+          display: none;
+        }
+        .example-question {
+          grid-template-columns: 1fr;
         }
         .qa-example {
           margin-top: 0;
@@ -1389,9 +1397,6 @@
               loading="lazy"
               alt="専用ページ、LINEログイン、チケット購入、Stripe決済、質問、LINEで回答の6工程"
             />
-            <p class="process-note">
-              営業時間内は目安5～30分で返信。営業時間外は翌営業日にLINEへ返信します。
-            </p>
           </div>
           <div class="qa-screens-wrap card">
             <span class="eyebrow">実際の画面を確認</span>
