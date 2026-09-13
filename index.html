@@ -459,9 +459,18 @@
         font-size: 1rem;
         font-weight: 1000;
       }
-      .qa-screens {
+      .screens-description {
         grid-column: 1 / -1;
         grid-row: 3;
+        margin: 0 0 4px;
+        color: var(--text);
+        font-size: 0.86rem;
+        font-weight: 700;
+        text-align: center;
+      }
+      .qa-screens {
+        grid-column: 1 / -1;
+        grid-row: 4;
         display: flex;
         align-items: flex-start;
         justify-content: center;
@@ -670,8 +679,8 @@
       }
       .consult-price-card ul {
         display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 3px 20px;
+        grid-template-columns: 1fr;
+        gap: 3px;
         margin: 10px 0 0;
         padding-left: 20px;
       }
@@ -1476,6 +1485,9 @@
           <div class="qa-screens-wrap card">
             <span class="eyebrow">実際の画面を確認</span>
             <h3 class="screens-title">実際のQ&A画面</h3>
+            <p class="screens-description">
+              選択肢を選んでいくだけで、何を質問したらよいか分からない方でも、良い質問ができます。
+            </p>
             <div class="qa-screens" aria-label="ROUTE Q&Aの実際の画面">
               <figure class="screen-shot">
                 <img
@@ -1502,7 +1514,7 @@
           <div class="qa-example card" aria-label="Q&Aの質問とLINE回答例">
             <div class="example-question">
               <span class="eyebrow">こんな質問に回答します</span>
-              <h3>選択肢にない質問を入力する</h3>
+              <h3>これはQ&amp;Aの回答例です</h3>
               <p>県立みなと高校の合格ラインの目安を教えてください。</p>
             </div>
             <div class="line-preview">
