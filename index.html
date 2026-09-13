@@ -727,7 +727,47 @@
         margin-top: 16px;
       }
       .consult-price-action p {
-        margin: 7px 0 0;
+        display: inline-block;
+        margin: 8px 0 0;
+        padding: 4px 12px;
+        border-radius: 999px;
+        background: #fff;
+        color: var(--muted);
+      }
+      .consult-live-preview {
+        display: grid;
+        grid-template-columns: minmax(0, 1.6fr) minmax(230px, 0.7fr);
+        gap: 20px;
+        align-items: center;
+        margin-top: 16px;
+        padding: 16px;
+        background: #fff;
+        border: 2px solid rgba(255, 255, 255, 0.9);
+        border-radius: 18px;
+        box-shadow: none;
+      }
+      .consult-live-preview img {
+        width: 100%;
+        border: 1px solid var(--line);
+        border-radius: 12px;
+      }
+      .consult-live-preview figcaption {
+        margin: 0;
+      }
+      .consult-live-preview h3 {
+        margin: 8px 0 6px;
+        color: var(--ink);
+        font-size: 1.15rem;
+      }
+      .consult-live-preview p {
+        margin: 0;
+        color: var(--text);
+      }
+      .consult-live-preview .privacy-note {
+        margin-top: 9px;
+        color: var(--blue-strong);
+        font-size: 0.82rem;
+        font-weight: 900;
       }
       .consult {
         display: grid;
@@ -1274,6 +1314,10 @@
           border-right: 0;
           border-bottom: 1px solid var(--line);
         }
+        .consult-live-preview {
+          grid-template-columns: 1fr;
+          padding: 12px;
+        }
         .consult {
           padding: 20px;
         }
@@ -1545,6 +1589,23 @@
               </div>
             </figure>
           </div>
+          <figure class="consult-live-preview" aria-label="オンライン受験相談の実際の画面">
+            <img
+              src="./assets/online-consultation-screen.webp"
+              width="1400"
+              height="933"
+              loading="lazy"
+              alt="Zoomで資料を画面共有しながら行うオンライン受験相談の画面"
+            />
+            <figcaption>
+              <span class="eyebrow">実際の相談画面</span>
+              <h3>資料を見ながら、分かりやすく整理します</h3>
+              <p>
+                高校受験の資料や個別診断票を画面共有しながら、状況に合わせて直接ご相談いただけます。
+              </p>
+              <p class="privacy-note">※お客様の画面は映りません。</p>
+            </figcaption>
+          </figure>
           <div class="consult-price-action">
             <a class="btn btn-outline contact-link" href="contact/"
               >オンライン相談を問い合わせる →</a
