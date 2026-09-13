@@ -358,6 +358,10 @@
         line-height: 1.35;
         margin: 7px 0;
       }
+      .qa-copy h2 {
+        font-size: clamp(1.35rem, 2.4vw, 1.85rem);
+        letter-spacing: -0.035em;
+      }
       .qa-copy p {
         margin: 0 0 10px;
       }
@@ -633,11 +637,13 @@
       }
       .consult-price-grid {
         display: grid;
-        grid-template-columns: 1.2fr 0.85fr 0.8fr;
+        grid-template-columns: 1.2fr 1fr 1fr;
         gap: 14px;
         align-items: stretch;
       }
       .consult-price-card {
+        min-width: 0;
+        height: 100%;
         padding: 20px;
       }
       .consult-price-card.featured {
@@ -688,6 +694,7 @@
         display: flex;
         flex-direction: column;
         overflow: hidden;
+        min-width: 0;
         height: 100%;
       }
       .report-preview img {
