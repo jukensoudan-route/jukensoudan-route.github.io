@@ -727,19 +727,16 @@
         margin-top: 16px;
       }
       .consult-price-action p {
-        display: inline-block;
-        margin: 8px 0 0;
-        padding: 4px 12px;
-        border-radius: 999px;
-        background: #fff;
-        color: var(--muted);
+        display: block;
+        margin: 7px 0 0;
+        padding: 0;
+        border-radius: 0;
+        background: transparent;
+        color: #fff;
       }
       .consult-live-preview {
-        display: grid;
-        grid-template-columns: minmax(0, 1.6fr) minmax(230px, 0.7fr);
-        gap: 20px;
-        align-items: center;
-        margin-top: 16px;
+        display: block;
+        margin: 16px 0 0;
         padding: 16px;
         background: #fff;
         border: 2px solid rgba(255, 255, 255, 0.9);
@@ -748,11 +745,14 @@
       }
       .consult-live-preview img {
         width: 100%;
+        max-height: 560px;
+        object-fit: contain;
+        background: #171717;
         border: 1px solid var(--line);
         border-radius: 12px;
       }
       .consult-live-preview figcaption {
-        margin: 0;
+        margin: 0 0 13px;
       }
       .consult-live-preview h3 {
         margin: 8px 0 6px;
@@ -1315,7 +1315,6 @@
           border-bottom: 1px solid var(--line);
         }
         .consult-live-preview {
-          grid-template-columns: 1fr;
           padding: 12px;
         }
         .consult {
@@ -1590,13 +1589,6 @@
             </figure>
           </div>
           <figure class="consult-live-preview" aria-label="オンライン受験相談の実際の画面">
-            <img
-              src="./assets/online-consultation-screen.webp"
-              width="1400"
-              height="933"
-              loading="lazy"
-              alt="Zoomで資料を画面共有しながら行うオンライン受験相談の画面"
-            />
             <figcaption>
               <span class="eyebrow">実際の相談画面</span>
               <h3>資料を見ながら、分かりやすく整理します</h3>
@@ -1605,6 +1597,13 @@
               </p>
               <p class="privacy-note">※お客様の画面は映りません。</p>
             </figcaption>
+            <img
+              src="./assets/online-consultation-screen.webp"
+              width="1400"
+              height="933"
+              loading="lazy"
+              alt="Zoomで資料を画面共有しながら行うオンライン受験相談の画面"
+            />
           </figure>
           <div class="consult-price-action">
             <a class="btn btn-outline contact-link" href="contact/"
