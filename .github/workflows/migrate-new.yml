@@ -24,10 +24,17 @@ jobs:
         run: |
           set -euo pipefail
           git clone --depth 1 https://github.com/jukensoudan-route/new.git /tmp/source
+
           cp CNAME /tmp/CNAME.keep
+          cp .github/workflows/deploy-pages.yml /tmp/deploy-pages.yml.keep
+
           find . -mindepth 1 -maxdepth 1 ! -name '.git' -exec rm -rf {} +
-          rsync -a --exclude='.git' /tmp/source/ ./
+
+          rsync -a             --exclude='.git'             --exclude='.github/workflows/deploy-pages.yml'             /tmp/source/ ./
+
+          mkdir -p .github/workflows
           cp /tmp/CNAME.keep CNAME
+          cp /tmp/deploy-pages.yml.keep .github/workflows/deploy-pages.yml
 
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
