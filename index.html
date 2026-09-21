@@ -1,1703 +1,304 @@
 <!doctype html>
 <html lang="ja">
-  <head>
-    <meta charset="utf-8" />
-    <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1, viewport-fit=cover"
-    />
-    <title>兵庫県高校受験の保護者相談・Q&amp;A｜進路相談室ROUTE</title>
-    <meta
-      name="description"
-      content="兵庫県の高校受験に関する保護者の疑問に、ROUTEがLINEで回答します。営業時間内は目安5～30分。初回1問無料。"
-    />
-    <meta name="robots" content="index,follow" />
-    <meta name="theme-color" content="#267EE6" />
-    <link rel="icon" type="image/webp" href="assets/route-logo.webp" />
-    <style>
-      :root {
-        --blue: #267ee6;
-        --blue-strong: #176ed2;
-        --green: #22b89a;
-        --green-strong: #10957d;
-        --ink: #223945;
-        --text: #405862;
-        --muted: #69808a;
-        --sky: #dcecff;
-        --mint: #dff7f1;
-        --line: #bfd9f3;
-        --white: #fff;
-        --shadow: 0 9px 25px rgba(38, 126, 230, 0.14);
-      }
-      * {
-        box-sizing: border-box;
-      }
-      html {
-        scroll-behavior: smooth;
-        scroll-padding-top: 76px;
-      }
-      body {
-        margin: 0;
-        font-family:
-          "Noto Sans JP", "Hiragino Kaku Gothic ProN", "Yu Gothic", sans-serif;
-        color: var(--text);
-        background: #fff;
-        line-height: 1.65;
-        font-size: 16px;
-      }
-      a {
-        color: inherit;
-        text-decoration: none;
-      }
-      img {
-        display: block;
-        max-width: 100%;
-        height: auto;
-      }
-      .wrap {
-        width: min(1080px, calc(100% - 36px));
-        margin-inline: auto;
-      }
-      section {
-        padding: 42px 0;
-      }
-      .soft {
-        background: linear-gradient(
-          125deg,
-          var(--sky) 0%,
-          #e8f4ff 48%,
-          var(--mint) 100%
-        );
-        border-block: 1px solid #c5def5;
-      }
-      .card {
-        background: #fff;
-        border: 1px solid var(--line);
-        border-radius: 18px;
-        box-shadow: var(--shadow);
-      }
-      .eyebrow {
-        display: inline-flex;
-        padding: 4px 11px;
-        border-radius: 999px;
-        background: #e4f8ff;
-        color: #0879b3;
-        font-size: 0.78rem;
-        font-weight: 900;
-        letter-spacing: 0.04em;
-      }
-      .section-head {
-        text-align: center;
-        max-width: 700px;
-        margin: 0 auto 18px;
-      }
-      .section-head h2 {
-        margin: 7px 0 4px;
-        color: var(--ink);
-        font-size: clamp(1.55rem, 3.4vw, 2.1rem);
-        line-height: 1.35;
-      }
-      .section-head p {
-        margin: 0;
-        color: var(--muted);
-      }
-      .btn {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        min-height: 48px;
-        padding: 11px 19px;
-        border: 3px solid var(--blue);
-        border-radius: 12px;
-        font-weight: 900;
-        line-height: 1.35;
-        box-shadow: none !important;
-      }
-      .btn-primary {
-        background: #ffe23f;
-        color: #174e90;
-      }
-      .btn-outline {
-        background: #fff;
-        border-color: var(--blue);
-        color: var(--blue-strong);
-      }
-      .note {
-        font-size: 0.78rem;
-        color: var(--muted);
-        line-height: 1.55;
-      }
-      .skip-link {
-        position: fixed;
-        left: 10px;
-        top: -80px;
-        z-index: 100;
-        background: #fff;
-        padding: 9px 12px;
-        border: 2px solid var(--blue);
-        border-radius: 8px;
-        font-weight: 800;
-      }
-      .skip-link:focus {
-        top: 10px;
-      }
-      .topnote {
-        background: #e9f9ff;
-        color: #137cad;
-        text-align: center;
-        font-size: 0.76rem;
-        font-weight: 700;
-        padding: 4px 16px;
-      }
-      .site-header {
-        position: sticky;
-        top: 0;
-        z-index: 50;
-        background: rgba(255, 255, 255, 0.96);
-        border-bottom: 1px solid var(--line);
-        backdrop-filter: blur(10px);
-      }
-      .nav {
-        height: 72px;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 16px;
-      }
-      .brand {
-        min-width: 0;
-        height: 64px;
-        display: flex;
-        align-items: center;
-        gap: 10px;
-      }
-      .brand img {
-        flex: 0 0 auto;
-        width: auto;
-        height: 58px;
-      }
-      .brand-title {
-        color: #174e90;
-        font-size: 0.96rem;
-        font-weight: 900;
-        line-height: 1.25;
-        white-space: nowrap;
-      }
-      .navlinks {
-        display: flex;
-        align-items: center;
-        gap: 17px;
-        font-size: 0.86rem;
-        font-weight: 800;
-      }
-      .navlinks a:not(.btn):hover {
-        color: var(--blue-strong);
-      }
-      .menu-btn {
-        display: none;
-        border: 2px solid var(--blue);
-        background: #fff;
-        border-radius: 10px;
-        width: 43px;
-        height: 43px;
-        font-size: 1.25rem;
-        color: var(--ink);
-        box-shadow: none;
-      }
-      .hero {
-        padding: 0;
-        background: #dff4ff;
-        overflow: hidden;
-      }
-      .top-hero-image {
-        width: 100%;
-        height: auto;
-        object-fit: contain;
-      }
-      .price-section {
-        padding: 38px 0 24px;
-      }
-      .price-grid {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 15px;
-      }
-      .price {
-        padding: 19px 18px;
-        text-align: center;
-        position: relative;
-      }
-      .price.free {
-        background: #f4fffc;
-      }
-      .price.recommended {
-        border: 2px solid var(--green);
-      }
-      .badge {
-        position: static;
-        display: inline-block;
-        margin: 0;
-        transform: none;
-        background: var(--green);
-        color: #fff;
-        border-radius: 999px;
-        padding: 3px 12px;
-        font-size: 0.72rem;
-        font-weight: 900;
-      }
-      .recommended-title {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 6px;
-        flex-wrap: wrap;
-      }
-      .price h3 {
-        margin: 0;
-        color: var(--ink);
-        font-size: 1rem;
-      }
-      .amount {
-        color: var(--ink);
-        font-size: 1.9rem;
-        font-weight: 900;
-        line-height: 1.3;
-        margin: 5px 0;
-      }
-      .amount small {
-        font-size: 0.85rem;
-      }
-      .per {
-        font-size: 0.77rem;
-        color: var(--muted);
-      }
-      .payment-note {
-        margin-top: 3px;
-        color: var(--blue-strong);
-        font-size: 0.78rem;
-        font-weight: 900;
-      }
-      .price-bar {
-        display: grid;
-        grid-template-columns: 1fr auto;
-        align-items: center;
-        gap: 18px;
-        margin-top: 16px;
-      }
-      .pricing-lead {
-        display: grid;
-        grid-template-columns: 1fr auto;
-        align-items: center;
-        gap: 24px;
-        margin-bottom: 18px;
-      }
-      .pricing-lead .section-head {
-        max-width: none;
-        margin: 0;
-        text-align: left;
-      }
-      .question-rule {
-        margin: 0;
-        padding: 12px 16px;
-        border: 3px solid #fff;
-        border-radius: 13px;
-        background: rgba(255, 255, 255, 0.14);
-        color: #fff;
-        font-size: clamp(1rem, 2.2vw, 1.28rem);
-        font-weight: 1000;
-        text-align: center;
-      }
-      .qa-overview {
-        order: 1;
-        grid-column: 1 / -1;
-        padding: 20px;
-        border: 3px solid var(--blue);
-        border-bottom: 0;
-        border-radius: 18px 18px 0 0;
-        box-shadow: none;
-      }
-      .qa-copy {
-        display: grid;
-        grid-template-columns: minmax(0, 1.3fr) minmax(220px, 1fr);
-        grid-template-areas:
-          "label speed"
-          "title speed"
-          "description hours"
-          "topics topics";
-        column-gap: 34px;
-        align-items: start;
-      }
-      .qa-copy > .eyebrow {
-        grid-area: label;
-        justify-self: start;
-        align-self: start;
-        margin-bottom: 7px;
-      }
-      .qa-copy > h2 {
-        grid-area: title;
-        white-space: nowrap;
-      }
-      .qa-copy > p:not(.business-hours) {
-        grid-area: description;
-        white-space: nowrap;
-      }
-      .qa-copy > .reply-speed {
-        grid-area: speed;
-      }
-      .qa-copy > .business-hours {
-        grid-area: hours;
-      }
-      .qa-copy > .topic-inline {
-        grid-area: topics;
-      }
-      .qa-copy h2,
-      .consult h2,
-      .profile h2 {
-        color: var(--ink);
-        font-size: clamp(1.55rem, 3.2vw, 2.05rem);
-        line-height: 1.35;
-        margin: 7px 0;
-      }
-      .qa-copy h2 {
-        font-size: clamp(1.35rem, 2.4vw, 1.85rem);
-        letter-spacing: -0.035em;
-      }
-      .qa-copy p {
-        margin: 0 0 10px;
-      }
-      .points {
-        display: grid;
-        gap: 5px;
-        margin: 0;
-        padding: 0;
-        list-style: none;
-      }
-      .points li {
-        position: relative;
-        padding-left: 23px;
-        font-weight: 700;
-      }
-      .points li:before {
-        content: "✓";
-        position: absolute;
-        left: 0;
-        color: var(--green);
-        font-weight: 900;
-      }
-      .reply-speed {
-        width: min(100%, 360px);
-        justify-self: center;
-        margin: 14px 0 10px;
-        padding: 14px 15px;
-        border: 3px solid var(--blue);
-        border-radius: 14px;
-        background: #eef7ff;
-        color: #174e90;
-        text-align: center;
-      }
-      .reply-speed strong {
-        display: block;
-        font-size: clamp(0.95rem, 1.65vw, 1.16rem);
-        line-height: 1.35;
-        white-space: nowrap;
-      }
-      .reply-speed span {
-        display: block;
-        margin-top: 3px;
-        font-size: 0.72rem;
-        font-weight: 800;
-        white-space: nowrap;
-      }
-      .business-hours {
-        justify-self: center;
-        margin: 0;
-        color: var(--ink);
-        font-size: 0.84rem;
-        font-weight: 900;
-        text-align: center;
-        white-space: nowrap;
-      }
-      .topic-inline {
-        margin-top: 12px;
-        padding-top: 10px;
-        border-top: 1px solid var(--line);
-        color: var(--ink);
-        font-size: 0.8rem;
-        font-weight: 800;
-        text-align: center;
-        white-space: nowrap;
-      }
-      .qa-screens-wrap {
-        order: 3;
-        display: grid;
-        grid-template-columns: auto 1fr auto;
-        align-items: center;
-        gap: 8px 16px;
-        margin-top: 14px;
-        padding: 14px;
-        border: 3px solid var(--blue);
-        border-right: 0;
-        border-radius: 18px 0 0 18px;
-        box-shadow: none;
-      }
-      .qa-screens-wrap > .eyebrow {
-        grid-column: 1 / -1;
-        grid-row: 1;
-        justify-self: start;
-        align-self: start;
-        margin-bottom: 0;
-      }
-      .qa-screens-wrap::after {
-        display: none;
-      }
-      .screens-title {
-        grid-column: 1 / -1;
-        grid-row: 2;
-        text-align: center;
-        margin: 0 0 5px;
-        color: var(--ink);
-        font-size: 1rem;
-        font-weight: 1000;
-      }
-      .screens-description {
-        grid-column: 1 / -1;
-        grid-row: 3;
-        margin: 0 0 4px;
-        color: var(--text);
-        font-size: 0.86rem;
-        font-weight: 700;
-        text-align: center;
-      }
-      .qa-screens {
-        grid-column: 1 / -1;
-        grid-row: 4;
-        display: flex;
-        align-items: flex-start;
-        justify-content: center;
-        gap: 10px;
-        padding: 4px;
-      }
-      .screen-shot {
-        flex: 1 1 0;
-        min-width: 0;
-        margin: 0;
-        text-align: center;
-      }
-      .screen-shot img {
-        width: 100%;
-        height: auto;
-        border-radius: 15px;
-        border: 1px solid #c7dced;
-        box-shadow: 0 7px 18px rgba(38, 126, 230, 0.12);
-      }
-      .screen-shot figcaption {
-        margin-top: 7px;
-        color: var(--ink);
-        font-size: 0.78rem;
-        font-weight: 900;
-      }
-      .qa-example {
-        order: 4;
-        display: grid;
-        grid-template-columns: 1fr;
-        gap: 18px;
-        margin-top: 14px;
-        padding: 18px;
-        align-items: center;
-        border: 3px solid var(--blue);
-        border-left: 0;
-        border-radius: 0 18px 18px 0;
-        box-shadow: none;
-      }
-      .example-question h3 {
-        margin: 0;
-        color: var(--ink);
-        font-size: 1.15rem;
-      }
-      .example-question {
-        display: grid;
-        grid-template-columns: auto 1fr auto;
-        align-items: center;
-        gap: 8px 16px;
-      }
-      .example-question::after {
-        content: "";
-        width: 118px;
-      }
-      .example-question p {
-        grid-column: 1 / -1;
-        margin: 0;
-        padding: 14px;
-        border: 2px solid var(--blue);
-        border-radius: 14px;
-        background: #f2f8ff;
-        color: var(--ink);
-        font-weight: 800;
-      }
-      .line-preview {
-        overflow: hidden;
-        border: 1px solid #b9d4ec;
-        border-radius: 16px;
-        background: #8eb7d7;
-      }
-      .line-title {
-        padding: 9px 14px;
-        background: #fff;
-        color: #20333c;
-        font-weight: 900;
-        text-align: center;
-      }
-      .line-chat {
-        display: grid;
-        gap: 10px;
-        padding: 18px;
-      }
-      .chat-row {
-        display: flex;
-        align-items: flex-end;
-        gap: 8px;
-      }
-      .chat-row.user {
-        justify-content: flex-end;
-      }
-      .line-avatar {
-        display: grid;
-        place-items: center;
-        flex: 0 0 34px;
-        height: 34px;
-        border-radius: 50%;
-        background: #267ee6;
-        color: #fff;
-        font-weight: 1000;
-      }
-      .bubble {
-        max-width: 86%;
-        padding: 11px 13px;
-        border-radius: 15px;
-        background: #fff;
-        color: #263e49;
-        font-size: 0.9rem;
-        line-height: 1.55;
-      }
-      .user .bubble {
-        background: #8de055;
-      }
-      .answer-scroll {
-        max-height: 310px;
-        overflow-y: auto;
-        overscroll-behavior: contain;
-        scrollbar-gutter: stable;
-        padding-right: 16px;
-      }
-      .answer-scroll::-webkit-scrollbar {
-        width: 8px;
-      }
-      .answer-scroll::-webkit-scrollbar-thumb {
-        background: #8eb7d7;
-        border-radius: 999px;
-      }
-      .line-caption {
-        margin: 0;
-        padding: 8px 14px;
-        background: #fff;
-        color: var(--muted);
-        font-size: 0.74rem;
-        text-align: center;
-        font-weight: 800;
-      }
-      .qa-process-wrap {
-        order: 2;
-        grid-column: 1 / -1;
-        display: grid;
-        grid-template-columns: auto 1fr auto;
-        align-items: center;
-        gap: 10px 18px;
-        margin-top: 0;
-        padding: 15px;
-        border: 3px solid var(--blue);
-        border-top: 0;
-        border-radius: 0 0 18px 18px;
-        box-shadow: none;
-      }
-      .qa-process-wrap::after {
-        content: "";
-        width: 88px;
-      }
-      .qa-process-wrap > .eyebrow {
-        justify-self: start;
-      }
-      .process-title {
-        text-align: center;
-        margin: 0;
-        color: var(--ink);
-        font-size: 1rem;
-        font-weight: 1000;
-      }
-      .qa-process-image {
-        grid-column: 1 / -1;
-        width: 100%;
-        height: auto;
-        border-radius: 12px;
-      }
-      .consult-pricing {
-        background: linear-gradient(
-          135deg,
-          #cfe4ff 0%,
-          #edf6ff 45%,
-          #d7f4ec 100%
-        );
-        border-block: 1px solid #9fc9ef;
-      }
-      .consult-price-grid {
-        display: grid;
-        grid-template-columns: repeat(3, minmax(0, 1fr));
-        gap: 14px;
-        align-items: stretch;
-      }
-      .consult-price-card {
-        min-width: 0;
-        height: 100%;
-        padding: 20px;
-      }
-      .consult-price-card.featured {
-        border: 2px solid var(--blue);
-      }
-      .consult-price-card h3 {
-        margin: 0;
-        color: var(--ink);
-        font-size: 1.08rem;
-      }
-      .consult-amount {
-        margin: 5px 0 10px;
-        color: var(--blue-strong);
-        font-size: 2rem;
-        font-weight: 900;
-        line-height: 1.2;
-      }
-      .consult-amount small {
-        font-size: 0.88rem;
-      }
-      .consult-price-card ul {
-        display: grid;
-        grid-template-columns: 1fr;
-        gap: 3px;
-        margin: 10px 0 0;
-        padding-left: 20px;
-      }
-      .consult-price-card li {
-        font-size: 0.82rem;
-      }
-      .mini-price {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        gap: 12px;
-        padding: 13px 0;
-        border-bottom: 1px solid var(--line);
-        font-weight: 800;
-      }
-      .mini-price:last-of-type {
-        border-bottom: 0;
-      }
-      .mini-price strong {
-        color: var(--blue-strong);
-        font-size: 1.35rem;
-      }
-      .report-preview {
-        display: flex;
-        flex-direction: column;
-        overflow: hidden;
-        min-width: 0;
-        height: 100%;
-        margin: 0;
-      }
-      .report-preview img {
-        width: 100%;
-        height: 0;
-        min-height: 220px;
-        flex: 1 1 0;
-        object-fit: contain;
-        object-position: top;
-        padding: 16px;
-        background: #fff;
-        border-bottom: 1px solid var(--line);
-      }
-      .report-preview div {
-        padding: 13px 15px;
-      }
-      .report-preview h3 {
-        margin: 0;
-        color: var(--ink);
-        font-size: 0.95rem;
-      }
-      .report-preview p {
-        margin: 3px 0 0;
-        font-size: 0.76rem;
-        color: var(--muted);
-      }
-      .consult-price-action {
-        text-align: center;
-        margin-top: 16px;
-      }
-      .consult-price-action p {
-        display: block;
-        margin: 7px 0 0;
-        padding: 0;
-        border-radius: 0;
-        background: transparent;
-        color: #fff;
-      }
-      .consult-live-preview {
-        display: block;
-        margin: 16px 0 0;
-        padding: 16px;
-        background: #fff;
-        border: 2px solid rgba(255, 255, 255, 0.9);
-        border-radius: 18px;
-        box-shadow: none;
-      }
-      .consult-live-preview img {
-        width: 100%;
-        max-height: 560px;
-        object-fit: contain;
-        background: #171717;
-        border: 1px solid var(--line);
-        border-radius: 12px;
-      }
-      .consult-live-preview figcaption {
-        margin: 0 0 13px;
-      }
-      .consult-live-preview h3 {
-        margin: 8px 0 6px;
-        color: var(--ink);
-        font-size: 1.15rem;
-      }
-      .consult-live-preview p {
-        margin: 0;
-        color: var(--text);
-      }
-      .consult-live-preview .privacy-note {
-        margin-top: 9px;
-        color: var(--blue-strong);
-        font-size: 0.82rem;
-        font-weight: 900;
-      }
-      .consult {
-        display: grid;
-        grid-template-columns: 1.1fr 0.9fr;
-        gap: 25px;
-        align-items: center;
-        padding: 27px;
-        border: 2px solid #bdebe3;
-      }
-      .consult p {
-        margin: 7px 0 14px;
-      }
-      .consult-visual img {
-        border-radius: 15px;
-        aspect-ratio: 2/1;
-        object-fit: cover;
-      }
-      .service-step {
-        display: inline-flex;
-        align-items: center;
-        gap: 7px;
-        color: var(--green-strong);
-        font-weight: 900;
-        font-size: 0.82rem;
-      }
-      .service-step:before {
-        content: "";
-        width: 9px;
-        height: 9px;
-        border-radius: 50%;
-        background: var(--green);
-      }
-      .profile {
-        display: grid;
-        grid-template-columns: 180px 1fr;
-        gap: 28px;
-        align-items: center;
-      }
-      .profile-photo {
-        border-radius: 18px;
-        aspect-ratio: 4/5;
-        object-fit: cover;
-        box-shadow: var(--shadow);
-      }
-      .profile-name {
-        font-weight: 900;
-        color: var(--green-strong);
-      }
-      .credential {
-        display: flex;
-        gap: 6px;
-        flex-wrap: wrap;
-        margin: 9px 0;
-      }
-      .credential span {
-        font-size: 0.74rem;
-        border: 1px solid var(--line);
-        border-radius: 999px;
-        padding: 4px 9px;
-        background: #fff;
-      }
-      .profile p {
-        margin: 8px 0;
-      }
-      .faq-list {
-        display: grid;
-        gap: 8px;
-        max-width: 820px;
-        margin: auto;
-      }
-      .faq {
-        background: #fff;
-        border: 1px solid var(--line);
-        border-radius: 13px;
-        overflow: hidden;
-      }
-      .faq summary {
-        cursor: pointer;
-        list-style: none;
-        padding: 14px 48px 14px 17px;
-        color: var(--ink);
-        font-weight: 800;
-        position: relative;
-      }
-      .faq summary::-webkit-details-marker {
-        display: none;
-      }
-      .faq summary:after {
-        content: "＋";
-        position: absolute;
-        right: 17px;
-        color: var(--blue);
-      }
-      .faq[open] summary:after {
-        content: "−";
-      }
-      .faq p {
-        margin: 0;
-        padding: 0 17px 15px;
-      }
-      .final-line {
-        margin-top: 22px;
-        text-align: center;
-        color: var(--ink);
-        font-weight: 800;
-      }
-      .nav-qa {
-        min-height: 40px;
-        padding: 8px 14px;
-        border-radius: 10px;
-        border-color: #06c755;
-        color: #fff !important;
-        background: #06c755;
-        box-shadow: none;
-      }
-      .primary-service {
-        background: linear-gradient(
-          135deg,
-          #267ee6 0%,
-          #1d72d8 58%,
-          #2ca6e8 100%
-        );
-        border: 0;
-      }
-      .primary-service .section-head h2,
-      .primary-service .section-head p {
-        color: #fff;
-      }
-      .primary-service .price {
-        border-color: rgba(255, 255, 255, 0.75);
-        box-shadow: 0 7px 18px rgba(8, 58, 120, 0.16);
-      }
-      .primary-service .price.free {
-        background: #f4fffc;
-        border: 3px solid #22b89a;
-      }
-      .qa-main-button {
-        min-width: 310px;
-        min-height: 74px;
-        padding-inline: 28px;
-        gap: 10px;
-        background: #06c755;
-        border-color: #fff;
-        color: #fff;
-        font-size: 1.08rem;
-      }
-      .qa-main-button::before {
-        content: "LINE";
-        display: grid;
-        place-items: center;
-        flex: 0 0 34px;
-        width: 34px;
-        height: 34px;
-        border-radius: 50%;
-        background: #fff;
-        color: #06c755;
-        font-size: 0.58rem;
-        font-weight: 1000;
-      }
-      .qa-detail {
-        padding-top: 0;
-        background: linear-gradient(
-          135deg,
-          #267ee6 0%,
-          #1d72d8 58%,
-          #2ca6e8 100%
-        );
-        border-bottom: 6px solid #267ee6;
-      }
-      .qa-detail > .wrap {
-        display: grid;
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-      }
-      .qa-detail .eyebrow {
-        min-height: 27px;
-        padding: 5px 13px;
-        align-items: center;
-        background: #267ee6;
-        color: #fff;
-        line-height: 1.2;
-        white-space: nowrap;
-      }
-      .support-service-label {
-        display: inline-flex;
-        padding: 5px 12px;
-        border-radius: 999px;
-        background: #dff7f1;
-        color: #087b67;
-        font-size: 0.76rem;
-        font-weight: 1000;
-        letter-spacing: 0.06em;
-      }
-      .service-bridge {
-        padding: 20px 0;
-        text-align: center;
-        background: #fff;
-      }
-      .service-bridge p {
-        margin: 0;
-        color: var(--ink);
-        font-weight: 900;
-      }
-      .service-bridge span {
-        display: block;
-        color: var(--green-strong);
-        font-size: 0.82rem;
-        margin-top: 2px;
-      }
-      .secondary-service {
-        padding-top: 38px;
-        background: linear-gradient(
-          135deg,
-          #22b89a 0%,
-          #10957d 58%,
-          #2fc7a8 100%
-        );
-        border: 0;
-      }
-      .secondary-service > .wrap {
-        overflow: visible;
-        border: 0;
-        border-radius: 0;
-        background: transparent;
-      }
-      .secondary-service .section-head {
-        max-width: none;
-        margin: 0 0 18px;
-        padding: 0;
-        background: transparent;
-        text-align: left;
-      }
-      .secondary-service .section-head h2 {
-        color: #fff;
-      }
-      .secondary-service .section-head p {
-        color: #fff;
-      }
-      .secondary-service .support-service-label {
-        background: #fff;
-        color: #087b67;
-      }
-      .secondary-service .secondary-note {
-        color: #fff;
-      }
-      .secondary-service .consult-price-grid {
-        padding: 0;
-      }
-      .secondary-service .consult-price-action {
-        padding: 0;
-      }
-      .secondary-service .consult-price-card.featured {
-        border-color: #22b89a;
-      }
-      .secondary-service .consult-amount,
-      .secondary-service .mini-price strong {
-        color: #0b866f;
-      }
-      .secondary-service .consult-price-action .btn {
-        border-color: var(--blue);
-        color: var(--blue-strong);
-        background: #fff;
-      }
-      .secondary-note {
-        display: inline-block;
-        margin-top: 5px;
-        color: #56736f;
-        font-size: 0.8rem;
-        font-weight: 800;
-      }
-      footer {
-        background: linear-gradient(135deg, #267ee6, #22b89a);
-        color: #fff;
-        padding: 24px 0 98px;
-        font-size: 0.82rem;
-      }
-      .footer-grid {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        gap: 18px;
-        flex-wrap: wrap;
-      }
-      .footer-logo {
-        font-size: 1rem;
-        font-weight: 900;
-      }
-      .footer-links {
-        display: flex;
-        gap: 12px;
-        flex-wrap: wrap;
-      }
-      .footer-links a {
-        text-decoration: underline;
-        text-underline-offset: 3px;
-      }
-      .mobile-cta-shell {
-        display: none;
-      }
-      @media (max-width: 860px) {
-        .navlinks {
-          display: none;
-        }
-        .menu-btn {
-          display: block;
-        }
-        .navlinks.open {
-          display: flex;
-          position: absolute;
-          left: 18px;
-          right: 18px;
-          top: 72px;
-          flex-direction: column;
-          align-items: stretch;
-          padding: 15px;
-          background: #fff;
-          border: 1px solid var(--line);
-          border-radius: 14px;
-          box-shadow: var(--shadow);
-        }
-        .qa-detail > .wrap {
-          grid-template-columns: 1fr;
-        }
-        .qa-overview {
-          border-right: 3px solid var(--blue);
-          border-bottom: 0;
-          border-radius: 18px 18px 0 0;
-        }
-        .qa-copy {
-          grid-template-columns: 1fr;
-          grid-template-areas:
-            "label"
-            "title"
-            "description"
-            "speed"
-            "hours"
-            "topics";
-          column-gap: 0;
-        }
-        .qa-copy > h2,
-        .qa-copy > p:not(.business-hours),
-        .reply-speed strong,
-        .reply-speed span,
-        .business-hours,
-        .topic-inline {
-          white-space: normal;
-        }
-        .reply-speed {
-          width: 100%;
-        }
-        .qa-process-wrap {
-          grid-template-columns: 1fr;
-        }
-        .qa-process-wrap::after {
-          display: none;
-        }
-        .qa-process-wrap > .eyebrow {
-          justify-self: start;
-        }
-        .qa-screens-wrap {
-          grid-template-columns: 1fr;
-          border-right: 3px solid var(--blue);
-          border-bottom: 0;
-          border-radius: 18px 18px 0 0;
-        }
-        .qa-screens-wrap::after,
-        .example-question::after {
-          display: none;
-        }
-        .example-question {
-          grid-template-columns: 1fr;
-        }
-        .qa-example {
-          margin-top: 0;
-          border-left: 3px solid var(--blue);
-          border-top: 0;
-          border-radius: 0 0 18px 18px;
-        }
-        .qa-example,
-        .consult {
-          grid-template-columns: 1fr;
-        }
-        .consult-price-grid {
-          grid-template-columns: 1fr 1fr;
-        }
-        .report-preview {
-          grid-column: 1/-1;
-          display: grid;
-          grid-template-columns: 180px 1fr;
-        }
-        .report-preview img {
-          height: 190px;
-          border-bottom: 0;
-          border-right: 1px solid var(--line);
-        }
-        .profile {
-          grid-template-columns: 150px 1fr;
-        }
-        .mobile-cta-shell {
-          display: block;
-          position: fixed;
-          z-index: 60;
-          left: 0;
-          right: 0;
-          bottom: 0;
-          padding: 8px 12px calc(8px + env(safe-area-inset-bottom));
-          background: rgba(255, 255, 255, 0.88);
-          border-top: 1px solid rgba(38, 126, 230, 0.22);
-          backdrop-filter: blur(10px);
-        }
-        .mobile-cta {
-          display: block;
-          background: #06c755;
-          color: #fff;
-          text-align: center;
-          font-weight: 1000;
-          border: 3px solid #fff;
-          border-radius: 13px;
-          padding: 12px;
-          box-shadow: none;
-        }
-      }
-      @media (max-width: 620px) {
-        body {
-          font-size: 16px;
-        }
-        .wrap {
-          width: min(100% - 24px, 1080px);
-        }
-        section {
-          padding: 30px 0;
-        }
-        .nav {
-          height: 66px;
-          gap: 8px;
-        }
-        .brand {
-          height: 60px;
-          gap: 6px;
-        }
-        .brand img {
-          height: 48px;
-        }
-        .brand-title {
-          max-width: 205px;
-          font-size: 0.72rem;
-          white-space: normal;
-        }
-        .navlinks.open {
-          top: 66px;
-        }
-        .topnote {
-          font-size: 0.69rem;
-        }
-        .hero {
-          padding: 0;
-        }
-        .price-section {
-          padding: 28px 0 18px;
-        }
-        .price-grid {
-          gap: 7px;
-        }
-        .price {
-          padding: 16px 6px;
-        }
-        .price h3 {
-          font-size: 0.82rem;
-        }
-        .amount {
-          font-size: 1.4rem;
-        }
-        .per,
-        .payment-note {
-          font-size: 0.67rem;
-        }
-        .badge {
-          font-size: 0.62rem;
-          padding: 2px 8px;
-        }
-        .price-bar {
-          grid-template-columns: 1fr;
-          gap: 11px;
-          margin-top: 15px;
-        }
-        .pricing-lead {
-          grid-template-columns: 1fr;
-          gap: 12px;
-          margin-bottom: 16px;
-        }
-        .pricing-lead .section-head {
-          text-align: center;
-        }
-        .question-rule {
-          font-size: 1rem;
-        }
-        .qa-main-button {
-          width: 100%;
-          min-width: 0;
-        }
-        .qa-overview {
-          padding: 14px;
-          gap: 14px;
-        }
-        .qa-screens {
-          flex-direction: column;
-          align-items: center;
-          gap: 13px;
-          padding: 10px;
-        }
-        .screen-shot {
-          width: 100%;
-        }
-        .screen-shot img,
-        .screen-shot:first-child img {
-          width: 100%;
-          height: auto;
-          border-radius: 10px;
-        }
-        .screen-shot figcaption {
-          font-size: 0.74rem;
-        }
-        .qa-process-wrap {
-          padding: 11px;
-        }
-        .qa-process {
-          grid-template-columns: 1fr;
-          gap: 7px;
-        }
-        .consult-price-grid {
-          grid-template-columns: 1fr;
-        }
-        .consult-price-card {
-          padding: 17px;
-        }
-        .consult-price-card ul {
-          grid-template-columns: 1fr;
-        }
-        .report-preview {
-          grid-column: auto;
-          display: flex;
-        }
-        .report-preview img {
-          height: 270px;
-          border-right: 0;
-          border-bottom: 1px solid var(--line);
-        }
-        .consult-live-preview {
-          padding: 12px;
-        }
-        .consult {
-          padding: 20px;
-        }
-        .consult-visual {
-          order: -1;
-        }
-        .footer-grid {
-          justify-content: center;
-          text-align: center;
-        }
-        .footer-links {
-          justify-content: center;
-        }
-      }
-      @media (max-width: 360px) {
-        .brand img {
-          height: 43px;
-        }
-        .brand-title {
-          max-width: 155px;
-          font-size: 0.63rem;
-        }
-        .menu-btn {
-          width: 40px;
-          height: 40px;
-        }
-      }
-      @media (prefers-reduced-motion: reduce) {
-        html {
-          scroll-behavior: auto;
-        }
-      }
-    </style>
-  </head>
-  <body id="top">
-    <a class="skip-link" href="#main-content">本文へ移動</a>
-    <header class="site-header">
-      <div class="wrap nav">
-        <a class="brand" href="#top" aria-label="ROUTE トップへ"
-          ><img
-            src="./assets/route-logo.webp"
-            width="420"
-            height="420"
-            alt="進路相談室ROUTE"
-          /><span class="brand-title"
-            >兵庫県高校受験 保護者相談室 ROUTE</span
-          ></a
-        >
-        <button
-          class="menu-btn"
-          aria-label="メニューを開く"
-          aria-expanded="false"
-          aria-controls="main-navigation"
-        >
-          ☰
-        </button>
-        <nav class="navlinks" id="main-navigation" aria-label="主要メニュー">
-          <a href="#pricing">Q&amp;A料金</a><a href="#qa">Q&amp;Aとは</a
-          ><a href="#consult">オンライン相談</a
-          ><a
-            class="btn nav-qa qa-link"
-            href="https://jukensoudan-route.github.io/route-qa/?v=20260911-4"
-            target="_blank"
-            rel="noopener"
-            >LINEでQ&amp;Aを始める</a
-          >
-        </nav>
-      </div>
-    </header>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>ROUTE｜兵庫県高校受験 保護者相談室</title>
+<meta name="description" content="兵庫県高校受験の保護者向けQ&Aとオンライン受験相談。志望校、内申点、実力テスト、私立専願、受験日程をLINEで1問から相談できます。">
+<meta name="theme-color" content="#0867b9">
+<link rel="icon" href="https://jukensoudan-route.github.io/assets/route-logo.webp" type="image/webp">
+<style>
+:root{--blue:#0875d1;--deep:#00529b;--navy:#063e76;--yellow:#ffe449;--ink:#12334e;--muted:#5d7485;--line:#d7e6f2;--pale:#f4faff;--white:#fff;--green:#16b96b}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:#fff;color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Noto Sans JP","Yu Gothic",sans-serif;line-height:1.5;-webkit-font-smoothing:antialiased}a{color:inherit;text-decoration:none}img{display:block;width:100%;height:auto}button{font:inherit}
+.page{width:min(100%,980px);margin:auto;background:#fff;box-shadow:0 0 45px rgba(7,55,100,.08)}
+.wrap{width:min(100% - 34px,850px);margin:auto}
+header{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.96);border-bottom:1px solid var(--line);backdrop-filter:blur(12px)}
+.head{height:68px;display:flex;align-items:center;justify-content:space-between;gap:12px}.brand{display:flex;align-items:center;gap:9px}.brand img{width:48px;height:48px;object-fit:contain}.brand b{font-size:.83rem;color:var(--navy)}.menu{display:grid;place-items:center;width:43px;height:43px;border:2px solid var(--blue);border-radius:12px;background:#fff;color:var(--navy);font-size:1.18rem;font-weight:900}
+.hero{background:#d9f1ff}.hero img{max-height:365px;object-fit:cover}
+.intro{position:relative;overflow:hidden;padding:34px 0 30px;background:linear-gradient(135deg,#075da9,#007ed9);color:#fff;text-align:center}.intro:before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 10% 80%,rgba(255,255,255,.13),transparent 22%),radial-gradient(circle at 92% 10%,rgba(255,255,255,.12),transparent 25%);pointer-events:none}.intro .wrap{position:relative}.eyebrow{font-size:.82rem;font-weight:900}.intro h1{margin:8px 0 15px;color:#fff;font-size:clamp(1.9rem,5vw,3.35rem);line-height:1.18;letter-spacing:-.035em}.intro h1 strong{display:block;color:var(--yellow);font-size:1.25em}.cta{display:inline-flex;min-height:54px;align-items:center;justify-content:center;gap:9px;padding:11px 25px;border:2px solid var(--yellow);border-radius:999px;background:var(--yellow);color:var(--navy);font-weight:1000;text-align:center}.cta.dark{border-color:var(--navy);background:var(--navy);color:#fff}.cta.outline{border-color:#7bc6ad;background:#fff;color:#08795d}.lineicon{display:grid;width:28px;height:28px;place-items:center;border-radius:8px;background:var(--green);color:#fff;font-size:.62rem;font-weight:1000}
+section{padding:37px 0}.title{text-align:center;margin-bottom:18px}.title h2{margin:0;color:var(--navy);font-size:clamp(1.4rem,3vw,2rem);line-height:1.35}.title h2:before,.title h2:after{content:"／";color:var(--yellow);margin:0 5px}.title p{margin:5px 0 0;color:var(--muted);font-size:.88rem}
+.questions{background:#fff}.qlist{display:grid;gap:9px;max-width:760px;margin:auto}.qitem{display:grid;grid-template-columns:40px 1fr auto;align-items:center;gap:11px;min-height:72px;padding:10px 15px;border:1px solid var(--line);border-radius:15px;background:#fff;box-shadow:0 5px 15px rgba(12,78,136,.08)}.qicon{display:grid;width:38px;height:38px;place-items:center;border-radius:50%;background:linear-gradient(135deg,#42a8f4,#0875d1);color:#fff;font-size:1.15rem;font-weight:1000}.qtext{font-weight:950;line-height:1.35}.qgo{padding-left:13px;border-left:1px solid var(--line);color:var(--blue);font-size:.82rem;font-weight:950}
+.freeband{padding:18px 0;background:var(--yellow)}.freein{display:flex;align-items:center;justify-content:space-between;gap:15px}.freecopy{color:var(--navy);font-size:clamp(1.25rem,3vw,1.75rem);font-weight:1000}.freecopy:before,.freecopy:after{content:"／";margin:0 5px;color:#0a74ca}
+.steps{background:linear-gradient(#eef9ff,#f9fdff)}.stepgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.step{position:relative;padding:18px 12px;border-radius:18px;background:#fff;text-align:center;box-shadow:0 6px 18px rgba(0,78,145,.08)}.step+.step:before{content:"›";position:absolute;left:-12px;top:43%;color:var(--blue);font-size:1.7rem}.stepno{display:grid;width:48px;height:48px;place-items:center;margin:0 auto 9px;border-radius:50%;background:linear-gradient(135deg,#42a8f4,#0875d1);color:#fff;font-size:.72rem;font-weight:1000;line-height:1.05}.stepno b{display:block;font-size:1.15rem}.stepicon{height:34px;margin-bottom:5px;color:var(--blue);font-size:1.8rem}.step h3{margin:0 0 3px;font-size:1rem}.step p{margin:0;color:var(--muted);font-size:.76rem}
+.real{padding-top:32px;background:#fff}.realgrid{display:grid;grid-template-columns:1.05fr .95fr;gap:17px;align-items:center}.phones{display:grid;grid-template-columns:1fr 1fr;gap:9px;align-items:end}.phone{padding:8px 7px 0;border:5px solid #17212b;border-bottom:0;border-radius:28px 28px 0 0;background:#17212b;overflow:hidden}.phone img{border-radius:18px 18px 0 0}.chatpromo{text-align:center}.scribble{color:#086cc1;font-size:clamp(1.35rem,3vw,2rem);font-weight:950;line-height:1.25;transform:rotate(-4deg)}.people{display:flex;align-items:end;justify-content:center;gap:8px;margin-top:14px}.person{position:relative;width:84px;height:108px}.headcircle{position:absolute;left:22px;top:0;width:41px;height:41px;border:3px solid var(--navy);border-radius:50%;background:#fff4df}.bodyshape{position:absolute;left:5px;bottom:0;width:74px;height:72px;border:3px solid var(--navy);border-radius:35px 35px 8px 8px;background:#e2f5ff}.person.parent .bodyshape{background:var(--yellow)}.person:after{content:"";position:absolute;left:31px;top:15px;width:22px;height:4px;border-radius:5px;background:var(--navy)}.bubble{display:inline-block;margin-top:9px;padding:7px 12px;border-radius:999px;background:#dff7f1;color:var(--navy);font-size:.82rem;font-weight:900}
+.reasons{padding:30px 0;background:linear-gradient(135deg,#064f91,#006dbd);color:#fff}.reasons .title h2{color:#fff}.reasonrow{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.reason{padding:14px 11px;border-radius:15px;background:#fff;color:var(--ink);text-align:center}.reasonnum{color:#0d72c6;font-size:1.25rem;font-weight:1000}.reasonicon{font-size:1.4rem}.reason h3{margin:3px 0;font-size:.9rem;line-height:1.3}.reason p{margin:0;color:var(--muted);font-size:.7rem}
+.services{padding:28px 0;background:#fff}.servicegrid{display:grid;grid-template-columns:1.2fr .8fr;gap:12px}.pricebox,.consultbox{padding:16px;border:1px solid var(--line);border-radius:17px;background:#fff}.consultbox{background:#effbf6}.boxhead{margin:0 0 11px;text-align:center;color:var(--navy);font-size:1.05rem}.pricegrid{display:grid;grid-template-columns:repeat(3,1fr);gap:7px}.price{position:relative;padding:12px 5px;border:1px solid var(--line);border-radius:13px;text-align:center}.price:first-child{border:2px solid #36b986;background:#f0fcf7}.recommend{position:absolute;top:-10px;left:50%;padding:2px 8px;border-radius:999px;background:#27ba8b;color:#fff;font-size:.57rem;font-weight:900;transform:translateX(-50%)}.price b{display:block;font-size:.75rem}.amount{margin:3px 0;color:var(--navy);font-size:1.42rem;font-weight:1000}.price small{display:block;color:var(--muted);font-size:.59rem}.pay{margin-top:4px;color:#0874cf;font-size:.62rem;font-weight:900}.consultbox{text-align:center}.consultbox p{margin:0 0 10px;color:var(--muted);font-size:.76rem}.monitor{font-size:1.4rem;color:var(--green)}
+.faq{padding:28px 0;background:#f5fbff}.faqlist{display:grid;gap:7px}.faq details{overflow:hidden;border:1px solid var(--line);border-radius:10px;background:#fff}.faq summary{position:relative;padding:11px 40px 11px 48px;cursor:pointer;list-style:none;font-size:.84rem;font-weight:900}.faq summary::-webkit-details-marker{display:none}.faq summary:before{content:"Q";position:absolute;left:12px;top:8px;display:grid;width:27px;height:27px;place-items:center;border-radius:50%;background:var(--blue);color:#fff;font-weight:1000}.faq summary:after{content:"⌄";position:absolute;right:14px;color:var(--navy);font-size:1.1rem}.faq details[open] summary:after{content:"⌃"}.faq p{margin:0;padding:0 15px 13px 48px;color:var(--muted);font-size:.8rem}
+.final{padding:31px 0 34px;background:linear-gradient(135deg,#064f91,#006dbd);color:#fff;text-align:center}.final p{margin:11px 0 0;font-size:.72rem}.final .cta{min-width:330px}
+footer{padding:18px 0 88px;background:#052e57;color:#dcecff;text-align:center;font-size:.7rem}.sticky{display:none}
+.qna-guide{padding:22px 0;background:#fff}.qna-guide-image{display:block;overflow:hidden;border:1px solid var(--line);border-radius:18px;background:#fff;box-shadow:0 8px 24px rgba(7,55,100,.10)}.qna-guide-image img{width:100%;height:auto}.qna-guide-note{display:none}
+@media(max-width:700px){.page{box-shadow:none}.wrap{width:calc(100% - 24px)}.head{height:62px}.brand img{width:42px;height:42px}.brand b{font-size:.69rem}.hero img{max-height:none}.intro{padding:27px 0 25px}.intro h1{font-size:1.75rem}.intro h1 strong{font-size:1.28em}.intro .cta{width:92%;min-height:50px}section{padding:30px 0}.title{margin-bottom:14px}.title h2{font-size:1.3rem}.qitem{grid-template-columns:38px 1fr auto;min-height:66px;padding:9px 11px}.qtext{font-size:.88rem}.qgo{font-size:.72rem}.freeband{padding:14px 0}.freein{gap:9px}.freecopy{font-size:1.08rem}.freein .cta{min-height:43px;padding:7px 14px;font-size:.78rem}.stepgrid{gap:7px}.step{padding:12px 6px}.step+.step:before{left:-8px}.stepno{width:42px;height:42px}.stepicon{height:29px;font-size:1.5rem}.step h3{font-size:.85rem}.step p{font-size:.63rem}.realgrid{grid-template-columns:1.22fr .78fr;gap:9px}.phone{padding:5px 4px 0;border-width:4px;border-bottom:0;border-radius:19px 19px 0 0}.phone img{border-radius:12px 12px 0 0}.scribble{font-size:1.05rem}.people{transform:scale(.82);margin-inline:-20px}.reasonrow{gap:6px}.reason{padding:10px 5px}.reason h3{font-size:.75rem}.reason p{font-size:.59rem}.servicegrid{grid-template-columns:1.55fr .85fr;gap:7px}.pricebox,.consultbox{padding:10px 7px}.boxhead{font-size:.87rem}.pricegrid{gap:4px}.price{padding:10px 2px}.amount{font-size:1.05rem}.price small{font-size:.51rem}.consultbox p{font-size:.61rem}.consultbox .cta{min-height:34px;padding:4px 8px;font-size:.65rem}.final .cta{width:92%;min-width:0}.sticky{position:fixed;z-index:70;left:0;right:0;bottom:0;display:block;padding:7px 11px calc(7px + env(safe-area-inset-bottom));border-top:1px solid var(--line);background:rgba(255,255,255,.95);backdrop-filter:blur(10px)}.sticky .cta{width:100%;min-height:49px}footer{padding-bottom:88px}}
+@media(max-width:700px){.qna-guide{padding:14px 0 20px}.qna-guide .wrap{width:100%}.qna-guide-image{border-width:0;border-radius:0;box-shadow:none}.qna-guide-note{display:block;margin:7px 12px 0;color:var(--muted);font-size:.69rem;text-align:center}}
+@media(max-width:390px){.intro h1{font-size:1.58rem}.freecopy{font-size:.96rem}.qgo{display:none}.qitem{grid-template-columns:36px 1fr}.step p{font-size:.58rem}.reason p{display:none}.servicegrid{grid-template-columns:1fr}.consultbox{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:7px;text-align:left}.consultbox .boxhead{margin:0}.consultbox p{margin:0}.people{transform:scale(.72)}}
 
-    <main id="main-content">
-      <section class="hero">
-        <img
-          class="top-hero-image"
-          src="./assets/route-top-hero.webp"
-          width="2048"
-          height="682"
-          alt="兵庫県高校受験専門 進路設計室ROUTE 迷いが進む力に"
-          fetchpriority="high"
-        />
-      </section>
+.detailintro{padding:28px 0;background:#fff}.detailcard{padding:22px;border:1px solid var(--line);border-radius:20px;background:var(--pale);text-align:center}.detailcard .tag{display:inline-block;padding:4px 11px;border-radius:999px;background:var(--blue);color:#fff;font-size:.72rem;font-weight:950}.detailcard h2{margin:8px 0 6px;color:var(--navy);font-size:clamp(1.35rem,3vw,1.9rem)}.detailcard p{margin:0;color:var(--muted);font-size:.88rem}.hours{display:flex;justify-content:center;gap:8px;flex-wrap:wrap;margin-top:12px}.hours span{padding:6px 10px;border:1px solid #bcdcf3;border-radius:999px;background:#fff;color:var(--navy);font-size:.75rem;font-weight:900}
+.answerexample{padding:32px 0;background:#f5fbff}.answergrid{display:grid;grid-template-columns:.8fr 1.2fr;gap:15px;align-items:start}.answerlead{padding:18px;border-radius:18px;background:var(--navy);color:#fff}.answerlead h2{margin:0 0 7px;font-size:1.25rem}.answerlead p{margin:0;color:#ddebfa;font-size:.84rem}.chatanswer{padding:15px;border:1px solid var(--line);border-radius:18px;background:#e8f4fb}.userbubble{max-width:88%;margin-left:auto;padding:11px 13px;border-radius:16px 16px 3px 16px;background:#85df55;color:#24402d;font-size:.82rem;font-weight:850}.routebubble{margin-top:9px;padding:14px;border-radius:16px 16px 16px 3px;background:#fff;font-size:.8rem}.routebubble b{color:var(--blue)}.routebubble details{margin-top:8px}.routebubble summary{cursor:pointer;color:var(--blue);font-weight:900}.routebubble .more{margin-top:8px;color:var(--muted)}
+.consultdetail{padding:38px 0;background:#edf9f5}.consulthead{text-align:center;margin-bottom:18px}.consulthead .subtag{display:inline-block;padding:4px 11px;border:1px solid #9cd4c5;border-radius:999px;background:#fff;color:#08795d;font-size:.7rem;font-weight:950}.consulthead h2{margin:7px 0 4px;color:var(--navy);font-size:clamp(1.45rem,3vw,2rem)}.consulthead p{margin:0;color:var(--muted);font-size:.87rem}.coursegrid{display:grid;grid-template-columns:1fr .8fr;gap:12px}.course{padding:18px;border:1px solid #bfe2d8;border-radius:18px;background:#fff}.course h3{margin:0;color:var(--navy);font-size:1.05rem}.course .courseprice{margin:4px 0 8px;color:var(--green);font-size:1.65rem;font-weight:1000}.course ul{margin:0;padding-left:1.2em;color:var(--muted);font-size:.78rem}.course li+li{margin-top:3px}.consultvisuals{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:13px}.visualcard{padding:12px;border:1px solid #bfe2d8;border-radius:18px;background:#fff}.visualcard h3{margin:0 0 7px;color:var(--navy);font-size:.95rem}.visualcard img{border-radius:11px}.visualcard p{margin:7px 0 0;color:var(--muted);font-size:.75rem}
+@media(max-width:700px){.answergrid{grid-template-columns:1fr}.answerlead{padding:14px}.coursegrid{grid-template-columns:1.2fr .8fr}.course{padding:13px 10px}.course .courseprice{font-size:1.28rem}.course ul{font-size:.68rem}.consultvisuals{grid-template-columns:1fr 1fr;gap:7px}.visualcard{padding:8px}.visualcard h3{font-size:.78rem}.visualcard p{font-size:.65rem}}
+@media(max-width:390px){.coursegrid,.consultvisuals{grid-template-columns:1fr}}
 
-      <section id="pricing" class="price-section primary-service">
-        <div class="wrap">
-          <div class="pricing-lead">
-            <div class="section-head">
-              <h2>初回1問無料。まず聞いてみる。</h2>
-              <p>必要な回数だけ選べます。</p>
-            </div>
-            <a
-              class="btn qa-main-button qa-link"
-              href="https://jukensoudan-route.github.io/route-qa/?v=20260911-4"
-              target="_blank"
-              rel="noopener"
-              >LINEでQ&amp;Aを始める</a
-            >
-          </div>
-          <div class="price-grid">
-            <article class="price free card">
-              <h3>初回</h3>
-              <div class="amount">1問無料</div>
-              <div class="per">初めての方・1人1回</div>
-            </article>
-            <article class="price card">
-              <h3>3問チケット</h3>
-              <div class="amount">1,500<small>円</small></div>
-              <div class="per">1問あたり500円</div>
-              <div class="payment-note">クレジットカード・電子決済</div>
-            </article>
-            <article class="price recommended card">
-              <h3 class="recommended-title">
-                <span class="badge">おすすめ</span><span>10問チケット</span>
-              </h3>
-              <div class="amount">3,500<small>円</small></div>
-              <div class="per">1問あたり350円</div>
-              <div class="payment-note">クレジットカード・電子決済</div>
-            </article>
-          </div>
-        </div>
-      </section>
 
-      <section id="qa" class="qa-detail">
-        <div class="wrap">
-          <div class="qa-overview card">
-            <div class="qa-copy">
-              <span class="eyebrow">ちょっと聞きたい方へ</span>
-              <h2>兵庫県受験の疑問を、1問ずつ解決。</h2>
-              <p>
-                画面の項目に沿って選ぶだけ。自由入力もでき、回答はLINEに届きます。
-              </p>
-              <div class="reply-speed">
-                <strong>営業時間内なら　目安5～30分で返信</strong
-                ><span>営業時間外のご質問は、翌営業日に返信します</span>
-              </div>
-              <p class="business-hours">営業時間 12:00～24:00 ／ 月曜日休業</p>
-              <div class="topic-inline">
-                相談例：志望校・併願校／内申点・実力テスト／私立専願／受験日程／説明会／保護者の準備
-              </div>
-            </div>
-          </div>
-          <div class="qa-process-wrap card" aria-label="Q&A利用の流れ">
-            <span class="eyebrow">ご利用の流れ</span>
-            <h3 class="process-title">質問してからLINEに回答が届くまで</h3>
-            <img
-              class="qa-process-image"
-              src="./assets/qna-flow-6steps.webp?v=20260913-14"
-              width="2048"
-              height="338"
-              loading="lazy"
-              alt="専用ページ、LINEログイン、チケット購入、Stripe決済、質問、LINEで回答の6工程"
-            />
-          </div>
-          <div class="qa-screens-wrap card">
-            <span class="eyebrow">操作画面</span>
-            <h3 class="screens-title">実際のQ&A画面</h3>
-            <p class="screens-description">
-              選択肢を選んでいくだけで、何を質問したらよいか分からない方でも、良い質問ができます。
-            </p>
-            <div class="qa-screens" aria-label="ROUTE Q&Aの実際の画面">
-              <figure class="screen-shot">
-                <img
-                  src="./assets/qa-screen-free-1.webp?v=20260913-14"
-                  width="508"
-                  height="881"
-                  loading="lazy"
-                  alt="ROUTE Q&Aの利用状況と利用ルールの画面"
-                />
-                <figcaption>① 利用状況・ルールを確認</figcaption>
-              </figure>
-              <figure class="screen-shot">
-                <img
-                  src="./assets/qa-screen-free-2.webp?v=20260913-14"
-                  width="507"
-                  height="938"
-                  loading="lazy"
-                  alt="相談内容や学校を選んで質問を入力するQ&A画面"
-                />
-                <figcaption>② 質問内容を入力</figcaption>
-              </figure>
-            </div>
-          </div>
-          <div class="qa-example card" aria-label="Q&Aの質問とLINE回答例">
-            <div class="example-question">
-              <span class="eyebrow">質問と回答例</span>
-              <h3>これはQ&amp;Aの回答例です</h3>
-              <p>県立みなと高校の合格ラインの目安を教えてください。</p>
-            </div>
-            <div class="line-preview">
-              <div class="line-title">ROUTE受験Q&amp;A</div>
-              <div class="line-chat">
-                <div class="chat-row user">
-                  <div class="bubble">
-                    県立みなと高校の合格ラインの目安を教えてください。
-                  </div>
-                </div>
-                <div class="chat-row">
-                  <div class="line-avatar">R</div>
-                  <div
-                    class="bubble answer-scroll"
-                    tabindex="0"
-                    aria-label="回答例の全文。上下にスクロールできます"
-                  >
-                    <strong>回答例</strong
-                    ><br />県立みなと高校普通科の合格ラインは、内申点だけで決まる固定点ではありませんが、まずは250点換算で内申200点前後が一つの目安です。令和9年度入試も第2学区の複数志願選抜で行われるため、内申と当日の5教科の得点を合わせて判断されます。<br /><br /><strong
-                      >目安としては、</strong
-                    ><br />・内申200点前後以上：当日点が大きく崩れなければ十分に判定できる位置<br />・内申190点台：当日点での上積みがより重要<br />・内申180点台以下：当日点を安定して高く取れるか、慎重に見たい位置<br /><br />ただし、「当日5教科で何点なら合格」と一律には言えません。問題の難易度、志願者数、受験者の内申分布で毎年変わるためです。県立みなと高校を第1志望にする場合は第1志望加算も合否判定に関わりますが、それだけで内申や当日点の不足を補えるものではありません。<br /><br />今は過去問を時間どおりに3年分ほど解き、合計点だけでなく、英語・数学・国語で大きな失点が出ていないかを見てください。理科・社会を得点源にし、5教科全体で安定して取る形が県立みなと高校では大切です。学校説明会などでも令和9年度入学希望者向けの案内が進んでいます。<br /><br />📖ROUTEでは、<br />学校や塾で聞かなければわからない重要なℹ️情報や、🙅保護者が知っておくべきことを、お伝えしています。<br />お気軽にご相談ください。☺️
-                  </div>
-                </div>
-              </div>
-              <p class="line-caption">LINEに届く回答のイメージ</p>
-            </div>
-          </div>
-        </div>
-      </section>
+/* September 2026 homepage update */
+.hero{padding:0;margin:0;line-height:0;background:#fff}
+.hero img{width:100%;height:auto;max-height:none;object-fit:contain}
+.service-brand{display:flex;justify-content:center;align-items:center;gap:16px;margin:0 auto 18px}
+.service-logo{width:270px;flex-shrink:0;aspect-ratio:3.05;overflow:hidden;background:#fff;border-radius:8px}
+.service-logo img{width:100%;height:auto;transform:translateY(-16%)}
+.service-brand p{margin:0;text-align:left;font-size:clamp(14px,2.1vw,20px);font-weight:800}
+.intro h1 .exam-label{display:block;font-size:.68em;margin-bottom:8px}
+.intro h1 .single-line{display:block;white-space:nowrap;font-size:clamp(14px,4.25vw,40px);letter-spacing:-.05em}
+.intro h1 strong{margin-top:12px}
+.questions .title h2{font-size:clamp(18px,3.3vw,28px)}
+.questions .title h2:before,.questions .title h2:after{content:none}
+.questions .title p{font-size:11px}
+@media(max-width:700px){
+.service-brand{gap:9px}.service-logo{width:42%;max-width:220px}
+.service-brand p{font-size:clamp(11px,3vw,17px)}
+.freein{flex-direction:column}.freein .cta{width:92%;font-size:.88rem}
+}
 
-      <div class="service-bridge">
-        <div class="wrap">
-          <p>Q&amp;Aだけでは整理しきれない方へ</p>
-          <span>ここからは直接相談できる補助サービスです</span>
-        </div>
-      </div>
+.service-brand{background:#fff;color:var(--navy);padding:12px 16px;border-radius:10px}
 
-      <section id="consult" class="consult-pricing secondary-service">
-        <div class="wrap">
-          <div class="section-head">
-            <span class="support-service-label">補助サービス</span>
-            <h2>オンライン受験相談</h2>
-            <p>
-              Q&amp;Aだけでは整理しきれない内容を、資料や成績を見ながら直接相談できます。
-            </p>
-          </div>
-          <div class="consult-price-grid">
-            <article class="consult-price-card featured card">
-              <h3>基本コース</h3>
-              <div class="consult-amount">15,000<small>円</small></div>
-              <strong>60分の個別相談＋個別診断票</strong>
-              <ul>
-                <li>お子さまに合った受験校の選び方</li>
-                <li>志望校合格に向けて、現在すべきこと</li>
-                <li>受験期における保護者の関わり方</li>
-                <li>学校や学習塾との上手な付き合い方</li>
-                <li>高校受験の仕組みや内申点について</li>
-                <li>お子さま専用の個別診断票を作成</li>
-              </ul>
-            </article>
-            <article class="consult-price-card card">
-              <h3>個別相談</h3>
-              <div class="mini-price">
-                <span>60分</span><strong>10,000円</strong>
-              </div>
-              <div class="mini-price">
-                <span>30分</span><strong>6,000円</strong>
-              </div>
-              <p class="note">
-                必要なテーマを絞って、オンラインで個別に相談できます。
-              </p>
-            </article>
-            <figure class="report-preview card">
-              <img
-                src="./assets/diagnostic-report-sample.jpg"
-                width="992"
-                height="1404"
-                loading="lazy"
-                alt="ROUTE個別診断票の実物見本"
-              />
-              <div>
-                <h3>個別診断票の実物見本</h3>
-                <p>
-                  兵庫県高校受験の予定や、今後すべきことを分かりやすく整理します。
-                </p>
-              </div>
-            </figure>
-          </div>
-          <figure class="consult-live-preview" aria-label="オンライン受験相談の実際の画面">
-            <figcaption>
-              <span class="eyebrow">実際の相談画面</span>
-              <h3>資料を見ながら、分かりやすく整理します</h3>
-              <p>
-                高校受験の資料や個別診断票を画面共有しながら、状況に合わせて直接ご相談いただけます。
-              </p>
-              <p class="privacy-note">※お客様の画面は映りません。</p>
-            </figcaption>
-            <img
-              src="./assets/online-consultation-screen.webp?v=20260913-14"
-              width="1400"
-              height="933"
-              loading="lazy"
-              alt="Zoomで資料を画面共有しながら行うオンライン受験相談の画面"
-            />
-          </figure>
-          <div class="consult-price-action">
-            <a class="btn btn-outline contact-link" href="contact/"
-              >オンライン相談を問い合わせる →</a
-            >
-            <p class="note">お問い合わせフォームが開きます。</p>
-          </div>
-        </div>
-      </section>
-    </main>
+/* Balanced service identity: single-line description on every screen */
+.service-brand{gap:24px;padding:8px 24px}
+.service-logo{width:250px;max-width:none}
+.service-brand p{white-space:nowrap;font-size:clamp(16px,2.1vw,20px);line-height:1.5;letter-spacing:0;font-weight:700}
+@media(max-width:700px){
+.service-brand{flex-direction:column;gap:3px;padding:7px 8px}
+.service-logo{width:210px;max-width:80%}
+.service-brand p{text-align:center;font-size:clamp(10px,3.5vw,20px);white-space:nowrap}
+}
 
-    <footer>
-      <div class="wrap footer-grid">
-        <div class="footer-logo">兵庫県高校受験 保護者相談室 ROUTE</div>
-        <div class="footer-links">
-          <a href="#pricing">Q&amp;A料金</a><a href="#qa">Q&amp;Aとは</a
-          ><a href="#consult">オンライン相談</a
-          ><a href="contact/" class="contact-link">お問い合わせ</a
-          ><a href="about/">ROUTEについて</a>
-        </div>
-        <div>© 2026 ROUTE</div>
-      </div>
-    </footer>
-    <div class="mobile-cta-shell">
-      <a
-        class="mobile-cta qa-link"
-        href="https://jukensoudan-route.github.io/route-qa/?v=20260911-4"
-        target="_blank"
-        rel="noopener"
-        >LINEでQ&amp;Aを始める</a
-      >
-    </div>
-    <script>
-      const button = document.querySelector(".menu-btn");
-      const nav = document.querySelector(".navlinks");
-      const closeMenu = () => {
-        nav?.classList.remove("open");
-        button?.setAttribute("aria-expanded", "false");
-        button?.setAttribute("aria-label", "メニューを開く");
-        if (button) button.textContent = "☰";
-      };
-      button?.addEventListener("click", () => {
-        const open = nav.classList.toggle("open");
-        button.setAttribute("aria-expanded", String(open));
-        button.setAttribute(
-          "aria-label",
-          open ? "メニューを閉じる" : "メニューを開く",
-        );
-        button.textContent = open ? "×" : "☰";
-      });
-      nav
-        ?.querySelectorAll("a")
-        .forEach((a) => a.addEventListener("click", closeMenu));
-      document.addEventListener("keydown", (e) => {
-        if (e.key === "Escape") closeMenu();
-      });
-      document.addEventListener("click", (e) => {
-        if (
-          nav?.classList.contains("open") &&
-          !nav.contains(e.target) &&
-          e.target !== button
-        )
-          closeMenu();
-      });
-      const mobile = () =>
-        /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
-      document.querySelectorAll(".contact-link").forEach((a) =>
-        a.addEventListener("click", (e) => {
-          if (mobile()) return;
-          e.preventDefault();
-          const p = window.open(
-            a.href,
-            "routeContact",
-            "popup=yes,width=720,height=860,resizable=yes,scrollbars=yes",
-          );
-          if (p) p.focus();
-          else location.href = a.href;
-        }),
-      );
-    </script>
-  </body>
+/* Q&A guide assembled from supplied original assets */
+.guide-v2{padding:30px 0;background:linear-gradient(135deg,#fff 25%,#f0faff)}
+.guide-wrap{width:calc(100% - 36px);margin:auto}
+.guide-top{display:grid;grid-template-columns:1.25fr 1fr;align-items:center;gap:12px;margin-bottom:22px}
+.guide-kicker{display:inline-block;margin:0 0 12px;border-bottom:4px solid #ffe449;color:var(--navy);font-weight:800;font-size:17px}
+.guide-copy h2{font-size:clamp(23px,3.2vw,32px);line-height:1.4;margin:0 0 12px;color:var(--navy)}
+.guide-copy>p:last-child{font-size:14px;line-height:1.9;margin:0;color:var(--navy)}
+.guide-copy strong{display:inline;background:linear-gradient(transparent 60%,#fff272 60%);white-space:nowrap}
+.guide-parent{border-radius:16px}
+.guide-steps{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:18px;padding:0;margin:0;list-style:none}
+.guide-step{position:relative;min-width:0;background:#fff;border:1px solid #c9e8fa;border-radius:16px;box-shadow:0 5px 15px #0875d10b}
+.guide-step h3{display:flex;align-items:center;gap:8px;min-height:72px;margin:0;padding:10px 9px;border-radius:15px 15px 0 0;background:#008cd9;color:#fff;font-size:15px;line-height:1.4}
+.guide-step h3 span{display:grid;place-items:center;flex-shrink:0;width:34px;height:34px;border-radius:50%;background:#fff;color:#008cd9;font-size:24px}
+.guide-step:not(:last-child):after{content:"";position:absolute;z-index:2;right:-16px;top:53%;border-top:14px solid transparent;border-bottom:14px solid transparent;border-left:13px solid #008cd9}
+.guide-screen{padding:10px 4px 0;aspect-ratio:0.84;display:flex;align-items:flex-end;justify-content:center;overflow:hidden;border-radius:0 0 15px 15px}
+.guide-screen img{width:100%;height:100%;object-fit:contain;object-position:center bottom}
+.guide-benefits{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:22px}
+.guide-benefit{display:flex;gap:10px;padding:15px 12px;border-radius:16px;background:#e8f6fd;color:var(--navy)}
+.guide-benefit>img{width:44px;height:48px;object-fit:contain;flex-shrink:0}
+.guide-benefit h3{font-size:15px;line-height:1.5;margin:0 0 6px}
+.guide-benefit p{font-size:12px;line-height:1.8;margin:0}
+.guide-end{text-align:right;margin:20px 0 0;color:var(--navy);font-weight:800;font-size:16px}
+@media(max-width:700px){
+.guide-v2{padding:24px 0}.guide-wrap{width:calc(100% - 24px)}
+.guide-top{grid-template-columns:1fr;gap:15px}.guide-copy h2{font-size:25px}
+.guide-copy>p:last-child{font-size:14px}.guide-parent{width:100%;max-width:440px;margin:auto}
+.guide-steps{grid-template-columns:1fr;gap:28px;max-width:380px;margin:auto}
+.guide-step h3{min-height:58px;font-size:18px;padding:10px 14px}
+.guide-screen{aspect-ratio:auto;height:365px;padding:12px 8px 0}
+.guide-screen img{max-width:340px}
+.guide-step:not(:last-child):after{top:auto;right:calc(50% - 14px);bottom:-21px;border-top:14px solid #008cd9;border-bottom:0;border-left:14px solid transparent;border-right:14px solid transparent}
+.guide-benefits{grid-template-columns:1fr}.guide-benefit{padding:15px;gap:14px}
+.guide-benefit h3{font-size:16px}.guide-benefit p{font-size:14px}
+.guide-end{text-align:center;font-size:15px}
+}
+
+
+/* Compact promotional sections */
+:root{--blue:#267EE6}
+.intro,.reasons,.final{background:#267EE6}
+.questions{padding:24px 0 20px}
+.questions .ranking-title{display:flex;align-items:center;justify-content:center;gap:10px;padding:14px 12px;border-radius:14px;background:#267EE6;color:#fff;font-size:clamp(17px,2.7vw,25px);font-weight:900}
+.ranking-title span{display:inline-block;flex-shrink:0;padding:3px 9px;border-radius:8px;background:#ffe449;color:#063e76;font-size:1.2em}
+.qlist{gap:6px}.qitem{min-height:48px;padding:6px 12px;border-radius:10px;grid-template-columns:30px 1fr auto;gap:9px}
+.qicon{width:29px;height:29px;font-size:16px;background:#267EE6}.qtext{font-size:14px;line-height:1.4}
+.freeband{background:#fff;padding:12px 0 20px}
+.freecopy{position:relative;display:flex;align-items:baseline;justify-content:center;gap:3px;padding:10px 18px;background:#ffe449;border:2px solid #063e76;border-radius:50% 45% 48% 42%;transform:rotate(-3deg);font-size:18px;white-space:nowrap}
+.freecopy:before,.freecopy:after{content:none}.freecopy strong{font-size:32px;color:#063e76}
+.guide-copy h2{font-weight:900}
+.guide-photo{position:relative;overflow:hidden;border-radius:16px}
+.guide-photo .guide-parent{max-width:none}
+.photo-message{position:absolute;bottom:7px;left:7px;right:7px;margin:0;padding:6px 9px;background:rgba(255,255,255,.93);border-radius:9px;color:#063e76;text-align:center;font-size:clamp(11px,1.6vw,16px);font-weight:800;line-height:1.5}
+.answerlead{padding:12px 0;background:transparent;color:#063e76;text-align:left}
+.answerlead h2{margin:0 0 5px;font-size:22px;white-space:nowrap}
+.answerlead p{color:#38546c;font-size:clamp(6px,1.48vw,13px);white-space:nowrap;margin:0}
+.answerexample .chatanswer{margin-top:10px;max-width:760px;margin-inline:auto}
+.routebubble h3{margin:0 0 10px;color:#267EE6;font-size:18px}
+.routebubble p{margin:0 0 13px;line-height:1.9;font-size:14px}
+.routebubble p:last-child{margin-bottom:0}
+.reasons{padding:18px 0}
+.reasons .title{margin-bottom:10px}.reasons .title h2{font-size:21px}
+.reasonrow{gap:10px}.reason{position:relative;padding:10px 8px;border-radius:22px 22px 22px 5px}
+.reasonnum,.reasonicon{display:inline-block;vertical-align:middle;font-size:18px;margin:0 3px}
+.reason h3{font-size:14px;margin:3px 0}.reason p{font-size:11px}
+.services{padding:22px 0}.servicegrid{display:block}
+.pricebox{display:flex;align-items:center;gap:18px;padding:18px;background:#ffe449;border:0}
+.pricebox>.boxhead{white-space:nowrap;margin:0;font-size:22px}
+.pricegrid{flex:1;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.price{background:#fff}.pricebox .amount{white-space:nowrap}
+.guide-step h3{background:#267EE6}
+@media(max-width:700px){
+.questions .ranking-title{gap:6px;font-size:16px;padding:12px 8px}
+.qitem{min-height:42px;padding:5px 9px;gap:7px}.qtext{font-size:13px}.qgo{font-size:11px}
+.freein{gap:14px}.freecopy{font-size:17px;padding:8px 20px}.freecopy strong{font-size:29px}
+.photo-message{font-size:14px}
+.reasons .title h2{font-size:19px}.reasonrow{gap:6px}.reason{padding:8px 4px}
+.reason h3{font-size:12px}.reason p{display:none}
+.pricebox{display:block;padding:14px 9px}.pricebox>.boxhead{font-size:21px;margin-bottom:14px}
+.pricegrid{gap:6px}.pricebox .amount{font-size:19px}.pricebox .price b{font-size:12px}
+.pricebox .price small{font-size:9px}
+}
+@media(max-width:390px){.qitem{grid-template-columns:29px 1fr}.pricebox .amount{font-size:17px}}
+
+/* Full-width sections, open online-consultation FAQ and slim footer */
+.services .servicegrid{display:block;width:min(100% - 34px,850px)}
+.services .pricebox{display:block;width:100%}
+.services .pricebox>.boxhead{text-align:center;margin:0 0 14px}
+.services .pricegrid{width:100%}
+.consultdetail .coursegrid,.consultdetail .consultvisuals{grid-template-columns:minmax(0,1fr)}
+.consultdetail .course,.consultdetail .visualcard{width:100%}
+.faq .title h2{font-size:clamp(17px,2.6vw,25px)}
+.faq .title h2:before,.faq .title h2:after{content:none}
+footer{padding:0;line-height:1.5}
+@media(max-width:700px){
+.services .servicegrid{width:calc(100% - 24px)}
+.page{padding-bottom:calc(70px + env(safe-area-inset-bottom))}
+footer{padding:0}
+}
+
+/* Emphasize guide and consultation headings */
+.guide-copy h2{font-size:clamp(30px,4.1vw,42px);font-weight:900;line-height:1.35;color:#063e76;text-shadow:0 1px 0 #fff;margin-bottom:14px}
+.guide-v2{padding-bottom:12px}
+.answerexample{padding-top:8px}
+.answerexample .answerlead{padding-top:0}
+.services{background:#267EE6}
+.consulthead h2{display:block;margin:10px 0 12px;padding:13px 16px;border-radius:12px;background:#267EE6;color:#fff;font-size:clamp(27px,4vw,36px);font-weight:900;line-height:1.35}
+@media(max-width:700px){
+.guide-copy h2{font-size:clamp(28px,7.5vw,38px)}
+.guide-v2{padding-bottom:10px}
+.answerexample{padding-top:6px}
+.consulthead h2{font-size:clamp(25px,7vw,32px);padding:12px 8px}
+}
+
+/* Expand the yellow pricing panel to the full section */
+.services{padding:0;background:#ffe449}
+.services .servicegrid{width:100%;max-width:none;margin:0}
+.services .pricebox{width:100%;margin:0;padding:22px max(17px,calc((100% - 850px)/2));border-radius:0;background:#ffe449}
+@media(max-width:700px){
+.services .servicegrid{width:100%}
+.services .pricebox{padding:20px 12px}
+}
+
+/* White identity panel directly below the title image */
+.brand-panel{padding:8px 0;background:#fff;border-bottom:1px solid #d7e6f2}
+.brand-panel .service-brand{margin:0;padding:5px 0;gap:24px;background:#fff}
+.brand-panel h2{margin:0;color:#063e76;white-space:nowrap;font-size:clamp(16px,2.1vw,20px);font-weight:800;line-height:1.7}
+.hyogo-pop{display:inline-block;position:relative;margin:0 4px;padding:1px 7px;background:#ffe449;color:#063e76;border:2px solid #267EE6;border-radius:9px 9px 9px 2px;font-size:1.18em;line-height:1.35;transform:rotate(-5deg)}
+@media(max-width:700px){
+.brand-panel{padding:6px 0}
+.brand-panel .service-brand{gap:3px;padding:2px 0}
+.brand-panel h2{font-size:clamp(10px,3.35vw,19px)}
+.hyogo-pop{margin:0 3px;padding:1px 5px}
+}
+
+/* Larger reason labels with numbered circles on the left */
+.question-button-label{display:inline;line-height:1.45}
+.question-button-label>span{white-space:nowrap}
+.reasonrow .reason{display:grid;grid-template-columns:44px minmax(0,1fr) 22px;align-items:center;column-gap:7px;padding:13px 10px;text-align:left}
+.reasonrow .reasonnum{grid-column:1;grid-row:1 / span 2;display:grid;place-items:center;width:44px;height:44px;margin:0;border:2px solid #267EE6;border-radius:50%;color:#267EE6;background:#fff;font-size:25px;font-weight:900;line-height:1}
+.reasonrow .reason h3{grid-column:2;grid-row:1;margin:0;font-size:18px;font-weight:900;line-height:1.45}
+.reasonrow .reasonicon{grid-column:3;grid-row:1;margin:0;font-size:20px}
+.reasonrow .reason p{grid-column:2 / 4;grid-row:2;margin:4px 0 0;font-size:11px}
+.reasonrow .pink-heart{color:#ee68a0;font-family:Arial,sans-serif;font-size:29px}
+@media(max-width:700px){
+.reasonrow{grid-template-columns:1fr;gap:8px}
+.reasonrow .reason{grid-template-columns:48px minmax(0,1fr) 32px;padding:10px 14px;column-gap:12px}
+.reasonrow .reasonnum{width:48px;height:48px;font-size:28px}
+.reasonrow .reason h3{font-size:20px}
+.reasonrow .reason h3 br{display:none}
+.reasonrow .reason p{display:none}
+.question-button-label{font-size:clamp(12px,3.5vw,16px)}
+.intro .cta,.final .cta,.sticky .cta{padding-inline:10px;gap:6px}
+}
+
+/* Full-width blue answer-example introduction */
+.answerexample>.wrap{width:100%;max-width:none}
+.answerexample .answerlead{width:100%;padding:15px max(12px,calc((100% - 850px)/2));border-radius:0;background:#267EE6;color:#fff}
+.answerexample .answerlead h2,.answerexample .answerlead p{color:#fff}
+.answerexample .chatanswer{width:calc(100% - 24px);max-width:760px;margin:14px auto 0}
+.consult-link{padding:28px 0;background:#edf9f5;text-align:center}.consult-link h2{margin:0 0 8px;color:#063e76;font-size:26px}.consult-link p{margin:0 0 16px;color:#516b7f;font-size:15px}.consult-link .cta{border-color:#267EE6;color:#267EE6}
+/* Crown ranks and full-width LINE-green consultation banner */
+.qicon.rank-crown{width:30px;height:30px;background:none;border-radius:0;box-shadow:none}.rank-crown svg{display:block;width:100%;height:100%}
+.consult-link{padding-top:0}.consult-link h2{width:100%;margin:0 0 20px;padding:15px 12px;background:#06C755;color:#fff;line-height:1.4;font-size:clamp(25px,5vw,34px)}
+
+/* Online consultation restored below a white section divider */
+.consult-divider{height:28px;width:100%;background:#fff;border-top:1px solid #edf0f3;border-bottom:1px solid #edf0f3}
+.consultdetail{padding-top:0;scroll-margin-top:70px}
+.consult-banner{margin:0 0 24px;padding:18px 12px;background:#06C755;color:#fff;text-align:center;font-size:clamp(26px,5vw,40px);line-height:1.4}
+.consultdetail .coursegrid,.consultdetail .consultvisuals{grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.consultdetail .course,.consultdetail .visualcard{min-width:0;padding:20px}
+.consultdetail .course h3,.consultdetail .visualcard h3{font-size:20px}
+.consultdetail .course ul{font-size:14px}
+.consultdetail .visualcard p{font-size:14px}
+.final,.sticky{background:#06C755}
+.final .online-cta,.sticky .online-cta{background:#fff;color:#087b38;border:2px solid #fff;box-shadow:none}
+@media(max-width:700px){.consult-divider{height:22px}.consultdetail .coursegrid,.consultdetail .consultvisuals{grid-template-columns:minmax(0,1fr)}.consultdetail .course,.consultdetail .visualcard{padding:16px}.online-cta{font-size:clamp(13px,3.8vw,17px)}}
+
+/* Blue reverse brand panel, full prefecture POP, and restored Q&A sticky CTA */
+
+
+
+
+
+
+footer{background:#267EE6;color:#fff}
+.sticky{background:rgba(255,255,255,.95)}
+</style>
+</head>
+<body>
+<div class="page">
+<header><div class="wrap head"><a class="brand" href="#top"><img src="https://jukensoudan-route.github.io/assets/route-logo.webp" alt="ROUTE"><b>高校受験相談室 ROUTE</b></a><button class="menu" aria-label="メニュー">☰</button></div></header>
+<main id="top">
+<section class="hero"><img src="assets/route-title-20260915.webp" alt="兵庫県高校受験専門 ROUTE"></section>
+<section class="brand-panel" aria-label="キケルート Q&Aサービス"><div class="wrap"><div class="service-brand"><div class="service-logo"><img src="assets/kikeroute-logo.webp" alt="キケルート" width="1774" height="887"></div><h2>ルートの<span class="hyogo-pop">兵庫県</span>高校受験Q&Aサービス</h2></div></div></section>
+
+<section class="intro"><div class="wrap"><h1><span class="exam-label">高校受験の</span><span class="single-line">「うちの子の受験、本当に大丈夫？」</span><strong>LINEで1問から。</strong></h1><a class="cta" href="https://jukensoudan-route.github.io/route-qa/" target="_blank" rel="noopener"><span class="lineicon">LINE</span><span class="question-button-label">ご質問はこちら(初回無料)</span></a></div></section>
+
+<section class="questions"><div class="wrap"><div class="title"><h2 class="ranking-title">今月の多い質問ランキング</h2></div><div class="qlist">
+<a class="qitem" href="https://jukensoudan-route.github.io/route-qa/" target="_blank" rel="noopener"><span class="qicon rank-crown" aria-label="1位"><svg viewBox="0 0 40 36" aria-hidden="true"><path d="M5 27 2 9 12 15 20 3 28 15 38 9 35 27Z" fill="#FFD95A" stroke="#B87E08" stroke-width="1.5" stroke-linejoin="round"/><path d="M6 30H34V34H6Z" fill="#B87E08"/><text x="20" y="25" text-anchor="middle" font-size="14" font-weight="900" fill="#3b2f20">1</text></svg></span><span class="qtext">内申点が１４０点ですが志望校はどこを目指せますか？</span><span class="qgo">質問する →</span></a>
+<a class="qitem" href="https://jukensoudan-route.github.io/route-qa/" target="_blank" rel="noopener"><span class="qicon rank-crown" aria-label="2位"><svg viewBox="0 0 40 36" aria-hidden="true"><path d="M5 27 2 9 12 15 20 3 28 15 38 9 35 27Z" fill="#E5EAF0" stroke="#8795A5" stroke-width="1.5" stroke-linejoin="round"/><path d="M6 30H34V34H6Z" fill="#8795A5"/><text x="20" y="25" text-anchor="middle" font-size="14" font-weight="900" fill="#3b2f20">2</text></svg></span><span class="qtext">成績や学力テストで志望校をどうやって決めるのですか？</span><span class="qgo">質問する →</span></a>
+<a class="qitem" href="https://jukensoudan-route.github.io/route-qa/" target="_blank" rel="noopener"><span class="qicon rank-crown" aria-label="3位"><svg viewBox="0 0 40 36" aria-hidden="true"><path d="M5 27 2 9 12 15 20 3 28 15 38 9 35 27Z" fill="#DCAA7D" stroke="#93552E" stroke-width="1.5" stroke-linejoin="round"/><path d="M6 30H34V34H6Z" fill="#93552E"/><text x="20" y="25" text-anchor="middle" font-size="14" font-weight="900" fill="#3b2f20">3</text></svg></span><span class="qtext">内申点（成績）を上げるにはどうしたら良いですか？</span><span class="qgo">質問する →</span></a>
+<a class="qitem" href="https://jukensoudan-route.github.io/route-qa/" target="_blank" rel="noopener"><span class="qicon">4</span><span class="qtext">志望校の関関同立への進学実績を教えてください。</span><span class="qgo">質問する →</span></a>
+<a class="qitem" href="https://jukensoudan-route.github.io/route-qa/" target="_blank" rel="noopener"><span class="qicon">5</span><span class="qtext">学校説明会や出願に向けて、今から何を準備すればいいですか？</span><span class="qgo">質問する →</span></a>
+</div></div></section>
+
+<section class="reasons"><div class="wrap"><div class="title"><h2>ROUTEを使う3つの理由</h2></div><div class="reasonrow"><div class="reason"><div class="reasonnum">01</div><div class="reasonicon">🎓</div><h3>兵庫県の<br>高校受験に特化</h3><p>地域の制度を踏まえて回答</p></div><div class="reason"><div class="reasonnum">02</div><div class="reasonicon">💬</div><h3>保護者の視点で<br>丁寧に回答</h3><p>ご家庭の状況に合わせます</p></div><div class="reason"><div class="reasonnum">03</div><div class="reasonicon pink-heart" aria-label="ピンクのハート">♥</div><h3>1問から気軽に<br>相談できる</h3><p>まず気になることから</p></div></div></div></section>
+
+
+<section class="qna-guide guide-v2" aria-labelledby="guide-heading"><div class="guide-wrap">
+<div class="guide-top"><div class="guide-copy"><p class="guide-kicker">知りたいことが、きっと見つかる。</p><h2 id="guide-heading">項目に沿って選ぶだけで<br>質問ができます</h2><p>何を質問したらよいか、具体的な疑問がわからなくても大丈夫。<br>自由入力もでき、思い通りの質問ができます。<strong>回答はLINEに届きます。</strong></p></div><div class="guide-photo"><img class="guide-parent" src="assets/guide-parent.webp" alt="スマホで気軽に質問する保護者のイメージ" loading="lazy" width="709" height="276"></div></div>
+<ol class="guide-steps"><li class="guide-step"><h3><span>1</span>質問したい内容を選ぶ</h3><div class="guide-screen"><img src="assets/guide-select.webp" alt="質問する内容・テーマ・高校を選択する画面" loading="lazy"></div></li><li class="guide-step"><h3><span>2</span>内容を確認して送信する</h3><div class="guide-screen"><img src="assets/guide-confirm.webp" alt="入力内容を確認して質問を送信する画面" loading="lazy"></div></li><li class="guide-step"><h3><span>3</span>自由入力もできる</h3><div class="guide-screen"><img src="assets/guide-free.webp" alt="質問内容を自由に入力する画面" loading="lazy"></div></li><li class="guide-step"><h3><span>4</span>回答がLINEに届く</h3><div class="guide-screen"><img src="assets/guide-line.webp" alt="LINEで回答を受け取る画面" loading="lazy"></div></li></ol>
+<div class="guide-benefits"><div class="guide-benefit"><img src="assets/guide-bulb.webp" alt="" loading="lazy"><div><h3>何を質問したらいいかわからなくても大丈夫！</h3><p>項目を選んでいくだけで、自然と良い質問ができます。</p></div></div><div class="guide-benefit"><img src="assets/guide-pencil.webp" alt="" loading="lazy"><div><h3>自由入力で思い通りの質問もできる！</h3><p>選択肢にない内容や、詳しく聞きたいことも自由に入力できます。</p></div></div><div class="guide-benefit"><img src="assets/guide-line-icon.webp" alt="" loading="lazy"><div><h3>回答はLINEに届く！</h3><p>質問への回答をLINEにお届けします。</p></div></div></div>
+</div></section>
+
+
+<section class="answerexample"><div class="wrap"><div class="answerlead"><h2>これはQ&Aの回答例です</h2><p>質問に対して、目安だけでなく「どう判断するか」「次に何をすべきか」までLINEで回答します。</p></div><div class="chatanswer"><div class="userbubble">成績や学力テストで志望校をどうやって決めるのですか？</div><div class="routebubble"><h3>質問の回答</h3><p>志望校は、成績だけで決めるのではなく、<strong>「お子さまが通いたい学校」と「今の力でどこまで目指せるか」</strong>を重ねて考えることが大切です。</p><p><b>① 通知表と学力テストは、分けて見ましょう</b><br>通知表は日頃の学習の積み重ねを見る材料、学力テストはテスト時点の理解度や得点力を見る材料です。同じ点数でも、テストの難しさや受験した集団によって意味が変わるため、点数だけを見て受験校を決めないようにしましょう。</p><p><b>② 1回の結果より、直近の変化を確認しましょう</b><br>最近のテストを並べて、得意・苦手な教科、点数の伸び方、失点の原因を見ます。「知識が足りない」のか「時間が足りない」のかで、これから取り組むことも変わります。</p><p><b>③ 通いたい理由も、親子で整理しましょう</b><br>学びたい内容、校風、部活動、通学時間などから候補を挙げ、今の成績との距離を学校や塾の先生と確認します。合格の可能性に加えて、入学後に無理なく学び続けられるかも大切です。</p><p><b>まず取り組むこと</b><br>直近の通知表と学力テストの結果を用意し、「気になる高校」と「その学校を選んだ理由」を書き出してみてください。学年、テストの名称・実施時期、教科別の結果が分かると、より具体的に整理できます。</p></div></div></div></section>
+
+
+
+<section class="services"><div class="wrap servicegrid"><div class="pricebox"><h2 class="boxhead">ご利用料金</h2><div class="pricegrid"><div class="price"><b>初回</b><div class="amount">1問無料</div><small>初めての方・1人1回</small></div><div class="price"><b>3問チケット</b><div class="amount">1,500円</div><small>1問あたり500円</small><div class="pay">クレジット決済</div></div><div class="price"><span class="recommend">おすすめ</span><b>10問チケット</b><div class="amount">3,500円</div><small>1問あたり350円</small><div class="pay">クレジット決済</div></div></div></div></div></section>
+
+
+<div class="consult-divider" aria-hidden="true"></div><section class="consultdetail" id="online-consultation"><h2 class="consult-banner">オンライン受験相談</h2><div class="wrap"><div class="consulthead"><span class="subtag">兵庫県高校受験・保護者向け</span><p>Q&Aだけでは整理しきれない内容を、資料や成績を見ながら直接相談できます。</p></div><div class="coursegrid"><div class="course"><h3>基本コース</h3><div class="courseprice">15,000円</div><ul><li>60分の個別相談＋個別診断票</li><li>お子さまに合った受験校の選び方</li><li>志望校合格に向けて現在すべきこと</li><li>受験期における保護者の関わり方</li><li>学校・学習塾との付き合い方</li><li>高校受験の仕組みや内申点</li></ul></div><div class="course"><h3>個別相談</h3><div class="courseprice">60分 10,000円</div><div class="courseprice">30分 6,000円</div><p style="margin:0;color:var(--muted);font-size:.75rem">必要なテーマを絞って、オンラインで個別に相談できます。</p></div></div><div class="consultvisuals"><div class="visualcard"><h3>個別診断票の実物見本</h3><img src="https://jukensoudan-route.github.io/assets/diagnostic-report-sample.jpg" alt="個別診断票の実物見本"><p>兵庫県高校受験の予定や、今後すべきことを分かりやすく整理します。</p></div><div class="visualcard"><h3>実際の相談画面</h3><img src="https://jukensoudan-route.github.io/assets/online-consultation-screen.webp" alt="オンライン相談の実際の画面"><p>資料を画面共有しながら相談できます。お客様の画面は映りません。</p></div></div><div style="text-align:center;margin-top:15px"><a class="cta outline" href="https://jukensoudan-route.github.io/contact/">オンライン相談を問い合わせる →</a></div></div></section><section class="faq"><div class="wrap"><div class="title"><h2>オンライン相談についてのよくあるご質問</h2></div><div class="faqlist"><details open><summary>どのような相談ができますか？</summary><p>志望校の選び方、内申点、学習の進め方、受験期の保護者の関わり方などを相談できます。成績や資料を見ながら、今後の取り組みを一緒に整理します。</p></details><details open><summary>相談中は自分の顔を映す必要がありますか？</summary><p>お客様の画面は映りません。こちらから資料を画面共有しながらご説明します。</p></details><details open><summary>基本コースと個別相談の違いは何ですか？</summary><p>基本コースは60分の個別相談と個別診断票がセットで15,000円です。個別相談は、必要なテーマを絞って相談でき、60分10,000円・30分6,000円です。</p></details></div></div></section>
+
+
+
+<section class="final"><div class="wrap"><a class="cta online-cta" href="https://jukensoudan-route.github.io/contact/"><span class="lineicon">LINE</span><span>オンライン相談はこちらから</span></a><p>兵庫県の子どもたちの未来を、保護者と一緒に考えます。</p></div></section>
+</main>
+<footer>© 2026 高校受験相談室 ROUTE</footer>
+<div class="sticky"><a class="cta" href="https://jukensoudan-route.github.io/route-qa/" target="_blank" rel="noopener"><span class="lineicon">LINE</span><span class="question-button-label">ご質問はこちら(初回無料)</span></a></div>
+</div>
+</body>
 </html>
