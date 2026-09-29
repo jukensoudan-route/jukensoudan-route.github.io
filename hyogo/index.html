@@ -686,6 +686,9 @@
   <iframe name="backendFrame" class="backend-frame"></iframe>
 
   <script>
+    const ROUTE_PREFECTURE = "hyogo";
+    const ROUTE_PREFECTURE_LABEL = "兵庫";
+    const ROUTE_ENVIRONMENT = "production";
     const GAS_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbyAUKGZK_WK8l_bGs0AEWilwP_Z8WKRaeSsX3iP1dijuReeMAF-rVBIZl-CQYcozDCu3A/exec";
     const LIFF_ID = "2010636994-in5dBoXy";
     const CONSENT_POLICY_VERSION = "2026-09-11-v1";
@@ -1351,7 +1354,12 @@
         form.target = "backendFrame";
         form.style.display = "none";
 
-        const payload = Object.assign({}, data, { requestId:requestId });
+        const payload = Object.assign({}, data, {
+          requestId:requestId,
+          prefecture:ROUTE_PREFECTURE,
+          prefectureLabel:ROUTE_PREFECTURE_LABEL,
+          environment:ROUTE_ENVIRONMENT
+        });
         Object.keys(payload).forEach(function(key) {
           const input = document.createElement("input");
           input.type = "hidden";
