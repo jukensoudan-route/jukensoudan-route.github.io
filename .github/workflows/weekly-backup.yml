@@ -1,0 +1,31 @@
+name: Weekly repository backup snapshot
+
+on:
+  schedule:
+    # Every Sunday at 02:00 JST (Saturday 17:00 UTC)
+    - cron: '0 17 * * 6'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  create-backup-tag:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the published branch
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Create an immutable weekly snapshot tag
+        shell: bash
+        run: |
+          set -euo pipefail
+          tag="backup-$(TZ=Asia/Tokyo date +%Y-%m-%d)"
+          if git ls-remote --exit-code --tags origin "refs/tags/${tag}" >/dev/null 2>&1; then
+            echo "${tag} already exists"
+            exit 0
+          fi
+          git tag -a "${tag}" -m "Automatic weekly backup ${tag}"
+          git push origin "refs/tags/${tag}"
