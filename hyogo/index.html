@@ -729,6 +729,7 @@
     let isValidatingQuestion = false;
     let validatedQuestionToken = "";
     let validatedQuestionSignature = "";
+    let scrollTopAfterMessage = false;
     const pendingRequests = {};
 
     function clearApprovedValidation_() {
@@ -1756,6 +1757,13 @@
 
     function closeMessage() {
       document.getElementById("messageModal").classList.remove("show");
+
+      if (scrollTopAfterMessage) {
+        scrollTopAfterMessage = false;
+        requestAnimationFrame(function() {
+          window.scrollTo({ top:0, left:0, behavior:"auto" });
+        });
+      }
     }
 
     function getCurrentQuestionData() {
@@ -2216,6 +2224,14 @@
 
         document.getElementById("questionManual").value =
           "";
+
+        document.getElementById("rulesAgree").checked =
+          false;
+
+        updateSubmitState();
+
+        scrollTopAfterMessage =
+          true;
 
 
         showMessage(
