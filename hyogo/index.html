@@ -580,7 +580,7 @@
         <div class="agreement-box-title">ご利用ルールへの同意</div>
         <p>「ご利用ルール」「返金・キャンセルについて」「回答内容についての免責」を確認してください。</p>
         <label class="consent-check" for="rulesAgree">
-          <input type="checkbox" id="rulesAgree" onchange="updateSubmitState()">
+          <input type="checkbox" id="rulesAgree" autocomplete="off" onchange="updateSubmitState()">
           <span>すべての内容を確認し、同意します</span>
         </label>
       </div>
@@ -653,7 +653,7 @@
       <div class="confirm-box" id="confirmBox"></div>
       <div class="confirm-consent">
         <label class="consent-check" for="confirmRulesAgree">
-          <input type="checkbox" id="confirmRulesAgree" onchange="updateConfirmConsent()">
+          <input type="checkbox" id="confirmRulesAgree" autocomplete="off" onchange="updateConfirmConsent()">
           <span>ご利用ルール・返金条件・免責事項への同意を再確認しました</span>
         </label>
       </div>
@@ -1506,6 +1506,13 @@
         isSending;
     }
 
+    function resetConsentState() {
+      document.getElementById("rulesAgree").checked = false;
+      document.getElementById("confirmRulesAgree").checked = false;
+      updateSubmitState();
+      updateConfirmConsent();
+    }
+
     function updateUsage(result) {
       if (!result) return;
       usageData = result;
@@ -2001,6 +2008,8 @@
         document.getElementById("questionManual").value =
           "";
 
+        resetConsentState();
+
 
         showMessage(
           "質問を受け付けました",
@@ -2090,6 +2099,10 @@
     async function confirmStripeReturnIfNeeded() {
       const payment = getStripeReturnParams();
 
+      if (payment.stripe === "success" || payment.stripe === "cancel") {
+        resetConsentState();
+      }
+
       if (payment.stripe === "cancel") {
         cleanStripeReturnUrl();
         showMessage("決済をキャンセルしました","質問回数は追加されていません。","!");
@@ -2177,9 +2190,16 @@
     });
 
     window.addEventListener("load", function() {
+      resetConsentState();
       changeTheme(false);
       changeDistrict();
       initializeLiff();
+    });
+
+    window.addEventListener("pageshow", function(event) {
+      if (event.persisted) {
+        resetConsentState();
+      }
     });
   </script>
 
