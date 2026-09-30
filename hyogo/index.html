@@ -712,6 +712,9 @@
 
   <script>
     const GAS_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbyAUKGZK_WK8l_bGs0AEWilwP_Z8WKRaeSsX3iP1dijuReeMAF-rVBIZl-CQYcozDCu3A/exec";
+    const QUESTION_OPTIONS_URL = "https://script.google.com/macros/s/AKfycbwH9FJsaxcbahXTBpEm1Hh7f3Tqzrul7sUyuZRAuY-TMXXE-5hXlPnzGGXN-MDiZAh6/exec";
+    const QUESTION_OPTIONS_CACHE_KEY = "route_hyogo_question_options_v2";
+    const QUESTION_OPTIONS_CACHE_MS = 10 * 60 * 1000;
     const LIFF_ID = "2010636994-in5dBoXy";
     const CONSENT_POLICY_VERSION = "2026-09-11-v1";
     const CONSENT_SUMMARY = "ご利用ルール／返金・キャンセルについて／回答内容についての免責";
@@ -734,7 +737,7 @@
     }
 
 
-    const questionTemplates = {
+    let questionTemplates = {
       school:{
         "学校の特徴・強み":["{school}の特徴や強みを教えてください。"],
         "コース・学科":["{school}にはどのようなコース・学科がありますか？"],
@@ -1310,7 +1313,7 @@
     }
 
 
-    const themes = {
+    let themes = {
       school:[
         "学校の特徴・強み",
         "コース・学科",
@@ -1415,6 +1418,86 @@
         "志望校変更の時期"
       ]
     };
+
+    function applyQuestionOptions(data) {
+      if (!data || !data.ok || !Array.isArray(data.categories) || !data.categories.length) {
+        throw new Error("質問選択項目を取得できませんでした。");
+      }
+
+      const nextTemplates = {};
+      const nextThemes = {};
+      const categorySelect = document.getElementById("category");
+      categorySelect.innerHTML = '<option value="">大項目を選択してください</option>';
+
+      data.categories.forEach(function(category) {
+        if (!category || !category.key || !category.label || !Array.isArray(category.themes)) return;
+        nextTemplates[category.key] = {};
+        nextThemes[category.key] = [];
+
+        category.themes.forEach(function(theme) {
+          if (!theme || !theme.name || !Array.isArray(theme.questions) || !theme.questions.length) return;
+          nextThemes[category.key].push(theme.name);
+          nextTemplates[category.key][theme.name] = theme.questions.slice();
+        });
+
+        if (!nextThemes[category.key].length) return;
+        const option = document.createElement("option");
+        option.value = category.key;
+        option.textContent = category.label;
+        categorySelect.appendChild(option);
+      });
+
+      questionTemplates = nextTemplates;
+      themes = nextThemes;
+    }
+
+    function fetchQuestionOptions() {
+      return new Promise(function(resolve, reject) {
+        const callbackName = "routeQuestionOptions_" + Date.now() + "_" + Math.random().toString(36).slice(2);
+        const script = document.createElement("script");
+        const timeout = window.setTimeout(function() {
+          cleanup();
+          reject(new Error("質問選択項目の取得がタイムアウトしました。"));
+        }, 8000);
+
+        function cleanup() {
+          window.clearTimeout(timeout);
+          delete window[callbackName];
+          if (script.parentNode) script.parentNode.removeChild(script);
+        }
+
+        window[callbackName] = function(data) {
+          cleanup();
+          resolve(data);
+        };
+        script.onerror = function() {
+          cleanup();
+          reject(new Error("質問選択項目を読み込めませんでした。"));
+        };
+        script.src = QUESTION_OPTIONS_URL + "?action=getQuestionOptions&callback=" + encodeURIComponent(callbackName);
+        document.head.appendChild(script);
+      });
+    }
+
+    async function loadQuestionOptions() {
+      try {
+        const cached = JSON.parse(localStorage.getItem(QUESTION_OPTIONS_CACHE_KEY) || "null");
+        if (cached && cached.savedAt && Date.now() - cached.savedAt < QUESTION_OPTIONS_CACHE_MS) {
+          applyQuestionOptions(cached.data);
+          return;
+        }
+      } catch (error) {
+        localStorage.removeItem(QUESTION_OPTIONS_CACHE_KEY);
+      }
+
+      const data = await fetchQuestionOptions();
+      applyQuestionOptions(data);
+      try {
+        localStorage.setItem(QUESTION_OPTIONS_CACHE_KEY, JSON.stringify({ savedAt: Date.now(), data: data }));
+      } catch (error) {
+        console.warn("質問選択項目をブラウザに保存できませんでした。", error);
+      }
+    }
 
     function changeTheme(resetSelection) {
       const category = document.getElementById("category").value;
@@ -2342,7 +2425,12 @@
       }
     });
 
-    document.addEventListener("DOMContentLoaded", function() {
+    document.addEventListener("DOMContentLoaded", async function() {
+      try {
+        await loadQuestionOptions();
+      } catch (error) {
+        console.warn("シートの質問選択項目を取得できないため、内蔵データを使用します。", error);
+      }
       changeTheme(false);
       renderSchoolTypeButtons("schoolTypeGrid", "", 1);
       if (!/^(localhost|127\.0\.0\.1)$/.test(location.hostname)) initializeLiff();
