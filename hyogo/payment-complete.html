@@ -1,1 +1,205 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>決済確認｜ROUTE 受験Q&A</title>
+  <meta name="robots" content="noindex,nofollow">
+  <style>
+    :root{--blue:#267EE6;--deep:#174e90;--bg:#f4f8fd;--text:#172231;--sub:#637083;--ok:#0f8a5f;--danger:#d92d20;--warn:#8a5a00}
+    *{box-sizing:border-box}
+    body{margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans JP",sans-serif}
+    .wrap{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:22px}
+    .card{width:min(560px,100%);background:#fff;border:2px solid #d7e3f1;border-radius:24px;padding:30px 22px;text-align:center;box-shadow:0 14px 36px rgba(23,78,144,.08)}
+    .mark{width:84px;height:84px;margin:0 auto 18px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:#edf5ff;color:var(--blue);font-size:42px;font-weight:900}
+    .mark.ok{background:#e9f8f1;color:var(--ok)}
+    .mark.cancel{background:#fff0f0;color:var(--danger)}
+    .mark.warn{background:#fff8e6;color:var(--warn)}
+    h1{margin:0;font-size:30px;line-height:1.4;color:var(--deep)}
+    p{margin:14px 0 0;color:var(--sub);font-size:17px;line-height:1.8}
+    .note{margin-top:20px;padding:15px;border-radius:14px;background:#edf5ff;color:#244b75;font-weight:700;line-height:1.7}
+    .remaining{display:none;margin-top:18px;padding:16px;border-radius:14px;background:#f0faf6;color:#146c4d;font-size:18px;font-weight:900;line-height:1.6}
+    .btn{display:none;width:100%;margin-top:24px;padding:18px 16px;border-radius:15px;background:var(--blue);color:#fff;text-decoration:none;font-size:20px;font-weight:900;border:0;cursor:pointer}
+    .retry{display:none;width:100%;margin-top:14px;padding:15px 16px;border-radius:15px;background:#fff;color:var(--blue);font-size:18px;font-weight:900;border:2px solid var(--blue);cursor:pointer}
+    .subbtn{display:block;margin-top:14px;color:var(--blue);font-weight:800;text-decoration:underline;text-underline-offset:3px}
+    iframe.backend-frame{position:absolute;width:1px;height:1px;left:-9999px;top:-9999px;border:0}
+    .spinner{width:56px;height:56px;margin:0 auto;border:6px solid #dce8f6;border-top-color:var(--blue);border-radius:50%;animation:spin .8s linear infinite}
+    @keyframes spin{to{transform:rotate(360deg)}}
+  </style>
+</head>
+<body>
+  <div class="wrap"><main class="card">
+    <div class="mark" id="mark"><div class="spinner" id="spinner"></div></div>
+    <h1 id="title">決済を確認しています</h1>
+    <p id="text">Stripeの決済状況を確認し、質問回数を反映しています。画面を閉じずにそのままお待ちください。</p>
+    <div class="note" id="note">確認が完了するまでLINEは開きません。</div>
+    <div class="remaining" id="remaining"></div>
+   <a class="btn" id="backBtn" href="https://kikeroute.jp/hyogo/">LINEでQ&Aに戻る</a>
+    <button class="retry" id="retryBtn" type="button">決済確認をもう一度行う</button>
+    <a class="subbtn" href="https://kikeroute.jp/">キケルート公式HPへ戻る</a>
+  </main></div>
 
+  <iframe name="backendFrame" class="backend-frame"></iframe>
+
+  <script>
+    (function(){
+      const GAS_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbyAUKGZK_WK8l_bGs0AEWilwP_Z8WKRaeSsX3iP1dijuReeMAF-rVBIZl-CQYcozDCu3A/exec";
+      const QNA_URL = "https://kikeroute.jp/hyogo/";
+      const pendingRequests = {};
+
+      const mark = document.getElementById('mark');
+      const spinner = document.getElementById('spinner');
+      const title = document.getElementById('title');
+      const text = document.getElementById('text');
+      const note = document.getElementById('note');
+      const remaining = document.getElementById('remaining');
+      const backBtn = document.getElementById('backBtn');
+      const retryBtn = document.getElementById('retryBtn');
+
+      function setMark(kind, symbol){
+        mark.className = 'mark' + (kind ? ' ' + kind : '');
+        mark.innerHTML = '';
+        mark.textContent = symbol;
+      }
+
+      function showSuccess(result){
+        setMark('ok','✓');
+        title.textContent = '決済が完了しました';
+        text.textContent = '質問回数を追加しました。';
+        note.textContent = '決済確認が完了しました。下のボタンからQ&Aへ戻ってください。';
+        remaining.style.display = 'block';
+        remaining.textContent = '現在の残り回数：' + Number(result && result.remainingCount || 0) + '回';
+        backBtn.style.display = 'block';
+        retryBtn.style.display = 'none';
+      }
+
+      function showCancel(){
+        setMark('cancel','!');
+        title.textContent = '決済をキャンセルしました';
+        text.textContent = '質問回数は追加されていません。必要な場合はQ&Aページからもう一度お手続きください。';
+        note.textContent = '決済は完了していません。';
+        remaining.style.display = 'none';
+        backBtn.style.display = 'block';
+        retryBtn.style.display = 'none';
+      }
+
+      function showMissingSession(){
+        setMark('warn','!');
+        title.textContent = '決済情報を確認できません';
+        text.textContent = '決済確認に必要な情報がURLにありません。';
+        note.textContent = '決済済みか判断できないため、同じ決済をやり直さずROUTEへお問い合わせください。';
+        remaining.style.display = 'none';
+        backBtn.style.display = 'none';
+        retryBtn.style.display = 'none';
+      }
+
+      function showConfirmError(error){
+        setMark('warn','!');
+        title.textContent = '決済確認が完了していません';
+        text.textContent = '決済画面で支払いが完了していても、質問回数の反映確認がまだ完了していない可能性があります。';
+        note.textContent = '再決済はしないでください。「決済確認をもう一度行う」を押してください。\n' + (error && error.message ? '詳細：' + error.message : '');
+        remaining.style.display = 'none';
+        backBtn.style.display = 'none';
+        retryBtn.style.display = 'block';
+      }
+
+      function postToGas(data){
+        return new Promise(function(resolve,reject){
+          const requestId = 'route_payment_' + Date.now() + '_' + Math.random().toString(36).slice(2);
+          pendingRequests[requestId] = {resolve:resolve,reject:reject};
+
+          const form = document.createElement('form');
+          form.method = 'POST';
+          form.action = GAS_WEB_APP_URL;
+          form.target = 'backendFrame';
+          form.style.display = 'none';
+
+          const payload = Object.assign({},data,{requestId:requestId});
+          Object.keys(payload).forEach(function(key){
+            const input = document.createElement('input');
+            input.type = 'hidden';
+            input.name = key;
+            input.value = payload[key] == null ? '' : String(payload[key]);
+            form.appendChild(input);
+          });
+
+          document.body.appendChild(form);
+          form.submit();
+
+          setTimeout(function(){
+            if(pendingRequests[requestId]){
+              delete pendingRequests[requestId];
+              reject(new Error('決済確認サーバーから応答を受け取れませんでした。'));
+            }
+            if(form.parentNode) form.remove();
+          },60000);
+        });
+      }
+
+      window.addEventListener('message',function(event){
+        let message = event.data;
+        if(typeof message === 'string'){
+          try{ message = JSON.parse(message); }catch(error){ return; }
+        }
+        if(!message || message.source !== 'route-qa-gas') return;
+
+        let data = message.payload;
+        if(typeof data === 'string'){
+          try{ data = JSON.parse(data); }catch(error){ return; }
+        }
+        if(!data || !data.requestId) return;
+
+        const pending = pendingRequests[data.requestId];
+        if(!pending) return;
+        delete pendingRequests[data.requestId];
+
+        if(data.ok){
+          pending.resolve(data.result || {});
+        }else{
+          pending.reject(new Error(data.message || '決済確認に失敗しました。'));
+        }
+      });
+
+      async function confirmPayment(){
+        const params = new URLSearchParams(location.search);
+        const state = params.get('stripe');
+        const sessionId = params.get('session_id');
+
+        if(state === 'cancel'){
+          showCancel();
+          return;
+        }
+
+        if(state !== 'success' || !sessionId){
+          showMissingSession();
+          return;
+        }
+
+        mark.className = 'mark';
+        mark.innerHTML = '<div class="spinner"></div>';
+        title.textContent = '決済を確認しています';
+        text.textContent = 'Stripeの決済状況を確認し、質問回数を反映しています。画面を閉じずにそのままお待ちください。';
+        note.textContent = '確認が完了するまでLINEは開きません。';
+        remaining.style.display = 'none';
+        backBtn.style.display = 'none';
+        retryBtn.style.display = 'none';
+
+        try{
+          const result = await postToGas({
+            action:'confirmCheckout',
+            sessionId:sessionId
+          });
+          showSuccess(result);
+        }catch(error){
+          console.error(error);
+          showConfirmError(error);
+        }
+      }
+
+      backBtn.href = QNA_URL;
+      retryBtn.addEventListener('click',confirmPayment);
+      confirmPayment();
+    })();
+  </script>
+</body>
+</html>
