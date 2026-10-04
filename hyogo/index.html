@@ -719,7 +719,7 @@
     const CONSENT_POLICY_VERSION = "2026-09-11-v1";
     const CONSENT_SUMMARY = "ご利用ルール／返金・キャンセルについて／回答内容についての免責";
 
-    const USAGE_CACHE_PREFIX = "routeQaUsage:";
+    const USAGE_CACHE_PREFIX = "routeQaUsage:v2:";
     const USAGE_CACHE_TTL_MS = 24 * 60 * 60 * 1000;
     let liffInitialization = null;
     let lineProfile = null;
@@ -1713,7 +1713,11 @@
         saveCachedUsage(lineProfile && lineProfile.userId, result);
       }
       const remaining = Math.max(0, Number(result.remainingCount || 0));
-      document.getElementById("planUsage").textContent = result.ticketLabel || "無料お試し";
+      let ticketLabel = result.ticketLabel || "無料お試し";
+      ticketLabel = String(ticketLabel)
+        .replace(/1,500円\s*[／/]\s*3回/g, "1,000円／3回")
+        .replace(/3,500円\s*[／/]\s*10回/g, "3,000円／10回");
+      document.getElementById("planUsage").textContent = ticketLabel;
       document.getElementById("remainingUsage").textContent = remaining + "回";
       document.getElementById("usageStatus").textContent = fromCache
         ? "前回の利用状況です。最新の残り回数を確認しています。"
