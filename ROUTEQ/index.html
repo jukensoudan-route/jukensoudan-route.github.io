@@ -581,11 +581,17 @@ a{text-decoration:none;color:inherit}
 .copyright-strip{
   background:linear-gradient(90deg,#0b4e9b 0%,#0877e8 100%);
   color:#fff;
-  text-align:center;
   padding:7px 16px;
   font-size:12px;
   font-weight:700;
   letter-spacing:.08em;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+}
+.copyright-strip a{
+  color:#fff;
+  text-decoration:underline;
 }
 @media(max-width:520px){
   .copyright-strip{
@@ -889,7 +895,7 @@ a{text-decoration:none;color:inherit}
 </section>
 
 </main>
-<footer class="copyright-strip"><span>© 2026 ROUTEQ. All Rights Reserved.</span><a href="/about/" style="margin-left:14px;color:#fff;text-decoration:underline;text-underline-offset:3px;font-weight:800">ROUTEQについて</a></footer>
+<footer class="copyright-strip"><span>© 2026 ROUTEQ. All Rights Reserved.</span><a href="about.html">ROUTEQについて</a></footer>
 <script>
 const b=document.querySelector('.hamburger'),n=document.querySelector('.nav');
 if(b&&n){
