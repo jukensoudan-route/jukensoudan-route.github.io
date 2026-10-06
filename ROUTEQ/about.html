@@ -203,25 +203,25 @@ a{text-decoration:none;color:inherit}
   .footer__links{justify-content:center;flex-wrap:wrap;margin-top:13px}
 }
 
-/* === ABOUT COMPACT SPACING V2 === */
+/* === ROUTEQ ABOUT COMPACT SPACING V1 === */
 .hero__inner{
-  min-height:260px !important;
-  padding:34px 0 38px !important;
+  min-height:220px !important;
+  padding:36px 0 38px !important;
 }
 .hero p{
-  margin-top:14px !important;
-  line-height:1.65 !important;
+  margin-top:12px !important;
+  line-height:1.7 !important;
 }
 .quicknav{
   margin-top:-18px !important;
 }
 .quicknav__grid{
-  gap:8px !important;
   padding:8px !important;
+  gap:8px !important;
 }
 .quicknav a{
   min-height:54px !important;
-  padding:0 14px !important;
+  padding:0 15px !important;
 }
 .section{
   padding:38px 0 !important;
@@ -229,15 +229,12 @@ a{text-decoration:none;color:inherit}
 .section__head{
   margin-bottom:18px !important;
 }
-.eyebrow{
-  margin-bottom:7px !important;
-}
 .section__lead{
   margin-top:8px !important;
   line-height:1.65 !important;
 }
 .business-card{
-  padding:24px 26px !important;
+  padding:24px !important;
 }
 .business-card p{
   line-height:1.75 !important;
@@ -251,420 +248,110 @@ a{text-decoration:none;color:inherit}
 .info-card h3{
   margin-bottom:5px !important;
 }
+.info-card p{
+  line-height:1.55 !important;
+}
 .info-card small{
   margin-top:4px !important;
+  line-height:1.5 !important;
 }
 .legal__box{
   padding:22px 24px !important;
 }
 .legal__box p{
-  margin-bottom:10px !important;
+  margin-bottom:12px !important;
   line-height:1.7 !important;
 }
 .legal__box li{
-  margin:5px 0 !important;
+  margin:6px 0 !important;
   line-height:1.65 !important;
 }
 .legal__note{
   margin-top:12px !important;
-  padding:10px 12px !important;
+  padding:11px 14px !important;
+  line-height:1.55 !important;
 }
 .footer__inner{
-  min-height:60px !important;
+  min-height:68px !important;
 }
-
-@media(max-width:820px){
+#business,#tokusho,#privacy,#terms{
+  scroll-margin-top:82px;
+}
+@media(max-width:560px){
   .hero__inner{
-    min-height:220px !important;
-    padding:26px 0 30px !important;
+    min-height:200px !important;
+    padding:28px 0 30px !important;
+  }
+  .hero h1{
+    font-size:38px !important;
+  }
+  .hero p{
+    margin-top:10px !important;
+    line-height:1.65 !important;
   }
   .quicknav{
-    margin-top:-12px !important;
-  }
-  .quicknav__grid{
-    gap:6px !important;
-    padding:6px !important;
+    margin-top:-14px !important;
   }
   .quicknav a{
-    min-height:48px !important;
+    min-height:46px !important;
     padding:0 12px !important;
   }
   .section{
-    padding:28px 0 !important;
+    padding:30px 0 !important;
   }
   .section__head{
     margin-bottom:14px !important;
   }
   .business-card{
-    padding:18px 18px !important;
+    padding:18px 16px !important;
   }
-  .info-grid{
-    gap:8px !important;
+  .business-card p{
+    line-height:1.7 !important;
   }
   .info-card{
-    padding:14px 16px !important;
+    padding:15px 16px !important;
   }
   .legal__box{
-    padding:17px 16px !important;
+    padding:18px 16px !important;
   }
   .footer__inner{
-    min-height:48px !important;
-    padding:12px 0 !important;
+    min-height:0 !important;
+    padding:16px 0 !important;
+  }
+  .footer__links{
+    margin-top:9px !important;
   }
 }
-/* === END ABOUT COMPACT SPACING V2 === */
+/* === END ROUTEQ ABOUT COMPACT SPACING V1 === */
 
 
-/* === ABOUT CARD TEXT BOLD V1 === */
-.business-card p,
-.info-card p,
-.info-card small,
+/* === ROUTEQ ABOUT BOX TEXT WEIGHT V1 === */
+.business-card p{
+  font-weight:700 !important;
+}
 .legal__box p,
-.legal__box li,
-.legal__note{
+.legal__box li{
   font-weight:700 !important;
 }
-/* === END ABOUT CARD TEXT BOLD V1 === */
-
-
-/* === ABOUT LINK BUTTON STYLE V1 === */
-.quicknav__grid{
-  background:rgba(255,255,255,.94) !important;
-  border:1px solid rgba(8,119,232,.10) !important;
-  box-shadow:0 14px 34px rgba(10,78,145,.09) !important;
-}
-.quicknav a{
-  background:linear-gradient(180deg,#ffffff 0%,#f7fbff 100%) !important;
-  border:1px solid #d9e9f7 !important;
-  border-radius:15px !important;
-  color:var(--navy) !important;
-  box-shadow:0 4px 12px rgba(18,88,150,.055) !important;
-  transition:transform .18s ease,border-color .18s ease,box-shadow .18s ease,color .18s ease !important;
-}
-.quicknav a:hover{
-  background:linear-gradient(180deg,#ffffff 0%,#eef7ff 100%) !important;
-  border-color:#9fcef7 !important;
-  color:var(--blue) !important;
-  transform:translateY(-2px) !important;
-  box-shadow:0 9px 22px rgba(8,119,232,.13) !important;
-}
-.quicknav a:active{
-  transform:translateY(0) !important;
-  box-shadow:0 3px 9px rgba(8,119,232,.10) !important;
-}
-.quicknav .arrow{
-  width:32px !important;
-  height:32px !important;
-  flex:0 0 32px !important;
-  background:linear-gradient(145deg,#197ee7 0%,#0877e8 58%,#0755c9 100%) !important;
-  color:#fff !important;
-  font-size:16px !important;
-  font-weight:900 !important;
-  box-shadow:0 5px 12px rgba(8,119,232,.22),inset 0 1px 0 rgba(255,255,255,.30) !important;
-  transition:transform .18s ease !important;
-}
-.quicknav a:hover .arrow{
-  transform:translateX(2px) !important;
-}
-
-.nav__home,
-.footer__home{
-  display:inline-flex !important;
-  align-items:center !important;
-  justify-content:center !important;
-  gap:9px !important;
-  border-radius:999px !important;
-  font-weight:900 !important;
-  letter-spacing:.03em !important;
-  transition:transform .18s ease,box-shadow .18s ease !important;
-}
-.nav__home{
-  background:rgba(255,255,255,.98) !important;
-  color:#0a5da8 !important;
-  border:1px solid rgba(255,255,255,.76) !important;
-  box-shadow:0 7px 18px rgba(0,35,80,.16) !important;
-}
-.footer__home{
-  padding:8px 14px !important;
-  background:rgba(255,255,255,.12) !important;
-  color:#fff !important;
-  border:1px solid rgba(255,255,255,.32) !important;
-  box-shadow:none !important;
-  text-decoration:none !important;
-}
-
-.nav__home:hover,
-.footer__home:hover{
-  transform:translateY(-1px) !important;
-}
-.nav__home:hover{
-  box-shadow:0 10px 24px rgba(0,35,80,.22) !important;
-}
-.footer__home:hover{
-  background:rgba(255,255,255,.19) !important;
-}
-
-/* 電話・メールはボタン化せず、上品なリンク表現に統一 */
-.info-card a{
-  color:var(--blue) !important;
-  text-decoration:none !important;
-  border-bottom:1px solid rgba(8,119,232,.30);
-  transition:border-color .18s ease,color .18s ease;
-}
-.info-card a:hover{
-  color:#0755c9 !important;
-  border-bottom-color:#0755c9;
-}
-
-@media(max-width:820px){
-  .quicknav a{
-    border-radius:13px !important;
-  }
-  .quicknav .arrow{
-    width:30px !important;
-    height:30px !important;
-    flex-basis:30px !important;
-  }
-  .nav__home{
-    box-shadow:none !important;
-  }
-}
-/* === END ABOUT LINK BUTTON STYLE V1 === */
-
-
-/* === ABOUT HOME BUTTON UNIFY V1 === */
-.nav__home,
-.footer__home{
-  display:inline-flex !important;
-  align-items:center !important;
-  justify-content:center !important;
-  min-height:40px !important;
-  padding:9px 16px !important;
-  border-radius:999px !important;
-  background:rgba(255,255,255,.14) !important;
-  color:#fff !important;
-  border:1px solid rgba(255,255,255,.34) !important;
-  box-shadow:none !important;
-  font-size:12px !important;
-  font-weight:900 !important;
-  letter-spacing:.04em !important;
-  text-decoration:none !important;
-  transition:background .18s ease,transform .18s ease,border-color .18s ease !important;
-}
-.nav__home:hover,
-.footer__home:hover{
-  background:rgba(255,255,255,.22) !important;
-  border-color:rgba(255,255,255,.48) !important;
-  transform:translateY(-1px) !important;
-}
-.nav__home::after,
-.footer__home::after{
-  content:none !important;
-  display:none !important;
-}
-.footer__links{
-  display:flex !important;
-  justify-content:center !important;
-  align-items:center !important;
-  margin-top:10px !important;
-}
-@media(max-width:820px){
-  .nav__home,
-  .footer__home{
-    min-height:38px !important;
-    padding:8px 14px !important;
-  }
-}
-/* === END ABOUT HOME BUTTON UNIFY V1 === */
-
-
-/* === ABOUT OPERATOR GRID V1 === */
-/* 営業時間を「主なサービス」の真上に配置 */
-.info-grid{
-  grid-template-columns:repeat(2,minmax(0,1fr)) !important;
-  grid-template-areas:
-    "operator location"
-    "phone email"
-    "hours price"
-    "services price"
-    "extra extra"
-    "payment payment" !important;
-}
-.info-grid > .info-card:nth-child(1){grid-area:operator}
-.info-grid > .info-card:nth-child(2){grid-area:location}
-.info-grid > .info-card:nth-child(3){grid-area:phone}
-.info-grid > .info-card:nth-child(4){grid-area:email}
-.info-grid > .info-card:nth-child(5){grid-area:hours}
-.info-grid > .info-card:nth-child(6){grid-area:services}
-.info-grid > .info-card:nth-child(7){grid-area:price}
-.info-grid > .info-card:nth-child(8){grid-area:extra}
-.info-grid > .info-card:nth-child(9){grid-area:payment}
-
-/* 支払い・サービス提供・キャンセル見出し */
-.payment-card h3{
-  margin:0 0 16px !important;
-  color:#fff !important;
-  font-family:"Hiragino Mincho ProN","Yu Mincho","YuMincho","Noto Serif JP",serif !important;
-  font-size:21px !important;
-  line-height:1.45 !important;
-  font-weight:700 !important;
-  letter-spacing:.02em !important;
-  text-decoration:underline !important;
-  text-decoration-thickness:1px !important;
-  text-underline-offset:7px !important;
-}
-
-@media(max-width:820px){
-  .info-grid{
-    grid-template-columns:1fr !important;
-    grid-template-areas:
-      "operator"
-      "location"
-      "phone"
-      "email"
-      "hours"
-      "services"
-      "price"
-      "extra"
-      "payment" !important;
-  }
-  .payment-card h3{
-    font-size:19px !important;
-    margin-bottom:14px !important;
-  }
-}
-/* === END ABOUT OPERATOR GRID V1 === */
-
-
-/* === ABOUT HERO TOP GAP V1 === */
-.hero__inner{
-  padding-top:0 !important;
-  align-items:flex-start !important;
-}
-.hero__copy{
-  margin-top:0 !important;
-}
-.hero__copy > .eyebrow:first-child{
-  margin-top:0 !important;
-}
-/* === END ABOUT HERO TOP GAP V1 === */
-
-
-/* === ABOUT HERO BOTTOM GAP V1 === */
-.hero__copy > p:last-child{
-  margin-bottom:0 !important;
-}
-.hero__inner{
-  padding-bottom:0 !important;
-}
-/* === END ABOUT HERO BOTTOM GAP V1 === */
-
-
-/* === ABOUT MOBILE MENU AND HERO GAP FIX V1 === */
-
-/* ヒーロー上下の余白を実際にゼロにする */
-.hero__inner{
-  min-height:0 !important;
-  height:auto !important;
-  padding-top:0 !important;
-  padding-bottom:0 !important;
-  align-items:flex-start !important;
-}
-.hero__copy{
-  margin-top:0 !important;
-  margin-bottom:0 !important;
-}
-.hero__copy > .eyebrow:first-child{
-  margin-top:0 !important;
-}
-.hero__copy > p:last-child{
-  margin-bottom:0 !important;
-}
-.quicknav{
-  margin-top:0 !important;
-}
-
-/* モバイルメニューを青背景にしてHOMEボタンを確実に見せる */
-@media(max-width:860px){
-  .nav.open{
-    display:grid !important;
-    gap:0 !important;
-    padding:9px !important;
-    background:linear-gradient(90deg,#0d4d98 0%,#0f59ab 35%,#197ee7 100%) !important;
-    border:0 !important;
-    box-shadow:0 12px 28px rgba(2,46,95,.20) !important;
-  }
-  .nav.open .nav__home{
-    display:flex !important;
-    width:100% !important;
-    min-height:42px !important;
-    margin:0 !important;
-    padding:9px 16px !important;
-    background:rgba(255,255,255,.14) !important;
-    color:#fff !important;
-    border:1px solid rgba(255,255,255,.34) !important;
-    border-radius:999px !important;
-    opacity:1 !important;
-    box-shadow:none !important;
-  }
-
-  .hero__inner{
-    min-height:0 !important;
-    padding:0 !important;
-  }
-  .quicknav{
-    margin-top:0 !important;
-  }
-}
-
-/* === END ABOUT MOBILE MENU AND HERO GAP FIX V1 === */
-
-
-/* === ABOUT HERO ONE LINE GAP V1 === */
-.hero__inner{
-  min-height:0 !important;
-  height:auto !important;
-  padding-top:1em !important;
-  padding-bottom:1em !important;
-  align-items:flex-start !important;
-}
-.hero__copy{
-  margin-top:0 !important;
-  margin-bottom:0 !important;
-}
-.hero__copy > .eyebrow:first-child{
-  margin-top:0 !important;
-}
-.hero__copy > p:last-child{
-  margin-bottom:0 !important;
-}
-.quicknav{
-  margin-top:0 !important;
-}
-
-@media(max-width:860px){
-  .hero__inner{
-    min-height:0 !important;
-    height:auto !important;
-    padding-top:1em !important;
-    padding-bottom:1em !important;
-  }
-}
-/* === END ABOUT HERO ONE LINE GAP V1 === */
+/* === END ROUTEQ ABOUT BOX TEXT WEIGHT V1 === */
 
 </style>
 </head>
 <body>
 <header class="topbar">
   <div class="container topbar__inner">
-    <a class="brand" href="/ROUTEQ/" aria-label="ROUTEQ ホーム">
+    <a class="brand" href="index.html" aria-label="ROUTEQ ホーム">
       <div class="brand__name">ROUTE<span>Q</span></div>
       <div class="brand__copy">あなたの未来を変える、最善の進路を。</div>
     </a>
     <button class="hamburger" id="menuBtn" aria-label="メニューを開く"><span></span><span></span><span></span></button>
     <nav class="nav" id="nav">
-        <a class="nav__home" href="/ROUTEQ/">ROUTEQ HOME</a>
-      </nav>
+      <a href="#business">事業概要</a>
+      <a href="#tokusho">特商法</a>
+      <a href="#privacy">プライバシー</a>
+      <a href="#terms">利用規約</a>
+      <a class="nav__home" href="index.html">ROUTEQ HOME</a>
+    </nav>
   </div>
 </header>
 
@@ -695,7 +382,7 @@ a{text-decoration:none;color:inherit}
         <h2>事業概要</h2>
       </div>
       <div class="business-card">
-        <p>ROUTEQは、教育・進路に関する情報提供、相談、支援を通じて、一人ひとりが自分に合った進路を見つけ、より良い未来へ進むためのサポートを行う教育・進路支援ブランドです。高校受験Q&amp;Aサービス「キケルート」、保護者向けオンライン受験相談、部活動と進学・受験勉強の両立を支えるサービスなどを展開しています。</p>
+        <p>ROUTEQは、教育・進路に関する情報提供、相談、支援を通じて、一人ひとりが自分に合った進路を見つけ、より良い未来へ進むためのサポートを行う教育・進路支援ブランドです。高校受験Q&amp;Aサービス「キケルート」、保護者向けオンライン個別相談、部活動と進学・受験勉強の両立を支えるサービスなどを展開しています。</p>
       </div>
     </div>
   </section>
@@ -711,7 +398,7 @@ a{text-decoration:none;color:inherit}
       <div class="info-grid">
         <div class="info-card">
           <h3>事業者名 / 運営責任者</h3>
-          <p>ROUTEQ（ルーテック）<br>運営責任者：飯降 敦也（いぶり あつや）</p>
+          <p>ROUTIQ（ルーティック）<br>運営責任者：飯降 敦也</p>
         </div>
 
         <div class="info-card">
@@ -738,21 +425,13 @@ a{text-decoration:none;color:inherit}
 
         <div class="info-card">
           <h3>主なサービス</h3>
-          <p>高校受験Q&amp;A「キケルート」<br>保護者向けオンライン受験相談<br>部活動支援サービス</p>
+          <p>高校受験Q&amp;A「キケルート」<br>オンライン個別相談<br>部活動支援サービス</p>
         </div>
 
         <div class="info-card">
-          <h3>利用料金</h3>
-          <p><strong>キケルートQ&amp;A</strong><br>
-          初回　1問無料（初めての方・1人1回）<br>
-          3問チケット　1,000円（1問あたり約333円）<br>
-          10問チケット　3,000円（1問あたり300円）<br><br>
-          <strong>保護者向けオンライン受験相談</strong><br>
-          基本コース　15,000円（1時間、診断票、その他資料付き）<br>
-          初回相談　30分無料<br>
-          個別相談　30分 6,000円<br>
-          個別相談　60分 10,000円</p>
-          <small>基本コースは1時間の個別相談に、診断票・その他資料が付きます。</small>
+          <h3>オンライン個別相談料金</h3>
+          <p>60分　10,000円<br>30分　6,000円</p>
+          <small>キケルートの料金は購入画面に表示します。</small>
         </div>
 
         <div class="info-card">
@@ -765,7 +444,7 @@ a{text-decoration:none;color:inherit}
           <h3>支払い・サービス提供・キャンセルについて</h3>
           <p><strong>支払時期：</strong>申込・購入時の事前決済<br>
           <strong>支払い方法：</strong>クレジットカード、PayPay、Apple Pay<br>
-          <strong>サービス提供：</strong>Q&amp;Aは購入後に利用可能回数を付与し、保護者向け保護者向けオンライン受験相談は予約日時にオンラインで提供します。<br>
+          <strong>サービス提供：</strong>Q&amp;Aは購入後に利用可能回数を付与し、オンライン個別相談は予約日時にオンラインで提供します。<br>
           <strong>キャンセル・返金：</strong>キケルートQ&amp;Aは質問送信後のキャンセル・返金は原則としてできません。システム障害、重複処理その他当方の明確な不備が確認された場合は、再回答・利用回数の復元・返金等の適切な方法で対応します。</p>
           <small>各サービス固有のキャンセル条件は、申込画面・購入画面に表示される内容が優先されます。</small>
         </div>
@@ -812,11 +491,14 @@ a{text-decoration:none;color:inherit}
 <footer class="footer">
   <div class="container footer__inner">
     <div>
-      <div class="footer__brand">ROUTEQ</div>
+      <div class="footer__brand">ROUTEQ <span style="opacity:.65">/</span> ROUTIQ</div>
       <div class="footer__copy">© 2026 ROUTEQ. All Rights Reserved.</div>
     </div>
     <div class="footer__links">
-      <a class="footer__home" href="/ROUTEQ/">ROUTEQ HOME</a>
+      <a class="footer__home" href="index.html">ROUTEQ HOME</a>
+      <a href="#tokusho">特商法</a>
+      <a href="#privacy">プライバシー</a>
+      <a href="#terms">利用規約</a>
     </div>
   </div>
 </footer>
