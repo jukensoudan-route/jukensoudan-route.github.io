@@ -86,6 +86,9 @@
       box-shadow:0 5px 15px rgba(7,91,71,.045);
     }
     .pricecard.primary{border:2px solid #08a94d;background:linear-gradient(180deg,#f7fffa,#eaf9f0)}
+    .pricecard-link{display:block;color:inherit;text-decoration:none;transition:transform .18s ease,box-shadow .18s ease,border-color .18s ease}
+    .pricecard-link:hover{transform:translateY(-2px);border-color:#06C755;box-shadow:0 10px 24px rgba(6,199,85,.14)}
+    .pricecard-link .book-label{display:inline-block;margin-top:8px;color:#078c48;font-size:12px;font-weight:900}
     .pricebadge{
       position:absolute;top:-12px;left:50%;transform:translateX(-50%);
       padding:3px 12px;border-radius:999px;background:#0aaa4e;color:#fff;font-size:12px;font-weight:900;white-space:nowrap;
@@ -223,16 +226,18 @@
               <div class="priceamount">30分無料</div>
               <div class="pricenote">初めての方</div>
             </div>
-            <div class="pricecard">
+            <a class="pricecard pricecard-link" href="https://cal.com/kikeroute/online-consultation-30" target="_blank" rel="noopener">
               <b>30分コース</b>
               <div class="priceamount">6,000円</div>
               <div class="pricenote">必要なテーマを絞って相談</div>
-            </div>
-            <div class="pricecard">
+              <span class="book-label">予約・決済へ ›</span>
+            </a>
+            <a class="pricecard pricecard-link" href="https://cal.com/kikeroute/online-consultation-60" target="_blank" rel="noopener">
               <b>60分コース</b>
               <div class="priceamount">10,000円</div>
               <div class="pricenote">じっくり相談したい方に</div>
-            </div>
+              <span class="book-label">予約・決済へ ›</span>
+            </a>
             <div class="pricecard">
               <span class="pricebadge">おすすめ</span>
               <b>基本コース</b>
