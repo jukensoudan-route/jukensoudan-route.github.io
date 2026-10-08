@@ -50,7 +50,8 @@
     .faq-head h2{margin:0;color:#073f35;font-size:clamp(22px,2.8vw,34px);line-height:1.25;text-wrap:balance}
     .faq-title-wrap{min-width:0}
     .faq-head p{margin:8px 0 0;color:#365d53;font-size:15px;line-height:1.8}
-    .faqlist{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px 24px}
+    .faqlist{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px}
+    .faq-column{display:flex;flex-direction:column;gap:12px;min-width:0}
     details{border:1px solid #e2eee9;border-radius:14px;background:#fff;box-shadow:0 5px 16px rgba(7,91,71,.06);overflow:hidden}
     summary{
       position:relative;cursor:pointer;list-style:none;padding:15px 64px 15px 52px;
@@ -169,7 +170,12 @@
       .faq-head{grid-template-columns:52px 1fr;gap:12px 14px}
       .faq-icon{width:52px;height:52px;font-size:28px}
       .faq-head p{font-size:14px}
-      .faqlist{grid-template-columns:1fr;gap:10px}
+      .faqlist{display:flex;flex-direction:column;gap:10px}
+      .faq-column{display:contents}
+      .faq-1{order:1}
+      .faq-2{order:2}
+      .faq-3{order:3}
+      .faq-4{order:4}
       .pricegrid{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
       .consultdetail{padding:38px 0 42px}
       .consultvisuals{grid-template-columns:1fr;gap:15px}
@@ -216,22 +222,26 @@
           </div>
 
           <div class="faqlist">
-            <details>
-              <summary>どのような相談ができますか？</summary>
-              <p>志望校の選び方、内申点、学習の進め方、受験期の保護者の関わり方などを相談できます。成績や資料を見ながら、今後の取り組みを一緒に整理します。</p>
-            </details>
-            <details>
-              <summary>相談中は自分の顔を映す必要がありますか？</summary>
-              <p>お客様の画面は映りません。こちらから資料を画面共有しながらご説明します。</p>
-            </details>
-            <details>
-              <summary>基本コースと個別相談の違いは何ですか？</summary>
-              <p>基本コースは1時間の個別相談に、診断票・その他資料が付いて15,000円です。初回相談は30分無料で、個別相談は30分6,000円・60分10,000円です。</p>
-            </details>
-            <details>
-              <summary>相談時間はどのくらいですか？</summary>
-              <p>個別相談は30分または60分、基本コースは1時間です。初回相談は30分無料です。</p>
-            </details>
+            <div class="faq-column">
+              <details class="faq-item faq-1">
+                <summary>どのような相談ができますか？</summary>
+                <p>志望校の選び方、内申点、学習の進め方、受験期の保護者の関わり方などを相談できます。成績や資料を見ながら、今後の取り組みを一緒に整理します。</p>
+              </details>
+              <details class="faq-item faq-3">
+                <summary>基本コースと個別相談の違いは何ですか？</summary>
+                <p>基本コースは1時間の個別相談に、診断票・その他資料が付いて15,000円です。初回相談は30分無料で、個別相談は30分6,000円・60分10,000円です。</p>
+              </details>
+            </div>
+            <div class="faq-column">
+              <details class="faq-item faq-2">
+                <summary>相談中は自分の顔を映す必要がありますか？</summary>
+                <p>お客様の画面は映りません。こちらから資料を画面共有しながらご説明します。</p>
+              </details>
+              <details class="faq-item faq-4">
+                <summary>相談時間はどのくらいですか？</summary>
+                <p>個別相談は30分または60分、基本コースは1時間です。初回相談は30分無料です。</p>
+              </details>
+            </div>
           </div>
         </div>
       </section>
