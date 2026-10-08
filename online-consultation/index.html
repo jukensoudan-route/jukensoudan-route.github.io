@@ -52,15 +52,28 @@
     .faq-head p{margin:8px 0 0;color:#365d53;font-size:15px;line-height:1.8}
     .faqlist{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px 24px}
     details{border:1px solid #e2eee9;border-radius:14px;background:#fff;box-shadow:0 5px 16px rgba(7,91,71,.06);overflow:hidden}
-    summary{position:relative;cursor:pointer;list-style:none;padding:14px 46px 14px 52px;color:#163e35;font-weight:800;line-height:1.45}
+    summary{
+      position:relative;cursor:pointer;list-style:none;padding:15px 64px 15px 52px;
+      color:#163e35;font-weight:900;line-height:1.45;background:linear-gradient(180deg,#fff,#fbfffd);
+      transition:background .18s ease,box-shadow .18s ease;
+    }
     summary::-webkit-details-marker{display:none}
     summary:before{
       content:"Q";position:absolute;left:14px;top:50%;transform:translateY(-50%);
       width:27px;height:27px;border-radius:50%;display:grid;place-items:center;
       background:linear-gradient(145deg,#1ebe61,#078c4d);color:#fff;font-size:14px;font-weight:900;
     }
-    summary:after{content:"⌄";position:absolute;right:16px;top:50%;transform:translateY(-56%);color:#0a5e4b;font-size:22px;font-weight:900}
-    details[open] summary:after{content:"⌃";transform:translateY(-40%)}
+    summary:after{
+      content:"＋";position:absolute;right:14px;top:50%;transform:translateY(-50%);
+      width:34px;height:34px;border-radius:50%;display:grid;place-items:center;
+      background:#f7fbff;color:#267EE6;border:1px solid #cfe0f5;
+      font-size:22px;font-weight:500;line-height:1;
+      box-shadow:0 3px 10px rgba(38,126,230,.10);
+      transition:.18s ease;
+    }
+    summary:hover,summary:focus-visible{background:#f5fbf8;outline:none;box-shadow:inset 0 0 0 2px rgba(6,199,85,.12)}
+    summary:hover:after,summary:focus-visible:after{background:#eef6ff;border-color:#b9d2f0;transform:translateY(-50%) scale(1.04)}
+    details[open] summary:after{content:"−";background:#267EE6;color:#fff;border-color:#267EE6;box-shadow:0 4px 12px rgba(38,126,230,.18)}
     details p{margin:0;padding:0 18px 16px 52px;border-top:1px solid #edf5f1;color:var(--muted);font-size:14px;line-height:1.8}
 
     /* pricing */
@@ -87,8 +100,17 @@
     }
     .pricecard.primary{border:2px solid #08a94d;background:linear-gradient(180deg,#f7fffa,#eaf9f0)}
     .pricecard-link{display:block;color:inherit;text-decoration:none;transition:transform .18s ease,box-shadow .18s ease,border-color .18s ease}
-    .pricecard-link:hover{transform:translateY(-2px);border-color:#06C755;box-shadow:0 10px 24px rgba(6,199,85,.14)}
-    .pricecard-link .book-label{display:inline-block;margin-top:8px;color:#078c48;font-size:12px;font-weight:900}
+    .pricecard-link:hover{transform:translateY(-2px);border-color:#bfd2ea;box-shadow:0 10px 24px rgba(38,96,166,.14)}
+    .pricecard-link:hover .book-label{transform:translateY(-1px);box-shadow:0 8px 20px rgba(38,96,166,.20),inset 0 1px 0 rgba(255,255,255,.2);filter:saturate(1.04)}
+    .pricecard-link .book-label{
+      display:inline-flex;align-items:center;justify-content:center;
+      margin-top:12px;min-height:44px;padding:10px 17px;border-radius:13px;
+      background:linear-gradient(135deg,#2d67b7,#4787cf);color:#fff;
+      border:1px solid rgba(28,88,158,.18);
+      font-size:15px;font-weight:800;line-height:1.15;letter-spacing:.015em;
+      box-shadow:0 6px 16px rgba(38,96,166,.17),inset 0 1px 0 rgba(255,255,255,.18);
+      transition:transform .18s ease,box-shadow .18s ease,filter .18s ease;
+    }
     .pricebadge{
       position:absolute;top:-12px;left:50%;transform:translateX(-50%);
       padding:3px 12px;border-radius:999px;background:#0aaa4e;color:#fff;font-size:12px;font-weight:900;white-space:nowrap;
@@ -101,7 +123,7 @@
       display:inline-flex;align-items:center;gap:12px;justify-content:center;
       min-width:min(540px,100%);padding:14px 24px;border-radius:999px;
       background:linear-gradient(120deg,#05a847,#06C755);color:#fff;text-decoration:none;
-      font-size:18px;font-weight:900;box-shadow:0 10px 22px rgba(6,199,85,.22);transition:.18s ease;
+      font-size:20px;font-weight:900;letter-spacing:.01em;box-shadow:0 10px 22px rgba(6,199,85,.22);transition:.18s ease;
     }
     .reserve-cta:hover{transform:translateY(-2px);box-shadow:0 14px 28px rgba(6,199,85,.28)}
     .reserve-cta__icon{font-size:24px}
@@ -151,19 +173,22 @@
       .pricegrid{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
       .consultdetail{padding:38px 0 42px}
       .consultvisuals{grid-template-columns:1fr;gap:15px}
-      .reserve-cta{font-size:16px}
+      .reserve-cta{font-size:18px;min-height:58px;padding:16px 20px}
     }
     @media(max-width:520px){
       .faq-head h2{font-size:22px}
-      summary{padding:13px 40px 13px 48px;font-size:14px}
+      summary{padding:14px 60px 14px 48px;font-size:15px}
+      summary:after{right:10px;width:32px;height:32px;font-size:21px}
       summary:before{left:12px}
       details p{padding:0 15px 14px 48px;font-size:13px}
       .section-title{font-size:24px}
       .section-title__icon{width:42px;height:42px;font-size:24px}
       .pricegrid{grid-template-columns:1fr}
-      .pricecard{min-height:auto;padding:17px 13px}
-      .reserve-cta{width:100%;min-width:0;padding:14px 16px}
-      .kikeroute-footer{padding:8px 10px;gap:8px;font-size:clamp(8px,2.5vw,10px)}
+      .pricecard{min-height:auto;padding:18px 13px}
+      .pricecard-link .book-label{width:100%;min-height:48px;padding:12px 14px;font-size:16px;border-radius:12px}
+      .reserve-cta{width:100%;min-width:0;min-height:60px;padding:16px 14px;font-size:18px}
+      .kikeroute-footer{padding:8px 10px;gap:6px 10px;font-size:clamp(9px,2.7vw,11px);flex-wrap:wrap;justify-content:center;text-align:center;white-space:normal}
+      .kikeroute-footer__copy,.kikeroute-footer__about{white-space:normal}
     }
   </style>
 </head>
@@ -191,19 +216,19 @@
           </div>
 
           <div class="faqlist">
-            <details open>
+            <details>
               <summary>どのような相談ができますか？</summary>
               <p>志望校の選び方、内申点、学習の進め方、受験期の保護者の関わり方などを相談できます。成績や資料を見ながら、今後の取り組みを一緒に整理します。</p>
             </details>
-            <details open>
+            <details>
               <summary>相談中は自分の顔を映す必要がありますか？</summary>
               <p>お客様の画面は映りません。こちらから資料を画面共有しながらご説明します。</p>
             </details>
-            <details open>
+            <details>
               <summary>基本コースと個別相談の違いは何ですか？</summary>
               <p>基本コースは1時間の個別相談に、診断票・その他資料が付いて15,000円です。初回相談は30分無料で、個別相談は30分6,000円・60分10,000円です。</p>
             </details>
-            <details open>
+            <details>
               <summary>相談時間はどのくらいですか？</summary>
               <p>個別相談は30分または60分、基本コースは1時間です。初回相談は30分無料です。</p>
             </details>
@@ -215,17 +240,18 @@
         <div class="wrap">
           <h2 class="section-title" id="price-title">
             <span class="section-title__icon">¥</span>
-            <span>ご利用料金</span>
+            <span>ご利用料金・お申し込み</span>
             <span class="section-title__line"></span>
           </h2>
 
           <div class="pricegrid">
-            <div class="pricecard primary">
+            <a class="pricecard pricecard-link primary" href="https://lin.ee/50Jp2Wa" target="_blank" rel="noopener">
               <span class="pricebadge">初回</span>
               <b>初回相談</b>
               <div class="priceamount">30分無料</div>
               <div class="pricenote">初めての方</div>
-            </div>
+              <span class="book-label">LINEで初回相談を予約 ›</span>
+            </a>
             <a class="pricecard pricecard-link" href="https://cal.com/kikeroute/online-consultation-30" target="_blank" rel="noopener">
               <b>30分コース</b>
               <div class="priceamount">6,000円</div>
@@ -243,16 +269,11 @@
               <b>基本コース</b>
               <div class="priceamount">15,000円</div>
               <div class="pricenote">1時間相談＋診断票・その他資料</div>
-              <span class="book-label">予約・決済へ ›</span>
+              <span class="book-label">基本コースを予約・決済へ ›</span>
             </a>
           </div>
 
           <div class="reserve-wrap">
-            <a class="reserve-cta" href="https://lin.ee/50Jp2Wa" target="_blank" rel="noopener">
-              <span class="reserve-cta__icon">▣</span>
-              <span>オンライン相談のご予約はこちらから</span>
-              <span>›</span>
-            </a>
             <div class="business-hours" aria-label="オンライン受験相談の営業時間">
               <strong>営業時間：9:00〜19:00</strong><br>
               定休日：月曜日
@@ -272,12 +293,12 @@
           <div class="consultvisuals">
             <div class="visualcard">
               <h3>個別診断票の実物見本</h3>
-              <img src="../assets/diagnostic-report-sample.jpg" alt="個別診断票の実物見本">
+              <img src="../assets/diagnostic-report-sample.jpg" alt="個別診断票の実物見本" loading="lazy" decoding="async">
               <p>兵庫県高校受験の予定や、今後すべきことを分かりやすく整理します。</p>
             </div>
             <div class="visualcard">
               <h3>実際の相談画面</h3>
-              <img src="../assets/online-session-actual.webp" alt="オンライン相談の実際の画面">
+              <img src="../assets/online-session-actual.webp" alt="オンライン相談の実際の画面" loading="lazy" decoding="async">
               <p>資料を画面共有しながら相談できます。お客様の画面は映りません。</p>
             </div>
           </div>
@@ -293,8 +314,8 @@
     </main>
 
     <footer class="kikeroute-footer">
-      <span class="kikeroute-footer__copy">© 2026 高校受験相談室 ROUTE</span>
-      <a class="kikeroute-footer__about" href="/ROUTEQ/">ROUTEQ（ルーテック）</a>
+      <span class="kikeroute-footer__copy">© 2026 キケルート</span>
+      <a class="kikeroute-footer__about" href="../about/">運営者情報</a>
     </footer>
   </div>
 </body>
