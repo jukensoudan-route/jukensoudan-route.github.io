@@ -2363,10 +2363,8 @@
 
           if (!liff.isInClient() && !liff.isLoggedIn()) {
             document.getElementById("loginStatus").innerHTML =
-              '<div class="status-icon">LINE</div>' +
-              '<div class="status-text">このブラウザでは自動認証を行いません。下のボタンからLINEで開いてください。</div>';
-            document.getElementById("usageStatus").innerHTML =
-              '<a href="https://liff.line.me/' + LIFF_ID + '" style="display:inline-block;margin-top:12px;padding:14px 20px;border-radius:12px;background:#06C755;color:#fff;text-decoration:none;font-weight:900;">LINEで開く</a>';
+              '<a href="https://liff.line.me/' + LIFF_ID + '" style="display:block;width:100%;padding:18px 20px;border-radius:14px;background:#06C755;color:#fff;text-align:center;text-decoration:none;font-size:22px;font-weight:900;">LINEでログイン</a>';
+            document.getElementById("usageStatus").textContent = "";
             setLoading(false);
             return;
           }
