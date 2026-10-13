@@ -2358,11 +2358,13 @@
         let startupFailed = false;
         try {
           if (!window.liff) throw new Error("LINEの読み込みに失敗しました。ページを再読み込みしてください。");
-          await liff.init({ liffId:LIFF_ID });
+          await liff.init({
+            liffId:LIFF_ID,
+            withLoginOnExternalBrowser:true
+          });
           timings.liffInitMs = Math.round(performance.now() - startedAt);
           if (!liff.isLoggedIn()) {
-            liff.login();
-            return;
+            throw new Error("LINE認証の完了を確認できませんでした。LINEから開き直してください。");
           }
           lineAccessToken = liff.getAccessToken();
           if (!lineAccessToken) throw new Error("LINE認証情報を取得できませんでした。");
