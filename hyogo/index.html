@@ -2358,13 +2358,18 @@
         let startupFailed = false;
         try {
           if (!window.liff) throw new Error("LINEの読み込みに失敗しました。ページを再読み込みしてください。");
-          await liff.init({
-            liffId:LIFF_ID,
-            withLoginOnExternalBrowser:true
-          });
+          await liff.init({ liffId:LIFF_ID });
           timings.liffInitMs = Math.round(performance.now() - startedAt);
-          if (!liff.isLoggedIn()) {
-            throw new Error("LINE認証の完了を確認できませんでした。LINEから開き直してください。");
+
+          const callbackParams = new URLSearchParams(window.location.search);
+          const hasLoginCallback = callbackParams.has("code") && callbackParams.has("state");
+
+          if (!liff.isInClient() && !liff.isLoggedIn()) {
+            if (hasLoginCallback) {
+              throw new Error("LINE認証の完了を確認できませんでした。ページを閉じて、LINEからもう一度開いてください。");
+            }
+            liff.login({ redirectUri: window.location.origin + window.location.pathname });
+            return;
           }
           lineAccessToken = liff.getAccessToken();
           if (!lineAccessToken) throw new Error("LINE認証情報を取得できませんでした。");
