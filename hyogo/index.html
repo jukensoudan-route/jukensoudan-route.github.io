@@ -2361,14 +2361,13 @@
           await liff.init({ liffId:LIFF_ID });
           timings.liffInitMs = Math.round(performance.now() - startedAt);
 
-          const callbackParams = new URLSearchParams(window.location.search);
-          const hasLoginCallback = callbackParams.has("code") && callbackParams.has("state");
-
           if (!liff.isInClient() && !liff.isLoggedIn()) {
-            if (hasLoginCallback) {
-              throw new Error("LINE認証の完了を確認できませんでした。ページを閉じて、LINEからもう一度開いてください。");
-            }
-            liff.login({ redirectUri: window.location.origin + window.location.pathname });
+            document.getElementById("loginStatus").innerHTML =
+              '<div class="status-icon">LINE</div>' +
+              '<div class="status-text">Safariでは自動認証を行いません。下のボタンからLINEで開いてください。</div>';
+            document.getElementById("usageStatus").innerHTML =
+              '<a href="https://liff.line.me/' + LIFF_ID + '" style="display:inline-block;margin-top:12px;padding:14px 20px;border-radius:12px;background:#06C755;color:#fff;text-decoration:none;font-weight:900;">LINEで開く</a>';
+            setLoading(false);
             return;
           }
           lineAccessToken = liff.getAccessToken();
