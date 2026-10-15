@@ -9,7 +9,7 @@ const liveSession = {
   mode: "payment",
   status: "complete",
   payment_status: "paid",
-  amount_total: 1500,
+  amount_total: 1000,
   currency: "jpy",
   payment_intent: "pi_fixture",
   client_reference_id: "U_LOCAL_FIXTURE",
@@ -60,7 +60,7 @@ test("unapproved products cannot grant", () => {
     "not_supported_qa_product");
 });
 test("incorrect price cannot grant", () => {
-  assert.equal(reason(fixture({ amount_total: 1000 })), "product_price_or_grant_mismatch");
+  assert.equal(reason(fixture({ amount_total: 1500 })), "product_price_or_grant_mismatch");
 });
 test("incorrect ticket count cannot grant", () => {
   assert.equal(reason(fixture({ metadata: { ...liveSession.metadata, grant_count: "30" } })),
@@ -78,7 +78,20 @@ test("unexpected currency cannot grant", () => {
 });
 test("ticket10 expected price and count can pass", () => {
   assert.equal(vetStripeCheckoutForLegacyLive(fixture({
-    amount_total: 3500,
+    amount_total: 3000,
     metadata: { ...liveSession.metadata, ticket_code: "ticket10", grant_count: "10" }
   })).allowed, true);
+});
+
+test("previous 10-ticket price cannot be mistaken for the current price", () => {
+  assert.equal(reason(fixture({
+    amount_total: 3500,
+    metadata: { ...liveSession.metadata, ticket_code: "ticket10", grant_count: "10" }
+  })), "product_price_or_grant_mismatch");
+});
+test("partial Session fails closed without GAS delivery", () => {
+  assert.equal(reason(fixture({ amount_total: undefined })), "invalid_amount_or_currency");
+});
+test("replay-preventing user verification requires both IDs", () => {
+  assert.equal(reason(fixture({ client_reference_id: null })), "purchase_user_mismatch");
 });
