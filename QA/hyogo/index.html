@@ -82,6 +82,7 @@
     .form-desc { margin:10px 0 0; color:var(--sub); font-size:20px; line-height:1.7; font-weight:600; }
     .field { margin-top:27px; }
     .field-label { display:flex; align-items:center; gap:10px; margin-bottom:10px; font-size:27px; font-weight:900; }
+    .card:not(.usage-card) .field-label > span:not(.num):not(.icon):not(.manual-input-hint){color:#ffe23f}
     .num,.icon {
       flex-shrink:0; display:flex; align-items:center; justify-content:center;
     }
@@ -265,7 +266,7 @@
       #questionModeDropdown { border:2px solid #fff; }
       #questionModeManual.active{border:2px solid #fff}
     .question-heading{flex-wrap:wrap}
-    .manual-input-hint{color:#ffe23f;font-size:16px;line-height:1.6;font-weight:800;flex:1 1 240px}
+    .manual-input-hint{color:#fff;font-size:16px;line-height:1.6;font-weight:800;flex:1 1 240px}
     .card.usage-card{background:#dff7f1;border-color:#bde8dd;color:#123c34}
     .usage-card > .usage-note{color:#123c34}
     .usage-card .login-status,.usage-card .usage-box{background:#22b89a;color:#123c34}
@@ -481,7 +482,7 @@
       <div class="field">
         <div class="field-label"><span class="num">1</span><span class="icon">📂</span><span>相談したい内容</span></div>
         <select id="category" onchange="changeTheme(true)">
-          <option value="">大項目を選択してください</option>
+          <option value="">第1項目を選択してください</option>
           <option value="school">志望校・高校選び</option>
           <option value="score">成績・入試得点</option>
           <option value="exam">入試制度・受験方法</option>
@@ -495,7 +496,7 @@
 
       <div class="field">
         <div class="field-label"><span class="num">2</span><span class="icon">📝</span><span>質問テーマ</span></div>
-        <select id="theme" onchange="renderQuestionOptions()"><option value="">先に大項目を選択してください</option></select>
+        <select id="theme" onchange="renderQuestionOptions()"><option value="">先に第1項目を選択してください</option></select>
       </div>
 
       <div class="field">
@@ -1199,7 +1200,7 @@
     const schoolTypeChoices = [
       ["district1","第1学区"], ["district2","第2学区"], ["district3","第3学区"],
       ["district4","第4学区"], ["district5","第5学区"], ["private","私立高校"],
-      ["nationalKosen","国立・高専"], ["flexible","通信制・定時制"], ["undecided","高校がまだ決まっていない"]
+      ["nationalKosen","国立・高専"], ["flexible","通信制・定時制"], ["undecided","まだ決まってない"]
     ];
     let secondSchoolType = "";
 
@@ -1424,7 +1425,7 @@
       const nextTemplates = {};
       const nextThemes = {};
       const categorySelect = document.getElementById("category");
-      categorySelect.innerHTML = '<option value="">大項目を選択してください</option>';
+      categorySelect.innerHTML = '<option value="">第1項目を選択してください</option>';
 
       data.categories.forEach(function(category) {
         if (!category || !category.key || !category.label || !Array.isArray(category.themes)) return;
@@ -1506,7 +1507,7 @@
       first.value = "";
       first.textContent = category && themes[category]
         ? "質問テーマを選択してください"
-        : "先に大項目を選択してください";
+        : "先に第1項目を選択してください";
       theme.appendChild(first);
 
       if (!category || !themes[category]) return;
@@ -2007,7 +2008,7 @@
 
 
         document.getElementById("confirmBox").innerHTML =
-          '<div class="confirm-row"><span class="confirm-label">大項目：</span>' +
+          '<div class="confirm-row"><span class="confirm-label">第1項目：</span>' +
           escapeHtml(
             data.categoryLabel
           ) +
