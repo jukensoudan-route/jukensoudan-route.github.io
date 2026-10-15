@@ -79,6 +79,7 @@
     .form-title { margin:0; font-size:32px; line-height:1.4; font-weight:900; }
     .qa-form-heading{box-sizing:border-box;width:100%;padding:18px 22px;border:3px solid var(--blue-dark);border-radius:16px;background:var(--blue);color:#fff;text-align:center;box-shadow:0 4px 12px rgba(38,126,230,.15)}
     .school-optional-note{font-size:.58em;font-weight:500;vertical-align:baseline}
+    #category,#theme{font-size:18px}
     .form-desc { margin:10px 0 0; color:var(--sub); font-size:20px; line-height:1.7; font-weight:600; }
     .field { margin-top:27px; }
     .field-label { display:flex; align-items:center; gap:10px; margin-bottom:10px; font-size:27px; font-weight:900; }
@@ -249,6 +250,7 @@
       .field-label { font-size:22px; }
       .num,.icon { width:37px; height:37px; font-size:18px; }
       select,input,textarea { font-size:20px; }
+      #category,#theme{font-size:16px}
       select,input { min-height:66px; }
       textarea { min-height:190px; }
       .rule ul { font-size:17px; }
@@ -476,13 +478,13 @@
       </section>
 
     <section class="card">
-      <h2 class="form-title qa-form-heading">質問を入力してください</h2>
-      <p class="form-desc" style="font-weight:400;">気になることを、できるだけ具体的にご入力ください。</p>
+      <h2 class="form-title qa-form-heading">✅️質問を入力してください</h2>
+      <p class="form-desc" style="font-weight:400;text-align:center;">気になることを、できるだけ具体的にご入力ください。</p>
 
       <div class="field">
         <div class="field-label"><span class="num">1</span><span class="icon">📂</span><span>相談したい内容</span></div>
         <select id="category" onchange="changeTheme(true)">
-          <option value="">第1項目を選択してください</option>
+          <option value="">内容を選択してください</option>
           <option value="school">志望校・高校選び</option>
           <option value="score">成績・入試得点</option>
           <option value="exam">入試制度・受験方法</option>
@@ -496,7 +498,7 @@
 
       <div class="field">
         <div class="field-label"><span class="num">2</span><span class="icon">📝</span><span>質問テーマ</span></div>
-        <select id="theme" onchange="renderQuestionOptions()"><option value="">先に第1項目を選択してください</option></select>
+        <select id="theme" onchange="renderQuestionOptions()"><option value="">①を先に選んでから選択してください</option></select>
       </div>
 
       <div class="field">
@@ -1425,7 +1427,7 @@
       const nextTemplates = {};
       const nextThemes = {};
       const categorySelect = document.getElementById("category");
-      categorySelect.innerHTML = '<option value="">第1項目を選択してください</option>';
+      categorySelect.innerHTML = '<option value="">内容を選択してください</option>';
 
       data.categories.forEach(function(category) {
         if (!category || !category.key || !category.label || !Array.isArray(category.themes)) return;
@@ -1507,7 +1509,7 @@
       first.value = "";
       first.textContent = category && themes[category]
         ? "質問テーマを選択してください"
-        : "先に第1項目を選択してください";
+        : "①を先に選んでから選択してください";
       theme.appendChild(first);
 
       if (!category || !themes[category]) return;
