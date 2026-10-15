@@ -496,7 +496,6 @@
 
     <section class="card">
       <h2 class="form-title qa-form-heading">✅️質問を入力してください</h2>
-      <p class="form-desc" style="font-weight:400;text-align:center;">気になることを、できるだけ具体的にご入力ください。</p>
 
       <div class="field">
         <div class="field-label"><span class="num">1</span><span class="icon">📂</span><span>相談したい内容</span></div>
@@ -763,8 +762,7 @@
         "通学・立地":["{school}への通学や立地について教えてください。"],
         "学校設備":["{school}の学校設備について教えてください。"],
         "学校行事":["{school}の主な学校行事を教えてください。"],
-        "制服・学校生活費":["{school}の制服や学校生活で必要になる費用を教えてください。"],
-        "学校同士の客観比較":["A高校とB高校の特徴を客観的に比較してください。"]
+        "制服・学校生活費":["{school}の制服や学校生活で必要になる費用を教えてください。"]
       },
       score:{
         "内申点":["兵庫県公立高校入試の内申点の仕組みを教えてください。","{school}の受験で内申点はどのように扱われますか？"],
@@ -1339,8 +1337,7 @@
         "通学・立地",
         "学校設備",
         "学校行事",
-        "制服・学校生活費",
-        "学校同士の客観比較"
+        "制服・学校生活費"
       ],
 
       score:[
@@ -1452,7 +1449,7 @@
         nextThemes[category.key] = [];
 
         category.themes.forEach(function(theme) {
-          if (!theme || !theme.name || !Array.isArray(theme.questions) || !theme.questions.length) return;
+          if (!theme || !theme.name || theme.name === "学校同士の客観比較" || !Array.isArray(theme.questions) || !theme.questions.length) return;
           nextThemes[category.key].push(theme.name);
           nextTemplates[category.key][theme.name] = theme.questions.slice();
         });
