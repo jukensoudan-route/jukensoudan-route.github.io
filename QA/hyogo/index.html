@@ -2351,12 +2351,18 @@
         let startupFailed = false;
         try {
           if (!window.liff) throw new Error("LINEの読み込みに失敗しました。ページを再読み込みしてください。");
-          await liff.init({ liffId:LIFF_ID, withLoginOnExternalBrowser:true });
+          // iOS Safari can return from LINE Login to the external browser repeatedly.
+          // Require an explicit login gesture on iOS instead of an automatic redirect loop.
+          const isIOSExternalBrowser = /iPad|iPhone|iPod/.test(navigator.userAgent);
+          await liff.init({ liffId:LIFF_ID, withLoginOnExternalBrowser:!isIOSExternalBrowser });
           timings.liffInitMs = Math.round(performance.now() - startedAt);
 
           if (!liff.isInClient() && !liff.isLoggedIn()) {
             document.getElementById("loginStatus").innerHTML =
-              '<a href="https://liff.line.me/' + LIFF_ID + '" style="display:block;width:100%;padding:18px 20px;border-radius:14px;background:#06C755;color:#fff;text-align:center;text-decoration:none;font-size:22px;font-weight:900;">LINEでログイン</a>';
+              '<button type="button" id="lineManualLogin" style="display:block;width:100%;padding:18px 20px;border:0;border-radius:14px;background:#06C755;color:#fff;text-align:center;font-size:22px;font-weight:900;cursor:pointer;">LINEでログイン</button>';
+            document.getElementById("lineManualLogin").addEventListener("click", function() {
+              liff.login({ redirectUri: location.origin + location.pathname });
+            });;
             document.getElementById("usageStatus").textContent = "";
             setLoading(false);
             return;
