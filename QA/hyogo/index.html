@@ -398,11 +398,205 @@
     /* QA page hero image: preserve full provided image on all screen sizes */
     .hero.image-hero { padding:0; background:#fff; }
     .hero.image-hero img { display:block; width:100%; height:auto; max-width:100%; }
-  </style>
+  
+/* ===== KIKEROUTE Q&A / Professional responsive design v1 ===== */
+:root { --kr-ink:#112a4c; --kr-blue:#1873df; --kr-deep:#1257b5; --kr-line:#dce6f1; --kr-paper:#fff; --kr-muted:#5b6d85; --kr-radius:22px; }
+html { scroll-behavior:smooth; scroll-padding-top:26px; }
+body { background:#f3f7fb; color:var(--kr-ink); font-family:"Noto Sans JP","Hiragino Kaku Gothic ProN",system-ui,-apple-system,"Segoe UI",sans-serif; -webkit-font-smoothing:antialiased; }
+body * { box-sizing:border-box; }
+a:focus-visible,button:focus-visible,select:focus-visible,textarea:focus-visible,input:focus-visible,summary:focus-visible { outline:3px solid #fdc83a; outline-offset:3px; }
+.kr-site-header { background:#fff; border-bottom:1px solid #e7eef6; }
+.kr-site-header__inner { max-width:1200px; margin:auto; padding:10px 24px; min-height:74px; display:flex; justify-content:space-between; align-items:center; gap:16px; }
+.kr-brand { display:flex; align-items:center; gap:11px; text-decoration:none; color:var(--kr-ink); font-weight:900; font-size:23px; line-height:1.2; }
+.kr-brand img { width:48px; height:48px; object-fit:contain; }
+.kr-brand small { display:block; font-size:10px; letter-spacing:.075em; color:var(--kr-muted); margin-top:5px; font-weight:700; }
+.kr-header-cta { display:inline-flex; gap:8px; align-items:center; justify-content:center; padding:11px 18px; background:#ecf5ff; color:#145cb9; border:1px solid #cae1ff; border-radius:999px; font-size:14px; font-weight:850; text-decoration:none; white-space:nowrap; }
+.kr-header-cta:hover { background:#d9eaff; }
+.kr-intro { padding:36px 24px 24px; background:radial-gradient(ellipse at 75% 20%,#e7f3ff 0,transparent 44%),linear-gradient(180deg,#f9fcff,#f3f7fb); }
+.kr-intro__layout { max-width:1152px; margin:auto; display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1.05fr); gap:clamp(28px,4vw,60px); align-items:center; }
+.kr-intro__copy { padding:10px 0 18px; }
+.kr-intro__tag { display:inline-block; padding:8px 13px; border-radius:999px; background:#e9f4ff; border:1px solid #d3e9ff; color:#1767c6; font-size:13px; font-weight:850; letter-spacing:.045em; }
+.kr-intro h1 { margin:20px 0 18px; color:#102c54; font-size:clamp(30px,3.45vw,48px); letter-spacing:-.04em; line-height:1.45; font-weight:900; text-wrap:balance; }
+.kr-intro h1 span { display:block; color:#1271dd; }
+.kr-intro__lead { margin:0; font-size:clamp(15px,1.45vw,18px); line-height:1.95; font-weight:550; color:#455b74; max-width:540px; }
+.kr-intro__cta { display:inline-flex; align-items:center; justify-content:space-between; gap:45px; margin-top:28px; padding:16px 23px; min-width:240px; border-radius:14px; background:linear-gradient(120deg,#1681ed,#145fcb); box-shadow:0 9px 22px rgba(24,110,217,.2); color:#fff; text-decoration:none; font-weight:900; font-size:17px; transition:transform .18s,box-shadow .18s; }
+.kr-intro__cta:hover { transform:translateY(-2px);box-shadow:0 12px 28px rgba(24,110,217,.27); }
+.kr-intro__sub { margin:13px 2px 0; color:#62758a; font-size:13px; font-weight:700; }
+.kr-intro__media { background:#fff; padding:11px; border:1px solid #dde9f5; box-shadow:0 18px 44px rgba(26,63,104,.10); border-radius:24px; overflow:hidden; min-width:0; }
+.kr-intro__media img { display:block; width:100%; height:auto; max-width:100%; border-radius:15px; object-fit:contain; background:#edf5fb; }
+.kr-intro__media-caption { display:block; margin-top:8px; text-align:center; font-size:12px; color:#6d7c91; letter-spacing:.035em; font-weight:700; }
+.kr-process { max-width:1152px; margin:0 auto 0; padding:15px 24px 20px; display:flex; justify-content:center; align-items:center; gap:clamp(10px,2.5vw,38px); color:#31506f; }
+.kr-process > div { display:flex; align-items:center; gap:11px; font-size:14px; }
+.kr-process__num { width:34px; height:34px; display:inline-flex; align-items:center; justify-content:center; flex-shrink:0; border-radius:50%; background:#e7f1ff; color:#1465c5; font-size:12px; font-weight:900; }
+.kr-process__arrow { color:#86a8cb; }
+.page { max-width:1152px; margin:0 auto; padding:20px 24px 80px; display:grid; grid-template-columns:minmax(0,.83fr) minmax(0,1.37fr); align-items:start; gap:20px 24px; }
+.page > .card { margin:0; min-width:0; width:100%; padding:28px; border:1px solid var(--kr-line); border-radius:var(--kr-radius); background:#fff; color:var(--kr-ink); box-shadow:0 7px 26px rgba(26,68,116,.045); }
+.page > .usage-card { grid-column:1;grid-row:1; }
+.page > .rules-card { grid-column:1;grid-row:2; padding:0; background:#f9fbfe; }
+.page > .kr-question-card { grid-column:2;grid-row:1 / span 3; padding:30px 32px; }
+.usage-card .usage-title { font-size:21px; margin:0 0 18px; color:#173a66; line-height:1.45; }
+.usage-card .login-status { margin:0 0 17px; padding:13px 15px; border-radius:13px; border:1px solid #d7e8fc; background:#edf6ff; color:#234f7c; }
+.usage-card .status-icon { background:#fff; color:#1874d5; font-size:18px; width:36px; height:36px; }
+.usage-card .status-text { font-size:14px; font-weight:750; overflow-wrap:anywhere; }
+.usage-card .usage-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px; }
+.usage-card .usage-box { padding:16px 10px; background:#f4f8fd; border:1px solid #e4edf8; border-radius:14px; }
+.usage-card .usage-label { font-size:13px; color:#63758a; }
+.usage-card .usage-value { font-size:29px; color:#1769c3; margin-top:5px; }
+.usage-card .usage-value.plan { font-size:19px; }
+.usage-card .usage-note { font-size:13px; line-height:1.75; margin-top:15px; color:#63758a; }
+.usage-card .ticket-area { border-radius:15px; background:#f2f8ff; padding:14px; }
+.usage-card .ticket-title { font-size:18px; }
+.usage-card .ticket-desc { font-size:13px; }
+.usage-card .ticket-grid { grid-template-columns:1fr; }
+.usage-card .ticket-button { font-size:17px; min-height:68px; }
+.kr-rules-details > summary { list-style:none; display:flex; flex-direction:column; position:relative; cursor:pointer; padding:19px 45px 19px 22px; font-size:16px; font-weight:900; color:#26476a; }
+.kr-rules-details > summary::-webkit-details-marker { display:none; }
+.kr-rules-details > summary::after { content:"＋"; position:absolute; right:20px; top:20px; color:#1873df; font-size:21px; font-weight:500; line-height:1; }
+.kr-rules-details[open] > summary::after { content:"−"; }
+.kr-rules-details > summary span { margin-top:5px; color:#76879a; font-size:12px; font-weight:650; }
+.rules-card .rule { margin:0; padding:0 21px 21px; border:0; background:transparent; border-radius:0; }
+.rules-card .rule-title { display:none; }
+.rules-card .rule ul { margin:0; padding-left:21px; font-size:13px; color:#54677c; line-height:1.85; font-weight:550; }
+.rules-card .rule li { margin-bottom:6px; }
+.rules-card .policy-links { display:flex; flex-wrap:wrap; gap:6px; margin-top:12px; }
+.rules-card .refund-link { font-size:12px; }
+.kr-question-card .form-title { color:#173b68; font-size:25px; line-height:1.5; letter-spacing:-.02em; }
+.kr-question-card .form-desc { margin-top:7px; color:#65778b; font-size:14px; line-height:1.8; }
+.kr-question-card .field { margin-top:26px; }
+.kr-question-card .field-label { display:flex; gap:9px; flex-wrap:wrap; align-items:center; font-size:17px; margin-bottom:12px; color:#243f60; }
+.kr-question-card .field-label .num { width:30px; height:30px; font-size:14px; border-radius:10px; background:#e6f1ff; color:#176aca; }
+.kr-question-card .field-label .icon { width:30px; height:30px; border-radius:9px; font-size:17px; }
+.kr-question-card select,.kr-question-card textarea,.kr-question-card input:not([type="checkbox"]):not([type="hidden"]) { min-height:54px; padding:11px 14px; border:1.5px solid #cfdeed; border-radius:12px; font-size:16px; font-weight:550; background:#fff; }
+.kr-question-card select:focus,.kr-question-card textarea:focus { border-color:#2079db; box-shadow:0 0 0 3px rgba(32,121,219,.12); }
+.kr-question-card textarea { min-height:145px; line-height:1.7; }
+.kr-question-card ::placeholder { font-size:14px; }
+.kr-question-card .school-type-btn { min-height:48px; font-size:13px; padding:9px 6px; }
+.kr-question-card .school-picker-panel { background:#f7faff; border:1px solid #d9e8f8; }
+.kr-question-card .question-input-mode { display:grid; grid-template-columns:1fr 1fr; gap:9px; margin:14px 0; }
+.kr-question-card .question-input-mode button { min-width:0; min-height:46px; border:1px solid #d0dfee; color:#315474; background:#f4f8fc; border-radius:11px; font-size:14px; font-weight:800; }
+.kr-question-card .question-input-mode button.active { background:#1675df; border-color:#1675df; color:#fff; }
+.kr-question-card .question-option-help { font-size:12px; line-height:1.75; }
+.kr-question-card .agreement-box { margin-top:28px; border:1.5px solid #b6d4f6; background:#f2f8ff; padding:18px; border-radius:15px; }
+.kr-question-card .agreement-box-title { color:#18589d; font-size:17px; }
+.kr-question-card .agreement-box p { font-size:13px; color:#5a6f85; }
+.kr-question-card .consent-check { background:#fff; border:1px solid #bfd7f2; font-size:14px; padding:12px 13px; border-radius:11px; }
+.kr-question-card .consent-check input { accent-color:#1475df; }
+.kr-submit-wrap { position:static; inset:auto; z-index:auto; width:100%; margin:23px 0 0; padding:0; background:none; border:0; }
+.kr-submit-wrap .submit { display:block; width:100%; min-height:59px; border-radius:13px; font-size:18px; font-weight:900; box-shadow:0 7px 20px rgba(21,106,208,.14); }
+.kr-submit-wrap .submit:disabled { box-shadow:none; cursor:not-allowed; opacity:.5; }
+.kr-submit-note { margin:9px 0 0; font-size:12px; color:#6f7f90; text-align:center; }
+.modal-bg .modal { box-shadow:0 28px 80px rgba(4,21,48,.23); }
+@media(min-width:1220px){ .kr-intro__layout{grid-template-columns:minmax(0,1fr) 510px;} }
+@media(max-width:900px){
+  .kr-intro__layout { grid-template-columns:minmax(0,1fr) minmax(0,.95fr); gap:26px; }
+  .kr-intro h1 { font-size:clamp(27px,4vw,38px); }
+  .page { grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr); gap:16px; }
+  .page > .card { padding:21px; }
+  .page > .rules-card { padding:0; }
+  .usage-card .usage-grid { grid-template-columns:1fr; }
+}
+@media(max-width:700px){
+  .kr-site-header__inner { padding:9px 16px; min-height:63px; }
+  .kr-brand { font-size:19px; }
+  .kr-brand img { height:38px; width:38px; }
+  .kr-brand small { font-size:9px; letter-spacing:0; }
+  .kr-header-cta { padding:9px 11px; font-size:12px; }
+  .kr-intro { padding:24px 16px 8px; }
+  .kr-intro__layout { grid-template-columns:1fr; gap:20px; }
+  .kr-intro__copy { padding:0; }
+  .kr-intro__tag { font-size:11px; padding:6px 10px; }
+  .kr-intro h1 { margin:14px 0 12px; font-size:clamp(27px,7vw,38px); line-height:1.46; }
+  .kr-intro__lead { font-size:14px; line-height:1.85; }
+  .kr-intro__cta { display:flex; justify-content:space-between; width:100%; min-height:53px; margin-top:19px; padding:13px 18px; font-size:15px; }
+  .kr-intro__sub { font-size:12px; text-align:center; }
+  .kr-intro__media { padding:7px; border-radius:17px; }
+  .kr-intro__media img { border-radius:11px; }
+  .kr-intro__media-caption { font-size:11px; }
+  .kr-process { margin:0 16px 0; padding:15px 7px; gap:5px; justify-content:space-between; }
+  .kr-process > div { flex-direction:column; gap:4px; font-size:10px; text-align:center; flex:1; line-height:1.45; }
+  .kr-process__num { width:27px; height:27px; font-size:10px; }
+  .kr-process__arrow { font-size:12px; margin-top:-13px; }
+  .page { display:flex; flex-direction:column; max-width:600px; gap:13px; padding:5px 12px 40px; }
+  .page > .card { padding:20px 17px; border-radius:17px; width:100%; }
+  .page > .usage-card { order:1; }
+  .page > .rules-card { order:2; padding:0; }
+  .page > .kr-question-card { order:3; padding:23px 17px; }
+  .usage-card .usage-grid { grid-template-columns:repeat(2,minmax(0,1fr)); }
+  .usage-card .usage-title { font-size:19px; }
+  .usage-card .usage-value { font-size:25px; }
+  .usage-card .usage-value.plan { font-size:16px; }
+  .kr-question-card .form-title { font-size:22px; }
+  .kr-question-card .field { margin-top:25px; }
+  .kr-question-card .field-label { font-size:15px; }
+  .kr-question-card .school-type-grid { grid-template-columns:repeat(2,minmax(0,1fr)); }
+  .kr-question-card select,.kr-question-card textarea { font-size:16px; }
+  .kr-question-card .consent-check { font-size:13px; }
+  .modal-bg { padding:12px; }
+  .modal-bg .modal { padding:19px 15px; border-radius:18px; }
+  .modal-bg .modal-title { font-size:22px; }
+  .modal-bg .modal-text { font-size:16px; }
+}
+@media(max-width:360px){
+  .kr-brand small { font-size:8px; }
+  .kr-header-cta { padding:8px; }
+  .kr-intro h1 { font-size:26px; }
+  .usage-card .usage-grid { grid-template-columns:1fr; }
+  .page { padding-left:8px; padding-right:8px; }
+}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.kr-intro__cta{transition:none}}
+
+/* Two-column layout with a stable left rail (avoid implicit grid row stretch). */
+.page > .kr-aside { grid-column:1; grid-row:1; min-width:0; display:flex; flex-direction:column; gap:20px; }
+.page > .kr-aside > .card { width:100%; margin:0; padding:28px; min-width:0; border:1px solid var(--kr-line); border-radius:var(--kr-radius); background:#fff; box-shadow:0 7px 26px rgba(26,68,116,.045); }
+.page > .kr-aside > .rules-card { padding:0; background:#f9fbfe; }
+.page > .kr-question-card { grid-column:2; grid-row:1; }
+@media(max-width:900px) {
+  .page > .kr-aside > .card { padding:21px; }
+  .page > .kr-aside > .rules-card { padding:0; }
+}
+@media(max-width:700px) {
+  .page > .kr-aside { width:100%; order:1; gap:13px; }
+  .page > .kr-question-card { width:100%; order:2; }
+  .page > .kr-aside > .card { padding:20px 17px; border-radius:17px; }
+  .page > .kr-aside > .rules-card { padding:0; }
+}
+/* ===== end Q&A visual design ===== */
+</style>
 </head>
-<body><header class="hero image-hero" aria-label="高校受験で気になった事を、さあ質問してみましょう。"><img src="https://d2ol7oe51mr4n9.cloudfront.net/user_3Jdcp9OGnmDTLg82gDZcCgcBzci/158a5b10-176b-4336-85fa-bbf504bb587c.png" width="919" height="807" alt="キケルート兵庫県版。高校受験で気になった事を質問してみましょう。質問を入力、専門家が回答、LINEで受け取る。" fetchpriority="high" decoding="async"></header>
+<body><header class="kr-site-header">
+  <div class="kr-site-header__inner">
+    <a class="kr-brand" href="/QA/" aria-label="キケルートQ&A トップページ">
+      <img src="../../assets/kikeroute-logo.webp" width="64" height="64" alt="">
+      <span>キケルート<small>KIKEROUTE | 兵庫県 高校受験Q&amp;A</small></span>
+    </a>
+    <a class="kr-header-cta" href="#qa-form">質問する <span aria-hidden="true">↗</span></a>
+  </div>
+</header>
+<section class="kr-intro" aria-labelledby="kr-intro-title">
+  <div class="kr-intro__layout">
+    <div class="kr-intro__copy">
+      <span class="kr-intro__tag">兵庫県版 · 高校受験Q&amp;A</span>
+      <h1 id="kr-intro-title">高校受験の「気になる」を、<span>聞いて解決へ。</span></h1>
+      <p class="kr-intro__lead">志望校選び、内申点、入試日程、学費など。兵庫県の高校受験について、知りたいことを1問から質問できます。</p>
+      <a class="kr-intro__cta" href="#qa-form">質問を入力する <span aria-hidden="true">→</span></a>
+      <p class="kr-intro__sub">初回1問無料 <span aria-hidden="true">・</span> 回答はLINEで受け取れます</p>
+    </div>
+    <div class="kr-intro__media">
+      <img src="https://d2ol7oe51mr4n9.cloudfront.net/user_3Jdcp9OGnmDTLg82gDZcCgcBzci/158a5b10-176b-4336-85fa-bbf504bb587c.png" width="919" height="807" alt="キケルートのご案内。高校受験で気になったことを質問し、回答をLINEで受け取るまでの3ステップ。" fetchpriority="high" decoding="async" onerror="this.onerror=null;this.src='../../assets/routeq-qa-mother-daughter.webp';">
+      <span class="kr-intro__media-caption">質問の流れをひと目で確認</span>
+    </div>
+  </div>
+</section>
+<nav class="kr-process" aria-label="ご利用の流れ">
+  <div><span class="kr-process__num">01</span><strong>質問を入力</strong></div>
+  <span class="kr-process__arrow" aria-hidden="true">→</span>
+  <div><span class="kr-process__num">02</span><strong>内容を確認・送信</strong></div>
+  <span class="kr-process__arrow" aria-hidden="true">→</span>
+  <div><span class="kr-process__num">03</span><strong>回答をLINEで受信</strong></div>
+</nav>
 
   <main class="page">
+    <aside class="kr-aside" aria-label="利用状況とご利用ルール">
     <section class="card usage-card">
       <div class="login-status" id="loginStatus" role="status" aria-live="polite">
         <div class="status-icon">…</div>
@@ -447,7 +641,7 @@
       </div>
     </section>
 
-    <section class="card rules-card" aria-label="ご利用ルール">
+    <section class="card rules-card" aria-label="ご利用ルール" id="qa-rules"><details class="kr-rules-details"><summary>ご利用ルールを確認する<span>質問送信前に必ずご確認ください</span></summary>
       <div class="rule">
         <div class="rule-title">ご利用ルール</div>
         <ul>
@@ -464,10 +658,11 @@
           <button type="button" class="refund-link" onclick="document.getElementById('refundPolicy').showModal()">返金・キャンセルについて</button>
           <button type="button" class="refund-link" onclick="document.getElementById('answerDisclaimer').showModal()">回答内容についての免責</button>
         </div>
-      </div>
+      </div></details>
       </section>
 
-    <section class="card">
+    </aside>
+    <section class="card kr-question-card" id="qa-form">
       <h2 class="form-title">質問を入力してください</h2>
       <p class="form-desc" style="font-weight:400;">気になることを、できるだけ具体的にご入力ください。</p>
 
@@ -599,12 +794,10 @@
         </label>
       </div>
       
-    </section>
-  </main>
-
-  <div class="submit-wrap">
+      <div class="submit-wrap kr-submit-wrap">
     <button class="submit" id="submitBtn" onclick="openConfirm()" disabled>この内容で質問する</button>
-  </div>
+  </div><p class="kr-submit-note">送信前に確認画面が表示されます。</p>
+    </section></main>
 
   <div class="modal-bg" id="districtHelpModal">
     <div class="modal">
