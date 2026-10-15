@@ -1,8 +1,8 @@
-// This legacy Render endpoint is for production fulfilment only.
+// This guard protects legacy Render's live-mode payment fulfilment.
 // Stripe TEST events must never reach the operational GAS ticket ledger.
 export const LIVE_QA_PRODUCTS = Object.freeze({
-  ticket3: Object.freeze({ amount: 1500, grantCount: 3 }),
-  ticket10: Object.freeze({ amount: 3500, grantCount: 10 })
+  ticket3: Object.freeze({ amount: 1000, grantCount: 3 }),
+  ticket10: Object.freeze({ amount: 3000, grantCount: 10 })
 });
 
 const ALLOWED_EVENTS = new Set([
