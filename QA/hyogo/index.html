@@ -41,7 +41,7 @@
       margin-top:17px; background:#fff; color:var(--blue);
       padding:16px; border-radius:17px; font-size:24px; line-height:1.65; font-weight:900;
     }
-    .page { padding:10px 8px 126px; }
+    .page { padding:10px 8px 16px; }
     .card {
       width:100%; background:#fff; border:1px solid var(--border);
       border-radius:20px; padding:22px 17px; margin-bottom:13px;
@@ -180,9 +180,13 @@
     .rule-title { color:var(--blue); font-size:24px; font-weight:900; }
     .rule ul { margin:8px 0 0; padding-left:25px; color:#536273; font-size:20px; line-height:1.85; font-weight:650; }
     .submit-wrap {
-      position:fixed; left:0; right:0; bottom:0; z-index:30;
-      padding:9px 8px calc(9px + env(safe-area-inset-bottom));
-      background:rgba(244,248,252,.97); border-top:1px solid #DFE7F1;
+      position:static;
+      max-width:760px;
+      width:100%;
+      margin:22px auto 24px;
+      padding:0 2px env(safe-area-inset-bottom);
+      background:transparent;
+      border:0;
     }
     .submit {
       width:100%; min-height:82px; border:0; border-radius:17px;
@@ -231,7 +235,7 @@
       .hero h1 { font-size:31px; margin-top:17px; }
       .hero p { font-size:17px; }
       .bubble { font-size:19px; padding:14px; }
-      .page { padding:8px 7px 115px; }
+      .page { padding:8px 7px 16px; }
       .card { padding:18px 14px; }
       .usage-title { font-size:23px; }
       .usage-grid,.ticket-grid { grid-template-columns:1fr; }
@@ -600,11 +604,11 @@
       </div>
       
     </section>
-  </main>
 
-  <div class="submit-wrap">
-    <button class="submit" id="submitBtn" onclick="openConfirm()" disabled>この内容で質問する</button>
-  </div>
+    <div class="submit-wrap">
+      <button class="submit" id="submitBtn" onclick="openConfirm()" disabled>この内容で質問する</button>
+    </div>
+  </main>
 
   <div class="modal-bg" id="districtHelpModal">
     <div class="modal">
