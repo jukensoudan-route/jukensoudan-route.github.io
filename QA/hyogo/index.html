@@ -408,6 +408,23 @@
     /* QA page hero image: preserve full provided image on all screen sizes */
     .hero.image-hero { padding:0; background:#fff; }
     .hero.image-hero img { display:block; width:100%; height:auto; max-width:100%; }
+
+    /* Compact dropdowns: match control height to text without affecting text inputs. */
+    .card select, .school-picker-panel select {
+      box-sizing:border-box;
+      min-height:0;
+      height:auto;
+      padding:10px 38px 10px 14px;
+      line-height:1.45;
+      font-size:18px;
+      font-weight:700;
+    }
+    #category,#theme{font-size:18px}
+    #question{font-size:16px}
+    @media(max-width:600px){
+      .card select,.school-picker-panel select{min-height:0;height:auto;padding:9px 36px 9px 12px;font-size:16px}
+      #question{font-size:15px}
+    }
   </style>
 </head>
 <body><header class="hero image-hero" aria-label="キケルート高校受験Q&A"><img src="qa-hero-person.webp" width="941" height="711" alt="キケルート兵庫県版。高校受験で気になった事をここから質問。" fetchpriority="high" decoding="async"><img src="qa-four-steps.webp" width="2172" height="563" alt="チケット購入、ここで質問、専門家が回答、LINEで受け取る、の4工程。" loading="lazy" decoding="async"></header>
