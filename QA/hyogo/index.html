@@ -77,6 +77,8 @@
     }
     .ticket-button span { display:block; margin-top:3px; font-size:16px; font-weight:700; opacity:.9; }
     .form-title { margin:0; font-size:32px; line-height:1.4; font-weight:900; }
+    .qa-form-heading{box-sizing:border-box;width:100%;padding:14px 18px;border:2px solid var(--blue);border-radius:14px;background:#fff;color:var(--text)}
+    .school-optional-note{font-size:.58em;font-weight:500;vertical-align:baseline}
     .form-desc { margin:10px 0 0; color:var(--sub); font-size:20px; line-height:1.7; font-weight:600; }
     .field { margin-top:27px; }
     .field-label { display:flex; align-items:center; gap:10px; margin-bottom:10px; font-size:27px; font-weight:900; }
@@ -306,7 +308,7 @@
       color:#173b34!important;
     }
     .usage-card .ticket-area{
-      background:#dff7f1!important;
+      background:#fff!important;
       border:2px solid var(--blue)!important;
       color:#173b34!important;
     }
@@ -333,7 +335,7 @@
     }
     .payment-logos{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:12px}
     .pay-label{font-size:14px;font-weight:800;color:#174e90}
-    .pay-mark{display:inline-flex;align-items:center;justify-content:center;min-height:28px;padding:3px 8px;border:1px solid #c9d9ed;border-radius:7px;background:#fff;font-size:13px;font-weight:900;line-height:1;color:#123}
+    .pay-mark{display:inline-flex;align-items:center;justify-content:center;min-height:28px;padding:3px 8px;border:2px solid #000;border-radius:7px;background:#fff;font-size:13px;font-weight:900;line-height:1;color:#123}
     .pay-mark.visa{color:#1434cb;font-style:italic}
     .pay-mark.jcb{color:#0876bd}
     .pay-mark.paypay{gap:4px;padding:2px 7px;font-size:12px;font-weight:800;white-space:nowrap}.paypay-logo{display:block;width:25px;height:25px;object-fit:contain}
@@ -428,7 +430,7 @@
 
       <div class="ticket-area" id="ticketArea">
         <div class="ticket-title">質問回数を追加する</div>
-        <div class="ticket-desc">残り回数が0回になったら、必要な回数券をご購入いただけます。</div>
+        <div class="ticket-desc"><strong>残り回数が0回</strong>になりました。必要な回数券をご購入いただけます。</div>
         <div class="payment-logos" aria-label="クレジットカード、PayPay、Apple Payに対応">
           <span class="pay-label">クレジットカード</span>
           <span class="pay-mark visa" aria-label="Visa">VISA</span>
@@ -472,7 +474,7 @@
       </section>
 
     <section class="card">
-      <h2 class="form-title">質問を入力してください</h2>
+      <h2 class="form-title qa-form-heading">質問を入力してください</h2>
       <p class="form-desc" style="font-weight:400;">気になることを、できるだけ具体的にご入力ください。</p>
 
       <div class="field">
@@ -499,7 +501,7 @@
         <div class="field-label">
           <span class="num">3</span>
           <span class="icon">🏫</span>
-          <span>高校を選択（任意）</span>
+          <span>高校を選択 <small class="school-optional-note">（まずは学区をお選びください：任意）</small></span>
         </div>
 
         <div class="school-type-grid" id="schoolTypeGrid" aria-label="高校の種類を選ぶ"></div>
@@ -516,8 +518,8 @@
             background:transparent;
             color:#267EE6;
             font-family:inherit;
-            font-size:18px;
-            font-weight:800;
+            font-size:27px;
+            font-weight:900;
             text-decoration:underline;
             cursor:pointer;
           "
@@ -579,7 +581,7 @@
             選択肢から選ぶ
           </button>
           <button type="button" id="questionModeManual" onclick="setQuestionMode('manual')">
-            手入力する
+            入力ボタン
           </button>
         </div>
 
@@ -590,7 +592,7 @@
         <textarea id="questionManual" placeholder="聞きたいことを1つに絞って入力してください。"></textarea>
 
         <div class="question-option-help">
-          「相談したい内容」と「質問テーマ」を選ぶと、プルダウンの質問内容が表示されます。自由に聞きたい場合は「手入力する」を選んでください。
+          「相談したい内容」と「質問テーマ」を選ぶと、プルダウンの質問内容が表示されます。自由に聞きたい場合は「入力ボタン」を選んでください。
         </div>
       </div>
 
