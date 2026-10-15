@@ -1,5 +1,6 @@
 import express from "express";
 import Stripe from "stripe";
+import { vetStripeCheckoutForLegacyLive } from "./payment-guard.mjs";
 
 const app = express();
 const port = process.env.PORT || 10000;
@@ -93,42 +94,26 @@ app.post("/stripe/webhook", express.raw({type:"application/json"}), async (req,r
     return res.status(400).send("invalid signature");
   }
 
-  const allowed = new Set([
-    "checkout.session.completed",
-    "checkout.session.async_payment_succeeded"
-  ]);
-
-  if (!allowed.has(event.type)) {
-    return res.status(200).json({received:true, ignored:true});
-  }
-
-  const session = event.data.object;
-  const sessionId = session?.id || "";
-  const metadata = session?.metadata || {};
-  const ticketCode = String(metadata.ticket_code || "").trim();
-  const lineUserId = String(
-    metadata.line_user_id ||
-    session?.client_reference_id ||
-    ""
-  ).trim();
-
-  // Ignore Checkout Sessions that are not ROUTE Q&A purchases.
-  // This Stripe account may also contain unrelated Payment Links.
-  if (!["ticket3", "ticket10"].includes(ticketCode) || !lineUserId) {
-    console.log(JSON.stringify({
-      kind:"stripe_event_ignored_non_route",
+  // Reject TEST or unverified Checkout before any request to operational GAS.
+  // Stripe signature verification has already succeeded above.
+  const gate = vetStripeCheckoutForLegacyLive(event);
+  if (!gate.allowed) {
+    console.warn(JSON.stringify({
+      kind:"stripe_event_ignored_by_safety_gate",
       eventId:event.id,
       type:event.type,
-      sessionId
+      reason:gate.reason
     }));
-
     return res.status(200).json({
       received:true,
       verified:true,
       ignored:true,
-      reason:"not_route_qa"
+      reason:gate.reason
     });
   }
+
+  const session = event.data.object;
+  const sessionId = gate.sessionId;
 
   try {
     await confirmCheckoutInGas(sessionId, event.id);
@@ -165,37 +150,6 @@ app.post("/stripe/webhook", express.raw({type:"application/json"}), async (req,r
   }
 });
 
-async function runGasIdempotencySelfTest() {
-  const sessionId = String(process.env.SELFTEST_SESSION_ID || "").trim();
-  if (!sessionId) return;
-
-  try {
-    const first = await confirmCheckoutInGas(sessionId, "selftest-1");
-    const second = await confirmCheckoutInGas(sessionId, "selftest-2");
-
-    const firstAlready = first.includes('"alreadyGranted":true');
-    const secondAlready = second.includes('"alreadyGranted":true');
-    const firstGrantedFalse = first.includes('"granted":false');
-    const secondGrantedFalse = second.includes('"granted":false');
-
-    console.log(JSON.stringify({
-      kind:"gas_idempotency_selftest",
-      pass:firstAlready && secondAlready && firstGrantedFalse && secondGrantedFalse,
-      firstAlready,
-      secondAlready,
-      firstGrantedFalse,
-      secondGrantedFalse
-    }));
-  } catch (error) {
-    console.error(JSON.stringify({
-      kind:"gas_idempotency_selftest",
-      pass:false,
-      message:error?.message || String(error)
-    }));
-  }
-}
-
 app.listen(port, () => {
   console.log("listening", port);
-  runGasIdempotencySelfTest();
 });
