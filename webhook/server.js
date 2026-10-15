@@ -1,6 +1,7 @@
 import express from "express";
 import Stripe from "stripe";
 import { vetStripeCheckoutForLegacyLive } from "./payment-guard.mjs";
+import { verifyGasConfirmationResponse } from "./gas-confirmation.mjs";
 
 const app = express();
 const port = process.env.PORT || 10000;
@@ -42,38 +43,11 @@ async function confirmCheckoutInGas(sessionId, eventId) {
     throw new Error("GAS HTTP " + response.status);
   }
 
-  // GAS HtmlService may return the payload with JavaScript escapes and/or
-  // HTML entities. Normalize both forms before evaluating the ROUTE result.
-  const decoded = text
-    .replace(/\\x([0-9a-fA-F]{2})/g, (_, hex) =>
-      String.fromCharCode(parseInt(hex, 16))
-    )
-    .replace(/\\u([0-9a-fA-F]{4})/g, (_, hex) =>
-      String.fromCharCode(parseInt(hex, 16))
-    )
-    // Apps Script HtmlService can escape quotes through multiple layers.
-    // Remove only backslashes that directly precede a quote; other
-    // backslashes remain untouched.
-    .replace(/\\+(?=["'])/g, "")
-    .replace(/&quot;|&#34;|&#x22;/gi, '"')
-    .replace(/&#39;|&#x27;|&apos;/gi, "'")
-    .replace(/&amp;/gi, "&")
-    .replace(/&lt;/gi, "<")
-    .replace(/&gt;/gi, ">");
+  // A 200 status from GAS alone is not proof of paid + granted state.
+  // Reject malformed HTML, mismatched request IDs and ambiguous grants so
+  // Stripe can safely retry rather than silently losing a paid order.
+  return verifyGasConfirmationResponse(text, eventId);
 
-  // HtmlService can preserve the JSON as an object literal rather than a
-  // quoted JSON string, so accept both quoted-key and object-literal forms.
-  const ok =
-    /["']?ok["']?\s*:\s*true\b/.test(decoded);
-
-  if (!ok) {
-    const match =
-      decoded.match(/["']?message["']?\s*:\s*["']([^"'<>]*)["']/);
-    const reason = match ? match[1] : "unknown GAS error";
-    throw new Error("GAS confirmCheckout failed: " + reason);
-  }
-
-  return decoded;
 }
 
 app.post("/stripe/webhook", express.raw({type:"application/json"}), async (req,res) => {
