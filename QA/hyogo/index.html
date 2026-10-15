@@ -77,7 +77,7 @@
     }
     .ticket-button span { display:block; margin-top:3px; font-size:16px; font-weight:700; opacity:.9; }
     .form-title { margin:0; font-size:32px; line-height:1.4; font-weight:900; }
-    .qa-form-heading{box-sizing:border-box;width:100%;padding:14px 18px;border:2px solid var(--blue);border-radius:14px;background:#fff;color:var(--text)}
+    .qa-form-heading{box-sizing:border-box;width:100%;padding:18px 22px;border:3px solid var(--blue-dark);border-radius:16px;background:var(--blue);color:#fff;text-align:center;box-shadow:0 4px 12px rgba(38,126,230,.15)}
     .school-optional-note{font-size:.58em;font-weight:500;vertical-align:baseline}
     .form-desc { margin:10px 0 0; color:var(--sub); font-size:20px; line-height:1.7; font-weight:600; }
     .field { margin-top:27px; }
@@ -107,11 +107,12 @@
 .question-mode-btn.active { background:#267EE6; color:#fff; border-color:#267EE6; }
 .question-option-btn.selected { border-color:#267EE6; background:#EEF5FF; color:#1768C9; }
     .school-type-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:9px; }
-    .school-type-btn { min-height:58px; padding:9px 8px; border:2px solid #D8E4F2; border-radius:14px; background:#fff; color:#344054; font:800 15px/1.35 inherit; cursor:pointer; }
+    .school-type-btn { min-height:58px; padding:9px 8px; border:2px solid #D8E4F2; border-radius:14px; background:#fff; color:#344054; font-family:inherit; font-size:19px; font-weight:900; line-height:1.35; cursor:pointer; }
     .school-type-btn.active { border-color:var(--blue); background:#EEF5FF; color:#1768C9; }
     .school-picker-panel { margin-top:12px; padding:14px; border:1px solid #D8E7FB; border-radius:16px; background:#F7FBFF; }
     .school-picker-panel[hidden],.compare-school-row[hidden] { display:none; }
     .school-picker-title { margin:0 0 8px; color:#344054; font-size:16px; font-weight:900; }
+    #schoolPickerTitle{display:none}
     .school-picker-panel select { min-height:60px; font-size:18px; }
     .school-count { margin:8px 2px 0; color:#667085; font-size:14px; font-weight:700; }
     .compare-school-row { margin-top:12px; padding-top:12px; border-top:1px solid #D8E7FB; }
@@ -229,7 +230,7 @@
     iframe.backend-frame { position:absolute; width:1px; height:1px; left:-9999px; top:-9999px; border:0; }
     @media (max-width:600px) {
       .school-type-grid { grid-template-columns:repeat(2,minmax(0,1fr)); }
-      .school-type-btn { min-height:54px; font-size:14px; }
+      .school-type-btn { min-height:54px; font-size:17px; font-weight:900; }
       .hero { padding:18px 14px 20px; }
       .brand-logo { width:46px; height:46px; font-size:24px; }
       .brand-title { font-size:23px; }
@@ -541,7 +542,7 @@
         </div>
 
         <div id="schoolPickerPanel" class="school-picker-panel" hidden>
-          <p class="school-picker-title" id="schoolPickerTitle">高校を選択してください</p>
+          <p class="school-picker-title" id="schoolPickerTitle" hidden aria-hidden="true">高校を選択してください</p>
           <select id="school" onchange="handleSchoolSelection(1)" disabled>
             <option value="">高校の種類を選択してください</option>
           </select>
