@@ -405,6 +405,13 @@
     }
 
   
+    /* LINE login status icons: green circle and white symbol (success and loading only). */
+    .usage-card #loginStatus .status-icon.is-authenticated,
+    .usage-card #loginStatus .status-icon.is-pending {
+      background:#06C755!important;
+      color:#fff!important;
+    }
+
     /* QA page hero image: preserve full provided image on all screen sizes */
     .hero.image-hero { padding:0; background:#fff; }
     .hero.image-hero img { display:block; width:100%; height:auto; max-width:100%; }
@@ -432,7 +439,7 @@
   <main class="page">
     <section class="card usage-card">
       <div class="login-status" id="loginStatus" role="status" aria-live="polite">
-        <div class="status-icon">…</div>
+        <div class="status-icon is-pending">…</div>
         <div class="status-text">LINE認証を確認しています</div>
       </div>
 
@@ -2392,7 +2399,7 @@
           authenticated = true;
           timings.authReadyMs = Math.round(performance.now() - startedAt);
           document.getElementById("loginStatus").innerHTML =
-            '<div class="status-icon">✓</div><div class="status-text">LINE認証済み</div>';
+            '<div class="status-icon is-authenticated">✓</div><div class="status-text">LINE認証済み</div>';
           document.getElementById("usageStatus").textContent = "最新の利用状況を確認しています。";
 
           // The LINE profile request can run alongside GAS; GAS requests stay sequential
@@ -2401,7 +2408,7 @@
             if (startupFailed) return;
             lineProfile = profile;
             document.getElementById("loginStatus").innerHTML =
-              '<div class="status-icon">✓</div><div class="status-text">LINE認証済み　' +
+              '<div class="status-icon is-authenticated">✓</div><div class="status-text">LINE認証済み　' +
               escapeHtml(profile.displayName || "") + '</div>';
             const cached = getCachedUsage(profile.userId);
             if (cached) {
