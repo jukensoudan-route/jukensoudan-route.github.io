@@ -1736,7 +1736,9 @@
       let ticketLabel = result.ticketLabel || "無料お試し";
       ticketLabel = String(ticketLabel)
         .replace(/1,500円\s*[／/]\s*3回/g, "1,000円／3回")
-        .replace(/3,500円\s*[／/]\s*10回/g, "3,000円／10回");
+        .replace(/3,500円\s*[／/]\s*10回/g, "3,000円／10回")
+        .replace(/1,000円\s*[／/]\s*3回/g, "3回券　1,000円")
+        .replace(/3,000円\s*[／/]\s*10回/g, "10回券　3,000円");
       document.getElementById("planUsage").textContent = ticketLabel;
       document.getElementById("remainingUsage").textContent = remaining + "回";
       document.getElementById("usageStatus").textContent = fromCache
