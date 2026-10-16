@@ -1,0 +1,795 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
+  <title>TEST｜兵庫県高校受験Q&A 表示確認</title>
+  <meta name="robots" content="noindex,nofollow">
+  
+  <link rel="preconnect" href="https://static.line-scdn.net">
+  
+  <style>
+    #loadingText {
+      white-space: pre-line;
+    }
+
+    :root {
+      --blue:#267EE6; --blue-dark:#1768C9; --blue-light:#EDF5FF;
+      --blue-pale:#F7FBFF; --bg:#F3F7FC; --text:#172231;
+      --sub:#637083; --border:#D7E3F1; --danger:#D92D20;
+    }
+    * { box-sizing:border-box; }
+    html,body { margin:0; padding:0; width:100%; }
+    body {
+      background:var(--bg); color:var(--text);
+      font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans JP",sans-serif;
+    }
+    .hero { background:linear-gradient(135deg,var(--blue),#176ED2); color:#fff; padding:22px 18px 24px; }
+    .brand { display:flex; align-items:center; gap:12px; }
+    .brand-logo {
+      width:150px; height:auto; max-width:42vw; border-radius:0; background:transparent;
+      display:block; object-fit:contain;
+    }
+    .brand-title { font-size:29px; font-weight:900; }
+    .brand-sub { margin-top:2px; font-size:17px; font-weight:650; opacity:.95; }
+    .hero h1 { margin:20px 0 0; font-size:39px; line-height:1.38; font-weight:900; }
+    .hero p { margin:12px 0 0; font-size:21px; line-height:1.7; font-weight:600; }
+    .bubble {
+      margin-top:17px; background:#fff; color:var(--blue);
+      padding:16px; border-radius:17px; font-size:24px; line-height:1.65; font-weight:900;
+    }
+    .page { padding:10px 8px 16px; }
+    .card {
+      width:100%; background:#fff; border:1px solid var(--border);
+      border-radius:20px; padding:22px 17px; margin-bottom:13px;
+    }
+    .login-status {
+      display:flex; align-items:center; gap:11px; padding:14px;
+      border-radius:15px; background:#fff; margin-bottom:19px;
+    }
+    .status-icon {
+      width:43px; height:43px; flex-shrink:0; border-radius:50%;
+      background:#fff; color:var(--blue); display:flex; align-items:center;
+      justify-content:center; font-size:22px; font-weight:900;
+    }
+    .status-text { font-size:20px; font-weight:800; line-height:1.5; }
+    .usage-title { font-size:27px; font-weight:900; margin-bottom:14px; }
+    .usage-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+    .usage-box { text-align:center; padding:17px 10px; border-radius:16px; background:#fff; }
+    .usage-label { font-size:18px; color:var(--sub); font-weight:750; }
+    .usage-value { margin-top:4px; font-size:36px; color:var(--blue); font-weight:900; }
+    .usage-value.plan { font-size:23px; line-height:1.45; }
+    .usage-note { margin-top:13px; text-align:center; color:var(--sub); font-size:18px; line-height:1.65; font-weight:650; }
+    .ticket-area {
+      display:none; margin-top:20px; padding:17px; border:1px solid #D8E7FB;
+      border-radius:17px; background:var(--blue-pale);
+    }
+    .ticket-title { font-size:24px; font-weight:900; color:var(--blue); }
+    .ticket-desc { margin-top:6px; color:var(--sub); font-size:18px; line-height:1.6; }
+    .ticket-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:14px; }
+    .ticket-button {
+      min-height:78px; border:0; border-radius:16px;
+      background:linear-gradient(135deg,var(--blue),var(--blue-dark));
+      color:#fff; font-family:inherit; font-size:21px; font-weight:900; cursor:pointer;
+    }
+    .ticket-button span { display:block; margin-top:3px; font-size:16px; font-weight:700; opacity:.9; }
+    .form-title { margin:0; font-size:32px; line-height:1.4; font-weight:900; }
+    .qa-form-heading{box-sizing:border-box;width:100%;padding:18px 22px;border:3px solid var(--blue-dark);border-radius:16px;background:var(--blue);color:#fff;text-align:center;box-shadow:0 4px 12px rgba(38,126,230,.15)}
+    .school-optional-note{font-size:.58em;font-weight:500;vertical-align:baseline}
+    #category,#theme{font-size:18px}
+    .form-desc { margin:10px 0 0; color:var(--sub); font-size:20px; line-height:1.7; font-weight:600; }
+    .field { margin-top:27px; }
+    .field-label { display:flex; align-items:center; gap:10px; margin-bottom:10px; font-size:27px; font-weight:900; }
+    .card:not(.usage-card) .field-label > span:not(.num):not(.icon):not(.manual-input-hint){color:#ffe23f}
+    .num,.icon {
+      flex-shrink:0; display:flex; align-items:center; justify-content:center;
+    }
+    .num {
+      width:42px; height:42px; border-radius:50%; background:var(--blue-light);
+      color:var(--blue); font-size:21px; font-weight:900;
+    }
+    .icon {
+      width:41px; height:41px; border-radius:11px; background:#F7FBFF;
+      border:1px solid #E1EBF7; font-size:21px;
+    }
+    select,input,textarea {
+      display:block; width:100%; border:2px solid var(--border); border-radius:16px;
+      background:#fff; color:var(--text); font-family:inherit; font-size:25px;
+      font-weight:700; outline:none;
+    }
+    select,input { min-height:78px; padding:0 18px; }
+    textarea { min-height:230px; padding:18px; line-height:1.65; resize:vertical; }
+    select:focus,input:focus,textarea:focus {
+      border-color:var(--blue); box-shadow:0 0 0 4px rgba(38,126,230,.10);
+    }
+    ::placeholder { color:#A1AAB8; font-size:22px; }
+.question-mode-btn.active { background:#267EE6; color:#fff; border-color:#267EE6; }
+.question-option-btn.selected { border-color:#267EE6; background:#EEF5FF; color:#1768C9; }
+    .school-type-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:9px; }
+    .school-type-btn { min-height:58px; padding:9px 8px; border:2px solid #D8E4F2; border-radius:14px; background:#fff; color:#344054; font-family:inherit; font-size:19px; font-weight:900; line-height:1.35; cursor:pointer; }
+    .school-type-btn.active { border-color:var(--blue); background:#EEF5FF; color:#1768C9; }
+    .school-picker-panel { margin-top:12px; padding:14px; border:1px solid #D8E7FB; border-radius:16px; background:#F7FBFF; }
+    .school-picker-panel[hidden],.compare-school-row[hidden] { display:none; }
+    .school-picker-title { margin:0 0 8px; color:#344054; font-size:16px; font-weight:900; }
+    #schoolPickerTitle{display:none}
+    .school-picker-panel select { min-height:60px; font-size:18px; }
+    .school-count { margin:8px 2px 0; color:#667085; font-size:14px; font-weight:700; }
+    .compare-school-row { margin-top:12px; padding-top:12px; border-top:1px solid #D8E7FB; }
+    .school-selection-summary { margin-top:10px; color:#1768C9; font-size:15px; font-weight:850; line-height:1.55; }
+    .undecided-note { margin-top:12px; padding:12px; border-radius:12px; background:#EEF9F4; color:#08795D; font-size:15px; font-weight:750; line-height:1.6; }
+    .question-option-help,.manual-question-note { margin-top:9px; color:#667085; font-size:14px; line-height:1.55; }
+
+
+    .question-input-mode {
+      display:flex;
+      gap:10px;
+      margin:10px 0 12px;
+      flex-wrap:wrap;
+    }
+    .question-input-mode button {
+      flex:1 1 160px;
+      border:2px solid #FFFFFF;
+      background:#267EE6;
+      color:#FFFFFF;
+      border-radius:12px;
+      padding:11px 12px;
+      font-size:15px;
+      font-weight:800;
+      cursor:pointer;
+    }
+    .question-input-mode button.active {
+      background:#FFFFFF;
+      color:#267EE6;
+      border-color:#FFFFFF;
+    }
+    #questionManual {
+      display:none;
+      margin-top:0;
+    }
+
+    .question-guide {
+      margin-top:13px;
+      padding:16px;
+      border:1px solid #D8E7FB;
+      border-radius:15px;
+      background:#F7FBFF;
+      color:#475467;
+      font-size:17px;
+      line-height:1.7;
+      font-weight:650;
+    }
+    .question-guide-title {
+      color:var(--blue);
+      font-size:19px;
+      font-weight:900;
+      margin-bottom:7px;
+    }
+    .question-guide-ok {
+      color:#1768C9;
+      font-weight:900;
+    }
+    .question-guide-ng {
+      color:#B42318;
+      font-weight:900;
+    }
+    .question-guide-example {
+      margin-top:5px;
+    }
+    .rule {
+      margin-top:26px; padding:17px; border:1px solid #DFEAFA;
+      border-radius:16px; background:var(--blue-pale);
+    }
+    .rule-title { color:var(--blue); font-size:24px; font-weight:900; }
+    .rule ul { margin:8px 0 0; padding-left:25px; color:#536273; font-size:20px; line-height:1.85; font-weight:400; }
+    .submit-wrap {
+      position:static;
+      max-width:760px;
+      width:100%;
+      margin:22px auto 24px;
+      padding:0 2px env(safe-area-inset-bottom);
+      background:transparent;
+      border:0;
+    }
+    .submit {
+      width:100%; min-height:82px; border:0; border-radius:17px;
+      background:linear-gradient(135deg,var(--blue),var(--blue-dark));
+      color:#fff; font-family:inherit; font-size:27px; font-weight:900; cursor:pointer;
+    }
+    .submit:disabled { opacity:.42; cursor:not-allowed; }
+    .modal-bg {
+      display:none; position:fixed; inset:0; z-index:100; align-items:center;
+      justify-content:center; padding:20px; background:rgba(15,23,42,.62);
+    }
+    .modal-bg.show { display:flex; }
+    .modal {
+      width:100%; max-width:650px; max-height:90vh; overflow-y:auto;
+      border-radius:26px; background:#fff; padding:27px 20px;
+    }
+    .modal-icon {
+      width:78px; height:78px; margin:0 auto 17px; border-radius:50%;
+      background:var(--blue-light); color:var(--blue); display:flex; align-items:center;
+      justify-content:center; font-size:39px; font-weight:900;
+    }
+    .modal-icon.error { background:#FFF0F0; color:var(--danger); }
+    .modal-title { text-align:center; font-size:31px; font-weight:900; line-height:1.4; }
+    .modal-text { margin-top:13px; color:var(--sub); text-align:center; font-size:21px; line-height:1.7; font-weight:650; }
+    .confirm-box { margin-top:18px; padding:17px; border-radius:15px; background:#F6FAFF; font-size:20px; line-height:1.75; }
+    .confirm-row { margin-bottom:13px; }
+    .confirm-row:last-child { margin-bottom:0; }
+    .confirm-label { color:var(--blue); font-weight:900; }
+    .modal-buttons { display:grid; grid-template-columns:1fr 1.2fr; gap:10px; margin-top:22px; }
+    .modal-button { min-height:70px; border-radius:15px; font-family:inherit; font-size:22px; font-weight:900; cursor:pointer; }
+    .secondary { background:#fff; border:2px solid var(--border); color:#475467; }
+    .primary { border:0; background:var(--blue); color:#fff; }
+    .spinner {
+      width:62px; height:62px; margin:0 auto 19px; border:6px solid #E5EDF7;
+      border-top-color:var(--blue); border-radius:50%; animation:spin .8s linear infinite;
+    }
+    @keyframes spin { to { transform:rotate(360deg); } }
+    iframe.backend-frame { position:absolute; width:1px; height:1px; left:-9999px; top:-9999px; border:0; }
+    @media (max-width:600px) {
+      .school-type-grid { grid-template-columns:repeat(2,minmax(0,1fr)); }
+      .school-type-btn { min-height:54px; font-size:17px; font-weight:900; }
+      .hero { padding:18px 14px 20px; }
+      .brand-logo { width:46px; height:46px; font-size:24px; }
+      .brand-title { font-size:23px; }
+      .brand-sub { font-size:14px; }
+      .hero h1 { font-size:31px; margin-top:17px; }
+      .hero p { font-size:17px; }
+      .bubble { font-size:19px; padding:14px; }
+      .page { padding:8px 7px 16px; }
+      .card { padding:18px 14px; }
+      .usage-title { font-size:23px; }
+      .usage-grid,.ticket-grid { grid-template-columns:1fr; }
+      .usage-value { font-size:33px; }
+      .form-title { font-size:27px; }
+      .form-desc { font-size:17px; }
+      .field-label { font-size:22px; }
+      .num,.icon { width:37px; height:37px; font-size:18px; }
+      select,input,textarea { font-size:20px; }
+      #category,#theme{font-size:16px}
+      select,input { min-height:66px; }
+      textarea { min-height:190px; }
+      .rule ul { font-size:17px; }
+      .submit { min-height:72px; font-size:23px; }
+    }
+
+    /* White/blue section background swap; form controls keep their original colors. */
+    .hero { background:var(--blue); color:#fff; }
+    .brand-logo,.bubble { background:var(--blue); color:#fff; }
+    .card { background:var(--blue); color:#fff; border-color:var(--blue); }
+    .card > .usage-note,.card > .form-desc,
+    .card .question-option-help,.card .manual-question-note { color:#fff; }
+    .card .field > div[style],.card .field > button[style] { color:#fff !important; }
+    .login-status,.usage-box,.ticket-area,.rule { color:var(--text); }
+      #questionModeDropdown { border:2px solid #fff; }
+      #questionModeManual.active{border:2px solid #fff}
+    .question-heading{flex-wrap:wrap}
+    .manual-input-hint{color:#fff;font-size:16px;line-height:1.6;font-weight:800;flex:1 1 240px}
+    .card.usage-card{background:#dff7f1;border-color:#bde8dd;color:#123c34}
+    .usage-card > .usage-note{color:#123c34}
+    .usage-card .login-status,.usage-card .usage-box{background:#22b89a;color:#123c34}
+    .usage-card .status-icon,.usage-card .usage-value{color:#087b67}
+      .rule{background:#f2f2f2;border-color:#ddd}
+    .brand-logo{width:64px;height:64px;flex:0 0 64px;object-fit:contain;background:#fff;border-radius:0}
+    @media(max-width:600px){.brand-logo{width:54px;height:54px;flex-basis:54px}}
+      .usage-card .usage-label,.usage-card .usage-value{color:#123c34}
+      .card > .rule{margin-top:0;margin-bottom:24px}
+  
+    .refund-link{display:block;margin:14px 0 0;padding:6px 0;border:0;background:transparent;color:#1768c9;text-decoration:underline;text-underline-offset:3px;font-family:inherit;font-weight:700;font-size:17px;line-height:1.5;cursor:pointer}
+    #refundPolicy{width:calc(100% - 24px);max-width:540px;max-height:85vh;margin:auto;padding:20px;border:0;border-radius:16px;background:#fff;color:#172231;overflow-y:auto;font-size:15px;line-height:1.65}
+    #refundPolicy::backdrop{background:rgba(15,23,42,.62)}
+    #refundPolicy h2{margin:0 0 16px;padding-right:44px;font-size:20px;line-height:1.45}
+    #refundPolicy h3{margin:14px 0 4px;font-size:16px}
+    #refundPolicy p{margin:0}
+    #refundPolicy ul{margin:8px 0 0;padding-left:22px}
+    #refundPolicy .refund-close{float:right;min-width:44px;min-height:36px;padding:4px 8px;border:1px solid #d7e3f1;border-radius:8px;background:#fff;color:#1768c9;cursor:pointer;font-size:14px}
+      .card.rules-card{background:#f2f2f2;border-color:#ddd}
+    .rules-card > .rule{margin:0;padding:0;border:0}
+  
+    /* Soft mint panels within the usage card. */
+    .card.usage-card{background:#e4f3ed;border-color:#c5e0d5}
+    .usage-card .login-status{background:#f3faf6;border:1px solid #c9e3d6;color:#244b40}
+    .usage-card .usage-box{background:linear-gradient(145deg,#ffffff,#edf7f2);border:1px solid #c9e3d6;color:#244b40}
+    .usage-card .usage-label{color:#587369}
+    .usage-card .usage-value{color:#14755d}
+    .usage-card .status-icon{background:#d8eee3;color:#14755d}
+    .usage-card > .usage-note{color:#49685d}
+  
+    /* ROUTEQ Q&A design and policy */
+    .card.usage-card{
+      background:#eaf4ff!important;
+      border:3px solid var(--blue)!important;
+      color:#173b34;
+    }
+    .usage-card .login-status,
+    .usage-card .usage-box{
+      background:#fff!important;
+      border:2px solid var(--blue)!important;
+      color:#173b34!important;
+    }
+    .usage-card .ticket-area{
+      background:#fff!important;
+      border:2px solid var(--blue)!important;
+      color:#173b34!important;
+    }
+    .usage-card .usage-label,
+    .usage-card .usage-value,
+    .usage-card .status-icon,
+    .usage-card > .usage-note{color:#174e90!important}
+    .card.rules-card{
+      background:#fff!important;
+      border:3px solid var(--blue)!important;
+      color:var(--text)!important;
+    }
+    .rules-card > .rule{background:#fff!important;color:var(--text)!important}
+    .submit{
+      background:#ffe23f!important;
+      color:#174e90!important;
+      border:3px solid var(--blue)!important;
+      box-shadow:none!important;
+    }
+    .ticket-button{
+      background:var(--blue);
+      border:2px solid var(--blue-dark);
+      box-shadow:none;
+    }
+    .payment-logos{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:12px}
+    .pay-label{font-size:14px;font-weight:800;color:#174e90}
+    .pay-mark{display:inline-flex;align-items:center;justify-content:center;min-height:28px;padding:3px 8px;border:2px solid #000;border-radius:7px;background:#fff;font-size:13px;font-weight:900;line-height:1;color:#123}
+    .pay-mark.visa{color:#1434cb;font-style:italic}
+    .pay-mark.jcb{color:#0876bd}
+    .pay-mark.paypay{gap:4px;padding:2px 7px;font-size:12px;font-weight:800;white-space:nowrap}.paypay-logo{display:block;width:25px;height:25px;object-fit:contain}
+    .applepay-logo{display:block;width:70px;height:29px;object-fit:contain}
+    .pay-mark.mastercard{gap:0;padding-inline:6px}
+    .pay-mark.mastercard i{display:block;width:17px;height:17px;border-radius:50%;background:#eb001b}
+    .pay-mark.mastercard i+ i{margin-left:-5px;background:#f79e1b;opacity:.9}
+    .policy-links{display:flex;flex-wrap:wrap;gap:4px 18px;margin-top:10px}
+    .policy-links .refund-link{margin:0}
+    #answerDisclaimer{width:calc(100% - 24px);max-width:620px;max-height:88vh;margin:auto;padding:22px;border:0;border-radius:16px;background:#fff;color:#172231;overflow-y:auto;font-size:15px;line-height:1.72}
+    #answerDisclaimer::backdrop{background:rgba(15,23,42,.62)}
+    #answerDisclaimer h2{margin:0 0 16px;padding-right:52px;font-size:22px;line-height:1.45;color:#174e90}
+    #answerDisclaimer h3{margin:22px 0 7px;font-size:18px;color:#174e90}
+    #answerDisclaimer p{margin:0 0 12px}
+    #answerDisclaimer ul,#answerDisclaimer ol{margin:8px 0 14px;padding-left:25px}
+    #answerDisclaimer blockquote{margin:12px 0;padding:12px 14px;border-left:4px solid var(--blue);background:#edf5ff}
+    #answerDisclaimer .disclaimer-emphasis{padding:12px;border:2px solid var(--blue);border-radius:10px;background:#fff8c9;text-align:center}
+    #answerDisclaimer .refund-close{float:right;min-width:48px;min-height:38px;padding:5px 10px;border:2px solid var(--blue);border-radius:8px;background:#fff;color:#1768c9;cursor:pointer;font-size:14px;font-weight:800}
+    @media(max-width:600px){
+      .payment-logos{gap:6px}
+      .pay-label{width:100%}
+      #answerDisclaimer{padding:18px 16px}
+    }
+
+  
+    .agreement-box{
+      margin-top:24px;
+      padding:17px;
+      border:3px solid var(--blue);
+      border-radius:16px;
+      background:#fff;
+      color:var(--text);
+    }
+    .agreement-box-title{margin:0 0 8px;color:#174e90;font-size:20px;font-weight:900}
+    .agreement-box p{margin:0 0 12px;font-size:15px;line-height:1.65;color:#536273}
+    .consent-check{
+      display:flex;
+      align-items:flex-start;
+      gap:11px;
+      padding:13px;
+      border:2px solid var(--blue);
+      border-radius:12px;
+      background:#fff8c9;
+      color:#172231;
+      font-size:17px;
+      line-height:1.55;
+      font-weight:900;
+      cursor:pointer;
+    }
+    .consent-check input{
+      flex:0 0 25px;
+      width:25px;
+      min-height:25px;
+      margin:1px 0 0;
+      padding:0;
+      accent-color:var(--blue);
+    }
+    .confirm-consent{margin-top:16px}
+    #confirmSendBtn:disabled{opacity:.42;cursor:not-allowed}
+    @media(max-width:600px){
+      .agreement-box{padding:14px}
+      .consent-check{font-size:15px}
+    }
+
+  
+    /* LINE login status icons: green circle and white symbol (success and loading only). */
+    .usage-card #loginStatus .status-icon.is-authenticated,
+    .usage-card #loginStatus .status-icon.is-pending {
+      background:#06C755!important;
+      color:#fff!important;
+    }
+
+    /* QA page hero image: preserve full provided image on all screen sizes */
+    .hero.image-hero { padding:0; background:#fff; }
+    .hero.image-hero img { display:block; width:100%; height:auto; max-width:100%; }
+
+    /* Compact dropdowns: match control height to text without affecting text inputs. */
+    .card select, .school-picker-panel select {
+      box-sizing:border-box;
+      min-height:0;
+      height:auto;
+      padding:10px 38px 10px 14px;
+      line-height:1.45;
+      font-size:18px;
+      font-weight:700;
+    }
+    #category,#theme{font-size:18px}
+    #question{font-size:16px}
+    @media(max-width:600px){
+      .card select,.school-picker-panel select{min-height:0;height:auto;padding:9px 36px 9px 12px;font-size:16px}
+      #question{font-size:15px}
+    }
+  </style>
+</head>
+<body>
+<div role="status" style="position:sticky;top:0;z-index:2147483647;padding:13px;background:#fff0c7;border-bottom:2px solid #d79619;text-align:center;color:#623e00;font:800 16px/1.6 sans-serif;">TEST 表示プレビュー｜認証・質問送信・購入は無効　<a href="/TEST/">TESTトップへ</a></div><header class="hero image-hero" aria-label="キケルート高校受験Q&A"><img src="/QA/hyogo/qalogo.png" width="1443" height="1090" alt="キケルート兵庫県版。高校受験で気になった事をここから質問。" fetchpriority="high" decoding="async"><img src="/QA/hyogo/qa-four-steps.webp" width="2172" height="563" alt="チケット購入、ここで質問、専門家が回答、LINEで受け取る、の4工程。" loading="lazy" decoding="async"></header>
+
+  <main class="page">
+    <section class="card usage-card">
+      <div class="login-status" id="loginStatus" role="status" aria-live="polite">
+        <div class="status-icon is-pending">…</div>
+        <div class="status-text">TEST：認証は無効です</div>
+      </div>
+
+      <div class="usage-title">Q&A利用状況</div>
+      <div class="usage-grid">
+        <div class="usage-box">
+          <div class="usage-label">利用プラン</div>
+          <div class="usage-value plan" id="planUsage">-</div>
+        </div>
+        <div class="usage-box">
+          <div class="usage-label">残り質問回数</div>
+          <div class="usage-value" id="remainingUsage">-</div>
+        </div>
+      </div>
+      <div class="usage-note"><span id="usageStatus" role="status" aria-live="polite">TEST表示のみ。顧客データには接続しません。</span><br>質問を1回送信するごとに、残り回数を1回使用します。</div>
+
+      <div class="ticket-area" id="ticketArea">
+        <div class="ticket-title">質問回数を追加する</div>
+        <div class="ticket-desc"><strong style="color:#D92D20;">残り回数が0回</strong>になりました。必要な回数券をご購入いただけます。</div>
+        <div class="payment-logos" aria-label="クレジットカード、PayPay、Apple Payに対応">
+          <span class="pay-label">クレジットカード</span>
+          <span class="pay-mark visa" aria-label="Visa">VISA</span>
+          <span class="pay-mark mastercard" aria-label="Mastercard"><i></i><i></i></span>
+          <span class="pay-mark jcb" aria-label="JCB">JCB</span>
+          <span class="pay-label">電子決済</span>
+          <span class="pay-mark paypay" aria-label="PayPay"><img class="paypay-logo" src="/assets/paypay-logo.svg" alt="" aria-hidden="true"><span>PayPay</span></span>
+          <img class="applepay-logo" src="/assets/apple-pay-logo.svg" alt="Apple Pay">
+        </div>
+        <div class="ticket-grid">
+          <button type="button" class="ticket-button" disabled>
+            3回券　1,000円
+            <span>1回あたり約333円</span>
+          </button>
+          <button type="button" class="ticket-button" disabled>
+            10回券　3,000円
+            <span>1回あたり300円</span>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <section class="card rules-card" aria-label="ご利用ルール">
+      <div class="rule">
+        <div class="rule-title">ご利用ルール</div>
+        <ul>
+          <li>無料お試しはお一人様1回限りです。</li>
+          <li>質問1回につき残り回数を1回使用します</li>
+          <li>1回につき質問できる学校は1校までです</li>
+          <li>1回につき質問テーマ1つまでです</li>
+          <li>通常Q&Aでは、学校・入試・費用・実績などの客観情報をお答えします</li>
+          <li>各教科の具体的な勉強方法や問題の解き方は対象外です</li>
+          <li>送信前に質問内容を確認し、対象外・不明確・不適切な内容は質問回数を使用せず差し戻します。</li>
+          <li>送信完了前は、確認画面で戻って質問を修正したり、送信を取りやめたりできます。</li>
+        </ul>
+        <div class="policy-links">
+          <button type="button" class="refund-link" disabled>返金・キャンセルについて</button>
+          <button type="button" class="refund-link" disabled>回答内容についての免責</button>
+        </div>
+      </div>
+      </section>
+
+    <section class="card">
+      <h2 class="form-title qa-form-heading">✅️質問を入力してください</h2>
+
+      <div class="field">
+        <div class="field-label"><span class="num">1</span><span class="icon">📂</span><span>相談したい内容</span></div>
+        <select id="category" disabled>
+          <option value="">内容を選択してください</option>
+          <option value="school">志望校・高校選び</option>
+          <option value="score">成績・入試得点</option>
+          <option value="exam">入試制度・受験方法</option>
+          <option value="qualification">英検・資格・優遇</option>
+          <option value="university">大学進学・進路実績</option>
+          <option value="cost">学費・費用</option>
+          <option value="schedule">受験スケジュール・進路決定</option>
+          <option value="confirm">学校・塾で確認すべき情報</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <div class="field-label"><span class="num">2</span><span class="icon">📝</span><span>質問テーマ</span></div>
+        <select id="theme" disabled><option value="">①を先に選んでから選択してください</option></select>
+      </div>
+
+      <div class="field">
+        <div class="field-label">
+          <span class="num">3</span>
+          <span class="icon">🏫</span>
+          <span>高校を選択 <small class="school-optional-note">（まずは学区をお選びください：任意）</small></span>
+        </div>
+
+        <div class="school-type-grid" id="schoolTypeGrid" aria-label="高校の種類を選ぶ"></div>
+        <input type="hidden" id="district" value="" disabled>
+
+        <button
+          id="districtHelpButton"
+          type="button"
+          style="
+            margin-top:10px;
+            padding:0;
+            border:0;
+            background:transparent;
+            color:#267EE6;
+            font-family:inherit;
+            font-size:16px;
+            font-weight:700;
+            text-decoration:underline;
+            cursor:pointer;
+          "
+         disabled>
+          学区がわからない方はこちら
+        </button>
+
+        <div
+          id="districtScopeNote"
+          style="
+            margin-top:9px;
+            color:#267EE6;
+            font-size:16px;
+            line-height:1.55;
+            font-weight:400;
+          "
+        >
+          ※学区を選択した場合、候補校・比較・おすすめ・強豪校など、学校を挙げる回答は原則その学区内を対象にします。
+        </div>
+
+        <div id="schoolPickerPanel" class="school-picker-panel" hidden>
+          <p class="school-picker-title" id="schoolPickerTitle" hidden aria-hidden="true">高校を選択してください</p>
+          <select id="school" disabled>
+            <option value="">高校の種類を選択してください</option>
+          </select>
+          <div class="school-count" id="schoolCount"></div>
+          <div class="compare-school-row" id="compareSchoolRow" hidden>
+            <p class="school-picker-title">比較する2校目</p>
+            <div class="school-type-grid" id="schoolTypeGrid2" aria-label="2校目の高校の種類を選ぶ"></div>
+            <select id="school2" style="margin-top:10px;" disabled>
+              <option value="">2校目の種類を選択してください</option>
+            </select>
+            <div class="school-count" id="schoolCount2"></div>
+          </div>
+          <div class="school-selection-summary" id="schoolSelectionSummary" aria-live="polite"></div>
+        </div>
+        <div id="undecidedNote" class="undecided-note" hidden>
+          学校一覧は表示せず、このまま下の「質問内容」から、候補校・学校選びについて相談できます。
+        </div>
+
+        <div
+          style="
+            margin-top:10px;
+            color:#637083;
+            font-size:17px;
+            line-height:1.6;
+            font-weight:400;
+          "
+        >
+          ※必要がなければ未選択でも構いません。
+        </div>
+      </div>
+
+      <div class="field">
+        <div class="field-label question-heading"><span class="num">4</span><span class="icon">💬</span><span>質問内容</span><span class="manual-input-hint">「入力ボタン」を押すと、ご自分で入力できます。</span></div>
+
+        <div class="question-input-mode">
+          <button type="button" id="questionModeDropdown" class="active" disabled>
+            選択肢から選ぶ
+          </button>
+          <button type="button" id="questionModeManual" disabled>
+            入力ボタン
+          </button>
+        </div>
+
+        <select id="question" disabled>
+          <option value="">質問内容を選択してください</option>
+        </select>
+
+        <textarea id="questionManual" placeholder="聞きたいことを1つに絞って入力してください。" disabled></textarea>
+
+        <div class="question-option-help">
+          「相談したい内容」と「質問テーマ」を選ぶと、プルダウンの質問内容が表示されます。自由に聞きたい場合は「入力ボタン」を選んでください。
+        </div>
+      </div>
+
+      <div class="agreement-box">
+        <div class="agreement-box-title">ご利用ルールへの同意</div>
+        <p>「ご利用ルール」「返金・キャンセルについて」「回答内容についての免責」を確認してください。</p>
+        <label class="consent-check" for="rulesAgree">
+          <input type="checkbox" id="rulesAgree" disabled>
+          <span>すべての内容を確認し、同意します</span>
+        </label>
+      </div>
+      
+    </section>
+
+    <div class="submit-wrap">
+      <button class="submit" id="submitBtn" disabled>この内容で質問する</button>
+    </div>
+  </main>
+
+  <div class="modal-bg" id="districtHelpModal">
+    <div class="modal">
+      <div class="modal-icon">🏫</div>
+      <div class="modal-title">学区の地域</div>
+
+      <div
+        style="
+          margin-top:20px;
+          font-size:18px;
+          line-height:1.8;
+          color:#475467;
+        "
+      >
+        <div style="margin-bottom:12px;">
+          <strong style="color:#267EE6;">第1学区</strong><br>
+          神戸市・芦屋市・洲本市・南あわじ市・淡路市
+        </div>
+
+        <div style="margin-bottom:12px;">
+          <strong style="color:#267EE6;">第2学区</strong><br>
+          尼崎市・西宮市・伊丹市・宝塚市・川西市・三田市・猪名川町・丹波篠山市・丹波市
+        </div>
+
+        <div style="margin-bottom:12px;">
+          <strong style="color:#267EE6;">第3学区</strong><br>
+          明石市・加古川市・高砂市・西脇市・三木市・小野市・加西市・加東市・稲美町・播磨町・多可町
+        </div>
+
+        <div style="margin-bottom:12px;">
+          <strong style="color:#267EE6;">第4学区</strong><br>
+          姫路市・相生市・たつの市・赤穂市・宍粟市・神河町・市川町・福崎町・太子町・上郡町・佐用町
+        </div>
+
+        <div>
+          <strong style="color:#267EE6;">第5学区</strong><br>
+          豊岡市・養父市・朝来市・香美町・新温泉町
+        </div>
+      </div>
+
+      <div
+        class="modal-buttons"
+        style="grid-template-columns:1fr;"
+      >
+        <button
+          class="modal-button primary"
+         disabled>
+          閉じる
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-bg" id="confirmModal">
+    <div class="modal">
+      <div class="modal-icon">✓</div>
+      <div class="modal-title">入力内容をご確認ください</div>
+      <div class="modal-text">送信すると、残り質問回数を1回使用します。</div>
+      <div class="confirm-box" id="confirmBox"></div>
+      <div class="confirm-consent">
+        <label class="consent-check" for="confirmRulesAgree">
+          <input type="checkbox" id="confirmRulesAgree" disabled>
+          <span>ご利用ルール・返金条件・免責事項への同意を再確認しました</span>
+        </label>
+      </div>
+      <div class="modal-buttons">
+        <button class="modal-button secondary" disabled>修正する</button>
+        <button class="modal-button primary" id="confirmSendBtn" disabled>同意して質問を送信</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-bg" id="messageModal">
+    <div class="modal">
+      <div class="modal-icon" id="messageIcon">✓</div>
+      <div class="modal-title" id="messageTitle"></div>
+      <div class="modal-text" id="messageText"></div>
+      <div class="modal-buttons" style="grid-template-columns:1fr;">
+        <button class="modal-button primary" disabled>閉じる</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-bg" id="loadingModal">
+    <div class="modal">
+      <div class="spinner"></div>
+      <div class="modal-title" id="loadingTitle">処理しています</div>
+      <div class="modal-text" id="loadingText">そのまま少々お待ちください。</div>
+    </div>
+  </div>
+
+  <iframe name="backendFrame" class="backend-frame"></iframe>
+
+  
+
+  <dialog id="refundPolicy" aria-labelledby="refundPolicyTitle">
+    <form method="dialog" action="#"><button class="refund-close" aria-label="返金・キャンセルについてを閉じる" disabled>閉じる</button></form>
+    <h2 id="refundPolicyTitle">Q&Aサービスのキャンセル・返金について</h2>
+    <h3>1. 質問送信前</h3>
+    <p>質問を送信する前であれば、キャンセルできます。質問回数・チケットは消費しません。</p>
+    <h3>2. 質問送信後</h3>
+    <p>質問送信後は、回答の作成が開始されるため、原則としてキャンセルできません。質問1件分として利用回数を消費します。</p>
+    <h3>3. 回答内容への不満</h3>
+    <p>「期待していた回答ではなかった」「思っていた内容と違った」「希望する結論ではなかった」など、回答内容に対する主観的な理由による返金・利用回数の復元は原則行いません。</p>
+    <h3>4. キケルート側に明確な不備がある場合</h3>
+    <p>次の場合は、内容を確認したうえで、再回答・質問回数の復元・返金のいずれか適切な方法で対応します。</p>
+    <ul>
+      <li>質問とは明らかに異なる内容を回答した場合</li>
+      <li>システム障害により回答が生成されなかった場合</li>
+      <li>同一質問がシステムの不具合で重複課金された場合</li>
+      <li>キケルート側の処理ミスによりサービスを提供できなかった場合</li>
+      <li>その他、当方の責任による明確な不具合が確認された場合</li>
+    </ul>
+  </dialog>
+
+  <dialog id="answerDisclaimer" aria-labelledby="answerDisclaimerTitle">
+    <form method="dialog" action="#"><button class="refund-close" aria-label="回答内容についての免責を閉じる" disabled>閉じる</button></form>
+    <h2 id="answerDisclaimerTitle">回答内容についての免責</h2>
+    <p>キケルート受験Q&amp;Aは、高校受験・学校選びに関する情報提供および保護者の判断を支援するサービスです。</p>
+    <p>回答作成時点で確認できる学校公式情報、兵庫県教育委員会等の公的情報、キケルートが保有する資料その他の情報をもとに回答します。</p>
+    <p>ただし、入試制度、募集人数、学費、学校説明会、推薦条件、進学実績その他の情報は変更される場合があります。最終的な出願・受験・入学手続き等については、必ず学校・教育委員会等が公表する最新の公式情報をご確認ください。</p>
+    <p>また、キケルートの回答は、</p>
+    <p class="disclaimer-emphasis"><strong>合格、不合格、進学先、推薦取得、入試結果その他の結果を保証するものではありません。</strong></p>
+    <p>特に、次の内容は、過去の実績・公開情報・各種資料をもとにした参考情報であり、将来の結果を保証するものではありません。</p>
+    <ul>
+      <li>合格可能性</li>
+      <li>合格ライン</li>
+      <li>内申点の目安</li>
+      <li>当日点の目安</li>
+      <li>学校の難易度</li>
+      <li>部活動の強さ</li>
+      <li>学校比較</li>
+    </ul>
+
+    <h3>質問内容に関するルール</h3>
+    <p>1回のQ&amp;Aにつき、質問は1つまでとします。</p>
+    <p>複数の独立した質問が含まれている場合、内容が不明確な場合、キケルートのサービス対象外の質問、不適切な質問、公序良俗に反する内容等は、送信前チェックで差し戻す場合があります。</p>
+    <p>なお、送信前に差し戻された質問については、質問回数を消費しません。</p>
+    <p>質問送信後に、利用者側の入力ミス、学校名の間違い、質問内容の変更等が判明した場合は、原則として新しい質問として扱います。</p>
+    
+
+    <h3>再回答について</h3>
+    <p>回答後に別の内容を追加で確認したい場合、または新しい条件を加えて回答を求める場合は、<strong>新しい1問として扱います。</strong></p>
+    <p>ただし、キケルート側の明確な誤りや質問内容の読み違いが確認された場合は、この限りではありません。</p>
+    
+
+    <h3>返金申請</h3>
+    <p>返金または利用回数の復元を希望する場合は、該当する質問と理由を添えてお問い合わせください。</p>
+    <p>内容を確認し、キケルート側のシステム障害・重複処理・明確な提供不備等が確認された場合に対応します。</p>
+    <p>単に回答内容への評価や結果への不満を理由とする返金には対応しません。</p>
+  </dialog>
+
+</body>
+</html>
+
