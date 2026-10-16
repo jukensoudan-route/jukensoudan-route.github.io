@@ -66,3 +66,36 @@ export function vetStripeCheckoutForLegacyLive(event) {
 
   return { allowed: true, sessionId: session.id, ticketCode };
 }
+
+/**
+ * A rejected, potentially paid LIVE Checkout must not get a 2xx response.
+ * No ticket is granted by this predicate; Stripe retries and the existing
+ * Payments reconciliation are responsible for delivery/recovery.
+ */
+export function shouldRetryRejectedCheckout(event) {
+  if (!ALLOWED_EVENTS.has(event?.type) || event?.livemode === false) {
+    return false;
+  }
+
+  const session = event?.data?.object;
+
+  // An unpaid completed Checkout can later emit async_payment_succeeded.
+  if (event.type === "checkout.session.completed" &&
+      session?.payment_status === "unpaid") {
+    return false;
+  }
+
+  // ROUTE Q&A uses directly created Checkout Sessions, not Payment Links.
+  // Only a Payment Link with no Q&A purchase reference is clearly unrelated.
+  if (session?.payment_link &&
+      !session?.metadata?.ticket_code &&
+      !session?.metadata?.line_user_id &&
+      !session?.client_reference_id) {
+    return false;
+  }
+
+  // A missing event livemode is not proof of TEST. Unknown LIVE payment
+  // state remains retryable, but an explicitly TEST event is always ignored.
+  return event?.livemode === true ||
+    (event?.livemode == null && session?.livemode !== false);
+}
