@@ -1,6 +1,6 @@
 import express from "express";
 import Stripe from "stripe";
-import { vetStripeCheckoutForLegacyLive } from "./payment-guard.mjs";
+import { vetStripeCheckoutForLegacyLive, shouldRetryRejectedCheckout } from "./payment-guard.mjs";
 import { verifyGasConfirmationResponse } from "./gas-confirmation.mjs";
 
 const app = express();
@@ -72,6 +72,21 @@ app.post("/stripe/webhook", express.raw({type:"application/json"}), async (req,r
   // Stripe signature verification has already succeeded above.
   const gate = vetStripeCheckoutForLegacyLive(event);
   if (!gate.allowed) {
+    // A potentially paid LIVE checkout needs reconciliation, not a 2xx ACK.
+    if (shouldRetryRejectedCheckout(event)) {
+      console.error(JSON.stringify({
+        kind: "stripe_live_checkout_needs_reconciliation",
+        eventId: event.id,
+        sessionId: event?.data?.object?.id || null,
+        reason: gate.reason
+      }));
+      // Do not call GAS or grant here. Stripe can retry this delivery.
+      return res.status(503).json({
+        received: true,
+        verified: true,
+        processed: false
+      });
+    }
     console.warn(JSON.stringify({
       kind:"stripe_event_ignored_by_safety_gate",
       eventId:event.id,
