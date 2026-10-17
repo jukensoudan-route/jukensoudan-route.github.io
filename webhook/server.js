@@ -1,5 +1,7 @@
 import express from "express";
 import Stripe from "stripe";
+import { vetStripeCheckoutForLegacyLive, shouldRetryRejectedCheckout } from "./payment-guard.mjs";
+import { verifyGasConfirmationResponse } from "./gas-confirmation.mjs";
 
 const app = express();
 const port = process.env.PORT || 10000;
@@ -41,38 +43,11 @@ async function confirmCheckoutInGas(sessionId, eventId) {
     throw new Error("GAS HTTP " + response.status);
   }
 
-  // GAS HtmlService may return the payload with JavaScript escapes and/or
-  // HTML entities. Normalize both forms before evaluating the ROUTE result.
-  const decoded = text
-    .replace(/\\x([0-9a-fA-F]{2})/g, (_, hex) =>
-      String.fromCharCode(parseInt(hex, 16))
-    )
-    .replace(/\\u([0-9a-fA-F]{4})/g, (_, hex) =>
-      String.fromCharCode(parseInt(hex, 16))
-    )
-    // Apps Script HtmlService can escape quotes through multiple layers.
-    // Remove only backslashes that directly precede a quote; other
-    // backslashes remain untouched.
-    .replace(/\\+(?=["'])/g, "")
-    .replace(/&quot;|&#34;|&#x22;/gi, '"')
-    .replace(/&#39;|&#x27;|&apos;/gi, "'")
-    .replace(/&amp;/gi, "&")
-    .replace(/&lt;/gi, "<")
-    .replace(/&gt;/gi, ">");
+  // A 200 status from GAS alone is not proof of paid + granted state.
+  // Reject malformed HTML, mismatched request IDs and ambiguous grants so
+  // Stripe can safely retry rather than silently losing a paid order.
+  return verifyGasConfirmationResponse(text, eventId);
 
-  // HtmlService can preserve the JSON as an object literal rather than a
-  // quoted JSON string, so accept both quoted-key and object-literal forms.
-  const ok =
-    /["']?ok["']?\s*:\s*true\b/.test(decoded);
-
-  if (!ok) {
-    const match =
-      decoded.match(/["']?message["']?\s*:\s*["']([^"'<>]*)["']/);
-    const reason = match ? match[1] : "unknown GAS error";
-    throw new Error("GAS confirmCheckout failed: " + reason);
-  }
-
-  return decoded;
 }
 
 app.post("/stripe/webhook", express.raw({type:"application/json"}), async (req,res) => {
@@ -93,42 +68,41 @@ app.post("/stripe/webhook", express.raw({type:"application/json"}), async (req,r
     return res.status(400).send("invalid signature");
   }
 
-  const allowed = new Set([
-    "checkout.session.completed",
-    "checkout.session.async_payment_succeeded"
-  ]);
-
-  if (!allowed.has(event.type)) {
-    return res.status(200).json({received:true, ignored:true});
-  }
-
-  const session = event.data.object;
-  const sessionId = session?.id || "";
-  const metadata = session?.metadata || {};
-  const ticketCode = String(metadata.ticket_code || "").trim();
-  const lineUserId = String(
-    metadata.line_user_id ||
-    session?.client_reference_id ||
-    ""
-  ).trim();
-
-  // Ignore Checkout Sessions that are not ROUTE Q&A purchases.
-  // This Stripe account may also contain unrelated Payment Links.
-  if (!["ticket3", "ticket10"].includes(ticketCode) || !lineUserId) {
-    console.log(JSON.stringify({
-      kind:"stripe_event_ignored_non_route",
+  // Reject TEST or unverified Checkout before any request to operational GAS.
+  // Stripe signature verification has already succeeded above.
+  const gate = vetStripeCheckoutForLegacyLive(event);
+  if (!gate.allowed) {
+    // A potentially paid LIVE checkout needs reconciliation, not a 2xx ACK.
+    if (shouldRetryRejectedCheckout(event)) {
+      console.error(JSON.stringify({
+        kind: "stripe_live_checkout_needs_reconciliation",
+        eventId: event.id,
+        sessionId: event?.data?.object?.id || null,
+        reason: gate.reason
+      }));
+      // Do not call GAS or grant here. Stripe can retry this delivery.
+      return res.status(503).json({
+        received: true,
+        verified: true,
+        processed: false
+      });
+    }
+    console.warn(JSON.stringify({
+      kind:"stripe_event_ignored_by_safety_gate",
       eventId:event.id,
       type:event.type,
-      sessionId
+      reason:gate.reason
     }));
-
     return res.status(200).json({
       received:true,
       verified:true,
       ignored:true,
-      reason:"not_route_qa"
+      reason:gate.reason
     });
   }
+
+  const session = event.data.object;
+  const sessionId = gate.sessionId;
 
   try {
     await confirmCheckoutInGas(sessionId, event.id);
@@ -165,37 +139,6 @@ app.post("/stripe/webhook", express.raw({type:"application/json"}), async (req,r
   }
 });
 
-async function runGasIdempotencySelfTest() {
-  const sessionId = String(process.env.SELFTEST_SESSION_ID || "").trim();
-  if (!sessionId) return;
-
-  try {
-    const first = await confirmCheckoutInGas(sessionId, "selftest-1");
-    const second = await confirmCheckoutInGas(sessionId, "selftest-2");
-
-    const firstAlready = first.includes('"alreadyGranted":true');
-    const secondAlready = second.includes('"alreadyGranted":true');
-    const firstGrantedFalse = first.includes('"granted":false');
-    const secondGrantedFalse = second.includes('"granted":false');
-
-    console.log(JSON.stringify({
-      kind:"gas_idempotency_selftest",
-      pass:firstAlready && secondAlready && firstGrantedFalse && secondGrantedFalse,
-      firstAlready,
-      secondAlready,
-      firstGrantedFalse,
-      secondGrantedFalse
-    }));
-  } catch (error) {
-    console.error(JSON.stringify({
-      kind:"gas_idempotency_selftest",
-      pass:false,
-      message:error?.message || String(error)
-    }));
-  }
-}
-
 app.listen(port, () => {
   console.log("listening", port);
-  runGasIdempotencySelfTest();
 });
