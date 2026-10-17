@@ -62,14 +62,39 @@
         mark.textContent = symbol;
       }
 
+      function isVerifiedGrant(result){
+        return !!result && result.paymentStatus === 'paid' &&
+          (result.granted === true || result.alreadyGranted === true);
+      }
+
       function showSuccess(result){
         setMark('ok','✓');
         title.textContent = '決済が完了しました';
         text.textContent = '質問回数を追加しました。';
         note.textContent = '決済確認が完了しました。下のボタンからQ&Aへ戻ってください。';
-        remaining.style.display = 'block';
-        remaining.textContent = '現在の残り回数：' + Number(result && result.remainingCount || 0) + '回';
+        const count = result && result.remainingCount;
+        if(count !== null && count !== undefined && count !== '' &&
+           Number.isInteger(Number(count)) && Number(count) >= 0){
+          remaining.style.display = 'block';
+          remaining.textContent = '現在の残り回数：' + Number(count) + '回';
+        }else{
+          remaining.style.display = 'none';
+          remaining.textContent = '';
+        }
         backBtn.style.display = 'block';
+        retryBtn.style.display = 'none';
+      }
+
+      function showPending(result){
+        setMark('warn','!');
+        title.textContent = '決済・付与を確認中';
+        text.textContent = result && result.paymentStatus === 'paid'
+          ? '支払いは確認できましたが、質問回数の付与はまだ確認できていません。'
+          : '決済状態または質問回数の付与を確認できていません。';
+        note.textContent = '付与状況の照合が必要です。再決済や確認の再実行はせず、ROUTEへお問い合わせください。';
+        remaining.style.display = 'none';
+        remaining.textContent = '';
+        backBtn.style.display = 'none';
         retryBtn.style.display = 'none';
       }
 
@@ -95,12 +120,13 @@
 
       function showConfirmError(error){
         setMark('warn','!');
-        title.textContent = '決済確認が完了していません';
-        text.textContent = '決済画面で支払いが完了していても、質問回数の反映確認がまだ完了していない可能性があります。';
-        note.textContent = '再決済はしないでください。「決済確認をもう一度行う」を押してください。\n' + (error && error.message ? '詳細：' + error.message : '');
+        title.textContent = '決済・付与を確認中';
+        text.textContent = '通信・確認の結果が不明なため、支払いと質問回数の付与を確認できていません。';
+        note.textContent = '再決済や確認の再実行はせず、ROUTEへお問い合わせください。';
         remaining.style.display = 'none';
+        remaining.textContent = '';
         backBtn.style.display = 'none';
-        retryBtn.style.display = 'block';
+        retryBtn.style.display = 'none';
       }
 
       function postToGas(data){
@@ -189,7 +215,11 @@
             action:'confirmCheckout',
             sessionId:sessionId
           });
-          showSuccess(result);
+          if(isVerifiedGrant(result)){
+            showSuccess(result);
+          }else{
+            showPending(result);
+          }
         }catch(error){
           console.error(error);
           showConfirmError(error);
