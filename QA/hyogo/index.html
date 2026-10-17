@@ -432,9 +432,22 @@
       .card select,.school-picker-panel select{min-height:0;height:auto;padding:9px 36px 9px 12px;font-size:16px}
       #question{font-size:15px}
     }
-  </style>
+      /* Q&Aへの戻り導線とサイトフッター */
+    .qa-back-nav { padding:10px 14px; background:#fff; border-bottom:1px solid var(--border); }
+    .qa-back-nav a { display:inline-flex; align-items:center; min-height:44px; color:#1768c9; font-size:16px; font-weight:800; text-decoration:underline; text-underline-offset:3px; }
+    .qa-back-nav a:focus-visible, .routeq-site-footer a:focus-visible { outline:3px solid #ffe23f; outline-offset:4px; border-radius:3px; }
+    .routeq-site-footer { width:100%; padding:3px 12px; background:var(--blue); color:#fff; text-align:center; }
+    .routeq-site-footer__inner { width:100%; display:flex; align-items:center; justify-content:space-between; flex-wrap:nowrap; gap:8px; }
+    .routeq-site-footer small { font-size:13px; line-height:1.35; font-weight:700; letter-spacing:.02em; white-space:nowrap; }
+    .routeq-site-footer a, .routeq-site-footer a:link, .routeq-site-footer a:visited, .routeq-site-footer a:hover, .routeq-site-footer a:active { display:inline-flex; align-items:center; justify-content:center; padding:2px 7px; border:1.5px solid #fff; border-radius:5px; background:transparent; color:#fff !important; -webkit-text-fill-color:#fff; font-size:13px; line-height:1.35; font-weight:800; text-decoration:none; white-space:nowrap; }
+    @media(max-width:600px){ .qa-back-nav { padding:8px 12px; } .qa-back-nav a { font-size:15px; } .routeq-site-footer { padding:3px 8px; } .routeq-site-footer__inner { gap:6px; } .routeq-site-footer small, .routeq-site-footer a { font-size:clamp(10px, 3vw, 12px); } }
+</style>
 </head>
 <body><header class="hero image-hero" aria-label="キケルート高校受験Q&A"><img src="qalogo.png" width="1443" height="1090" alt="キケルート兵庫県版。高校受験で気になった事をここから質問。" fetchpriority="high" decoding="async"><img src="qa-four-steps.webp" width="2172" height="563" alt="チケット購入、ここで質問、専門家が回答、LINEで受け取る、の4工程。" loading="lazy" decoding="async"></header>
+
+<nav class="qa-back-nav" aria-label="Q&A案内ページへ戻る">
+  <a href="/QA/">← Q&Aに戻る</a>
+</nav>
 
   <main class="page">
     <section class="card usage-card">
@@ -638,6 +651,13 @@
       <button class="submit" id="submitBtn" onclick="openConfirm()" disabled>この内容で質問する</button>
     </div>
   </main>
+
+<footer class="routeq-site-footer" aria-label="運営者情報">
+  <div class="routeq-site-footer__inner">
+    <small>© 2026 ROUTEQ</small>
+    <a href="/QA/">高校受験Q&amp;A キケルート</a>
+  </div>
+</footer>
 
   <div class="modal-bg" id="districtHelpModal">
     <div class="modal">
