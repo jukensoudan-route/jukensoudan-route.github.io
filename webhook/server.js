@@ -11,6 +11,7 @@ const LIVE_DEPLOYMENT_ID = "AKfycbyAUKGZK_WK8l_bGs0AEWilwP_Z8WKRaeSsX3iP1dijuRee
 const gasWebAppUrl = process.env.ROUTEQ_TEST_GAS_WEB_APP_URL || "";
 const isolatedMode = process.env.ROUTEQ_TEST_ISOLATION_APPROVED === "YES" &&
   process.env.ROUTEQ_TEST_SHEET_ID === TEST_SHEET_ID &&
+  (process.env.ROUTEQ_TEST_INTERNAL_SECRET || "").length >= 32 &&
   /^sk_test_/.test(process.env.STRIPE_SECRET_KEY || "") &&
   /^whsec_/.test(process.env.STRIPE_WEBHOOK_SECRET || "") &&
   /^https:\/\/script\.google\.com\/macros\/s\/[A-Za-z0-9_-]+\/exec$/.test(gasWebAppUrl) &&
@@ -32,7 +33,8 @@ async function confirmCheckoutInGas(sessionId, eventId) {
   const body = new URLSearchParams({
     action:"confirmCheckout",
     sessionId:String(sessionId || ""),
-    requestId:"stripe-webhook-" + String(eventId || "")
+    requestId:"stripe-webhook-" + String(eventId || ""),
+    testSecret: String(process.env.ROUTEQ_TEST_INTERNAL_SECRET || "")
   });
 
   const response = await fetch(gasWebAppUrl, {
