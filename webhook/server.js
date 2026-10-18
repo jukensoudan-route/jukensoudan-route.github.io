@@ -117,13 +117,13 @@ app.post("/stripe/webhook", express.raw({type:"application/json"}), async (req,r
       processed:true,
       eventId:event.id
     });
-  } catch (error) {
+  } catch {
     console.error(JSON.stringify({
       kind:"stripe_event_processing_failed",
       eventId:event.id,
       type:event.type,
       sessionId,
-      message:error?.message || String(error)
+      code:"gas_confirmation_failed"
     }));
 
     // Return a retryable error so Stripe can redeliver the event.
