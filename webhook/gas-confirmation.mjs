@@ -75,7 +75,8 @@ export function verifyGasConfirmationResponse(text, eventId) {
   }
   const newlyGranted = result.granted === true && result.alreadyGranted === false;
   const previouslyGranted = result.granted === false && result.alreadyGranted === true;
-  if ((!newlyGranted && !previouslyGranted) ||
+  if (result.requiresReview === true ||
+      (!newlyGranted && !previouslyGranted) ||
       !Number.isSafeInteger(result.remainingCount) || result.remainingCount < 0) {
     throw new Error("gas_grant_state_not_verified");
   }
