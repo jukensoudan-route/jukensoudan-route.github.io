@@ -187,16 +187,10 @@ function doPost(e) {
       message: '決済確認失敗・要照合' });
   }
 }
-/** Same HtmlService response envelope as the existing GAS app. */
+/** Return strict JSON so server-to-server callers can validate without HTML parsing. */
 function makeRouteqTestResponse_(data) {
-  const json = JSON.stringify(data)
-    .replace(/</g, '\\u003c').replace(/>/g, '\\u003e').replace(/&/g, '\\u0026');
-  const html = '<!doctype html><html><head><meta charset="UTF-8"></head><body>' +
-    '<script>(function(){const message={source:"route-qa-gas",payload:' + json + '};' +
-    'try{if(window.parent)window.parent.postMessage(message,"*");}catch(e){}' +
-    '})();</script></body></html>';
-  return HtmlService.createHtmlOutput(html)
-    .setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL);
+  return ContentService.createTextOutput(JSON.stringify(data))
+    .setMimeType(ContentService.MimeType.JSON);
 }
 function doGet() {
   return HtmlService.createHtmlOutput('ROUTEQ ISOLATED PAYMENT TEST ONLY - NOT ACTIVE');
