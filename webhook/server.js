@@ -19,6 +19,27 @@ const isolatedMode = process.env.ROUTEQ_TEST_ISOLATION_APPROVED === "YES" &&
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || "sk_test_placeholder");
 
+// Fixed diagnostic codes only: never log GAS response bodies, URLs or credentials.
+function classifyGasFailure_(error) {
+  const message = String(error?.message || "");
+  if (/^GAS HTTP [0-9]{3}$/.test(message)) return "gas_http_error";
+  if (error?.name === "TimeoutError" || error?.name === "AbortError") return "gas_timeout";
+  if (new Set(["gas_invalid_response", "gas_invalid_json", "gas_invalid_payload_json",
+    "gas_payload_missing", "gas_payload_unterminated"]).has(message)) return "gas_invalid_response";
+  if (new Set(["gas_confirmation_not_verified", "gas_payment_not_confirmed",
+    "gas_grant_state_not_verified"]).has(message)) return "gas_grant_not_verified";
+  if (error?.name === "TypeError") return "gas_network_error";
+  return "gas_unclassified_error";
+}
+
+function gasContentType_(response) {
+  const type = (response.headers.get("content-type") || "").toLowerCase();
+  if (type.includes("text/html")) return "html";
+  if (type.includes("application/json")) return "json";
+  return "other";
+}
+
+
 app.get("/health", (req,res) =>
   res.status(200).json({
     ok:true,
@@ -37,6 +58,7 @@ async function confirmCheckoutInGas(sessionId, eventId) {
     testSecret: String(process.env.ROUTEQ_TEST_INTERNAL_SECRET || "")
   });
 
+  const gasRequestStarted = Date.now();
   const response = await fetch(gasWebAppUrl, {
     method:"POST",
     headers:{"Content-Type":"application/x-www-form-urlencoded;charset=UTF-8"},
@@ -48,13 +70,27 @@ async function confirmCheckoutInGas(sessionId, eventId) {
   const text = await response.text();
 
   if (!response.ok) {
+    console.warn(JSON.stringify({
+      kind:"gas_response_diagnostic", eventId, code:"gas_http_error",
+      httpStatus:response.status, redirected:response.redirected,
+      contentType:gasContentType_(response), elapsedMs:Date.now()-gasRequestStarted
+    }));
     throw new Error("GAS HTTP " + response.status);
   }
 
   // A 200 status from GAS alone is not proof of paid + granted state.
   // Reject malformed HTML, mismatched request IDs and ambiguous grants so
   // Stripe can safely retry rather than silently losing a paid order.
-  return verifyGasConfirmationResponse(text, eventId);
+  try {
+    return verifyGasConfirmationResponse(text, eventId);
+  } catch (error) {
+    console.warn(JSON.stringify({
+      kind:"gas_response_diagnostic", eventId, code:classifyGasFailure_(error),
+      httpStatus:response.status, redirected:response.redirected,
+      contentType:gasContentType_(response), elapsedMs:Date.now()-gasRequestStarted
+    }));
+    throw error;
+  }
 
 }
 
@@ -117,13 +153,14 @@ app.post("/stripe/webhook", express.raw({type:"application/json"}), async (req,r
       processed:true,
       eventId:event.id
     });
-  } catch {
+  } catch (error) {
     console.error(JSON.stringify({
       kind:"stripe_event_processing_failed",
       eventId:event.id,
       type:event.type,
       sessionId,
-      code:"gas_confirmation_failed"
+      code:"gas_confirmation_failed",
+      reasonCode:classifyGasFailure_(error)
     }));
 
     // Return a retryable error so Stripe can redeliver the event.
