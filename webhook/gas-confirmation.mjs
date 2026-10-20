@@ -61,6 +61,25 @@ function extractGasPayload(text) {
   throw new Error("gas_payload_unterminated");
 }
 
+const PARSE_FAILURE_CODES = new Set([
+  "gas_invalid_response",
+  "gas_invalid_json",
+  "gas_invalid_payload_json",
+  "gas_payload_missing",
+  "gas_payload_unterminated"
+]);
+
+export function classifyGasFailure(error) {
+  const message = String(error?.message || "");
+  if (/^GAS HTTP [0-9]{3}$/.test(message)) return "gas_http_error";
+  if (error?.name === "TimeoutError" || error?.name === "AbortError") return "gas_timeout";
+  if (PARSE_FAILURE_CODES.has(message)) return message;
+  if (new Set(["gas_confirmation_not_verified", "gas_payment_not_confirmed",
+    "gas_grant_state_not_verified"]).has(message)) return "gas_grant_not_verified";
+  if (error?.name === "TypeError") return "gas_network_error";
+  return "gas_unclassified_error";
+}
+
 export function verifyGasConfirmationResponse(text, eventId) {
   const data = extractGasPayload(text);
   const expectedRequestId = "stripe-webhook-" + String(eventId || "");

@@ -1,7 +1,7 @@
 import express from "express";
 import Stripe from "stripe";
 // TEST-only service. Never import the LIVE fulfillment guard on this branch.
-import { verifyGasConfirmationResponse } from "./gas-confirmation.mjs";
+import { classifyGasFailure, verifyGasConfirmationResponse } from "./gas-confirmation.mjs";
 
 const app = express();
 const port = process.env.PORT || 10000;
@@ -20,18 +20,6 @@ const isolatedMode = process.env.ROUTEQ_TEST_ISOLATION_APPROVED === "YES" &&
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || "sk_test_placeholder");
 
 // Fixed diagnostic codes only: never log GAS response bodies, URLs or credentials.
-function classifyGasFailure_(error) {
-  const message = String(error?.message || "");
-  if (/^GAS HTTP [0-9]{3}$/.test(message)) return "gas_http_error";
-  if (error?.name === "TimeoutError" || error?.name === "AbortError") return "gas_timeout";
-  if (new Set(["gas_invalid_response", "gas_invalid_json", "gas_invalid_payload_json",
-    "gas_payload_missing", "gas_payload_unterminated"]).has(message)) return "gas_invalid_response";
-  if (new Set(["gas_confirmation_not_verified", "gas_payment_not_confirmed",
-    "gas_grant_state_not_verified"]).has(message)) return "gas_grant_not_verified";
-  if (error?.name === "TypeError") return "gas_network_error";
-  return "gas_unclassified_error";
-}
-
 function gasContentType_(response) {
   const type = (response.headers.get("content-type") || "").toLowerCase();
   if (type.includes("text/html")) return "html";
@@ -85,7 +73,7 @@ async function confirmCheckoutInGas(sessionId, eventId) {
     return verifyGasConfirmationResponse(text, eventId);
   } catch (error) {
     console.warn(JSON.stringify({
-      kind:"gas_response_diagnostic", eventId, code:classifyGasFailure_(error),
+      kind:"gas_response_diagnostic", eventId, code:classifyGasFailure(error),
       httpStatus:response.status, redirected:response.redirected,
       contentType:gasContentType_(response), elapsedMs:Date.now()-gasRequestStarted
     }));
@@ -160,7 +148,7 @@ app.post("/stripe/webhook", express.raw({type:"application/json"}), async (req,r
       type:event.type,
       sessionId,
       code:"gas_confirmation_failed",
-      reasonCode:classifyGasFailure_(error)
+      reasonCode:classifyGasFailure(error)
     }));
 
     // Return a retryable error so Stripe can redeliver the event.

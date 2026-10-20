@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { verifyGasConfirmationResponse } from "./gas-confirmation.mjs";
+import { classifyGasFailure, verifyGasConfirmationResponse } from "./gas-confirmation.mjs";
 
 const eventId = "evt_local_fixture";
 const sample = {
@@ -64,4 +64,25 @@ test("negative grant balance rejected", () => {
 });
 test("empty event ID never confirms", () => {
   reject(html(sample), "");
+});
+
+for (const code of [
+  "gas_invalid_response", "gas_invalid_json", "gas_invalid_payload_json",
+  "gas_payload_missing", "gas_payload_unterminated"
+]) {
+  test(`preserves safe parser diagnostic ${code}`, () => {
+    assert.equal(classifyGasFailure(new Error(code)), code);
+  });
+}
+
+test("preserves existing fixed aggregate classifications", () => {
+  assert.equal(classifyGasFailure(new Error("GAS HTTP 503")), "gas_http_error");
+  assert.equal(classifyGasFailure(Object.assign(new Error("secret"), { name: "AbortError" })), "gas_timeout");
+  assert.equal(classifyGasFailure(new Error("gas_grant_state_not_verified")), "gas_grant_not_verified");
+  assert.equal(classifyGasFailure(new TypeError("network detail")), "gas_network_error");
+});
+
+test("unknown messages cannot enter diagnostic logs", () => {
+  const sensitive = "https://example.invalid/?token=secret response-body personal-data";
+  assert.equal(classifyGasFailure(new Error(sensitive)), "gas_unclassified_error");
 });
