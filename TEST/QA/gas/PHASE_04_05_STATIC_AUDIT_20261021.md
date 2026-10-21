@@ -27,3 +27,11 @@ Phase ⑤: **対応中** (limited static checks completed; external path and run
 Phase ⑥: **未着手**. No instruction to deploy or run any staged source.
 
 Safety boundary: `main`, production GAS/Sheets/LINE, Stripe LIVE, and actual customer data are not modified.
+
+## Continuation — isolated core migration work
+- Copied the existing quarantined Q&A core to `TEST/QA/gas/訂正シート最優先・直接参照.TEST_BLOCKED.gs`; original staging snapshot retained unchanged.
+- Kept existing fail-closed checks for `setupAll`, `setupSheets`, `doGet`, `doPost`, `verifyLineUser_`, LINE push, and LINE diagnostic functions.
+- Added fail-closed gates to `callRouteOpenAiResponse_` and `authorizeUrlFetch`, which otherwise contained direct external UrlFetch calls.
+- GitHub write re-fetched and verified: file blob SHA `abf07961e845c1cdec0851eb41cced12a17417f5`; all cited guards present.
+- This source remains explicitly **NOT deployable**: code isolation under indirect calls, runtime schema and TEST adapters for authentication/AI/Stripe/messaging remain incomplete.
+- Phase ④ and ⑤ remain **対応中**; no GAS or production changes have been made.
