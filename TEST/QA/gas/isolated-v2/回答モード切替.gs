@@ -1115,7 +1115,7 @@ function processOneRouteDelayedReply_(
       if (sendStatus === '送信済') {
         props.deleteProperty(propertyKey);
       } else {
-        item.dueAt = '9999-12-31T23:59:59.999Z';
+        item.dueAt = 253402300799000;
         item.recoveryHold = true;
         item.recoveryReason = sendStatus;
         props.setProperty(propertyKey, JSON.stringify(item));
@@ -1361,13 +1361,13 @@ function processOneRouteDelayedReply_(
     }
 
 
-    /*
-     * 同じ失敗を1分ごとに無限再試行しない。
-     */
-    props
-      .deleteProperty(
-        propertyKey
-      );
+    // Preserve the recovery journal and defer scheduler processing.
+    // Unknown LINE acceptance must never trigger an automatic resend.
+    item.dueAt = 253402300799000;
+    item.recoveryHold = true;
+    item.recoveryReason = '送信結果不明';
+    try { props.setProperty(propertyKey, JSON.stringify(item)); }
+    catch(journalError) { console.error('遅延返信復旧情報の保存失敗：' + journalError); }
   }
 }
 
