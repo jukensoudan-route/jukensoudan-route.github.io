@@ -35,3 +35,8 @@
 - 内3ファイル（回答確認・内申点自動判定・回答モード切替）はGit blob自体が途中で終わっているため、保存版の原本完全性は未達。
 - AI修正反映の未修正原本についてstaging内の既知の拡張子候補を追加確認したが発見できず。
 - 原本コピーを優先し、未発見箇所の補作・TEST GASへの配置は行わない。
+
+## 追加の原本探索・構文確認
+- GitHub接続アカウントで、欠落関数名 `getRouteCandidateSchoolContext_`・`processOneRouteDelayedReply_`・`loadLatestUnconfirmedQuestion_`・`getRouteTopPriorityContext_` を横断コード検索：4件とも該当結果なし（索引対象外の履歴・別パスの不存在を意味しない）。
+- `staging/コード.gs` と `staging/訂正シート最優先・直接参照.gs` の各ソースは、コード実行を伴わないJavaScript構文解析に合格。これは真正な現行本番原本や機能同等性の証明ではない。
+- 完全な原本の未確保は3件、未修正原本が未発見は1件のまま。欠落補作は実施していない。
