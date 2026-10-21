@@ -247,7 +247,7 @@ function exportRouteDriveFileForOpenAI_(fileId, materialName) {
       '/export?mimeType=' +
       encodeURIComponent('application/pdf');
 
-    const response = UrlFetchApp.fetch(
+    const response = routeqQaRejectExternalFetch_(
       url,
       {
         method: 'get',
@@ -300,7 +300,7 @@ function uploadRouteFileToOpenAI_(blob) {
 
   const apiKey = getRouteOpenAiApiKey_();
 
-  const response = UrlFetchApp.fetch(
+  const response = routeqQaRejectExternalFetch_(
     'https://api.openai.com/v1/files',
     {
       method: 'post',
@@ -368,7 +368,7 @@ function ensureRouteVectorStore_() {
 
   const apiKey = getRouteOpenAiApiKey_();
 
-  const response = UrlFetchApp.fetch(
+  const response = routeqQaRejectExternalFetch_(
     'https://api.openai.com/v1/vector_stores',
     {
       method: 'post',
@@ -430,7 +430,7 @@ function attachRouteFileToVectorStore_(
 
   const apiKey = getRouteOpenAiApiKey_();
 
-  const response = UrlFetchApp.fetch(
+  const response = routeqQaRejectExternalFetch_(
     'https://api.openai.com/v1/vector_stores/' +
     encodeURIComponent(vectorStoreId) +
     '/files',
@@ -488,7 +488,7 @@ function waitForRouteVectorStoreFile_(
 
     Utilities.sleep(1500);
 
-    const response = UrlFetchApp.fetch(
+    const response = routeqQaRejectExternalFetch_(
       url,
       {
         method: 'get',
