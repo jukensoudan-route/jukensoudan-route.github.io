@@ -3486,72 +3486,17 @@ function saveQuestionForWeb_(p) {
       ]]);
 
 
-    /*
-     * Users更新も同時送信対策のためロック内。
-     */
-    users
-      .getRange(
-        userRow,
-        ROUTE_QA.USER_COL.DISPLAY_NAME
-      )
-      .setValue(
-        user.name || ''
-      );
-
-
-    users
-      .getRange(
-        userRow,
-        ROUTE_QA.USER_COL.USED_COUNT
-      )
-      .setValue(
-        newUsedCount
-      );
-
-
-    users
-      .getRange(
-        userRow,
-        ROUTE_QA.USER_COL.REMAINING
-      )
-      .setValue(
-        newRemaining
-      );
-
-    if (
-      freeTrialUsed !==
-      '使用済み'
-    ) {
-
-      users
-        .getRange(
-          userRow,
-          ROUTE_QA.USER_COL.FREE_TRIAL_USED
-        )
-        .setValue(
-          '使用済み'
-        );
+    /* Update all user counters in one row write to avoid split counter states. */
+    const nextUserValues = uv.slice();
+    nextUserValues[ROUTE_QA.USER_COL.DISPLAY_NAME - 1] = user.name || '';
+    nextUserValues[ROUTE_QA.USER_COL.USED_COUNT - 1] = newUsedCount;
+    nextUserValues[ROUTE_QA.USER_COL.REMAINING - 1] = newRemaining;
+    if (freeTrialUsed !== '使用済み') {
+      nextUserValues[ROUTE_QA.USER_COL.FREE_TRIAL_USED - 1] = '使用済み';
     }
-
-
-    users
-      .getRange(
-        userRow,
-        ROUTE_QA.USER_COL.LAST_QUESTION_AT
-      )
-      .setValue(
-        new Date()
-      );
-
-
-    users
-      .getRange(
-        userRow,
-        ROUTE_QA.USER_COL.UPDATED_AT
-      )
-      .setValue(
-        new Date()
-      );
+    nextUserValues[ROUTE_QA.USER_COL.LAST_QUESTION_AT - 1] = new Date();
+    nextUserValues[ROUTE_QA.USER_COL.UPDATED_AT - 1] = new Date();
+    users.getRange(userRow, 1, 1, 12).setValues([nextUserValues]);
 
   }
   finally {
