@@ -22,3 +22,9 @@
 
 ## 判断
 v2を本番またはTEST GASへコピー・実行・デプロイしない。原本・main・本番LINE・Stripe LIVE・外部APIは無変更。次は静的経路解析と隔離TESTデータマッピングを行い、安全に有効化できる個別内部機能のみ区分する。
+
+## 追加の一括静的検査
+- v2の11コードファイルを連結してJavaScript構文検査：**PASS**（265,988文字）。
+- 関数宣言215件、同名宣言0件。
+- 検査対象テキストに直接の `UrlFetchApp.*`、`ScriptApp.newTrigger/deleteTrigger`、`DriveApp.*`、`SpreadsheetApp.openById/getActiveSpreadsheet` の残存呼出なし（ただし文字列解析に基づき、Apps Script実行安全性の保証ではない）。
+- エントリの強制停止が残るため**機能検収は未完了**、**デプロイ不可**。
