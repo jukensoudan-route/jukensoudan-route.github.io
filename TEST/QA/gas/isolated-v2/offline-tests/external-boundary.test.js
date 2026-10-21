@@ -77,11 +77,11 @@ assert.throws(
 );
 assert.throws(
   () => context.routeqQaRejectExternalFetch_('https://api.stripe.com/v1/checkout/sessions', {}),
-  /outbound HTTP disabled \\(STRIPE\\)/
+  /outbound HTTP disabled \(STRIPE\)/
 );
 assert.throws(
   () => context.routeqQaRejectExternalFetch_('https://api.openai.com/v1/responses', {}),
-  /outbound HTTP disabled \\(OPENAI\\)/
+  /outbound HTTP disabled \(OPENAI\)/
 );
 
 assert.equal(directNetworkCalls, 0);
