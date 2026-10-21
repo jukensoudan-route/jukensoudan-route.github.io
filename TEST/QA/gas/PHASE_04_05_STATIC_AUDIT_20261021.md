@@ -88,3 +88,16 @@ Verified on the current TEST branch:
 - Existing 14-sheet connection check was reported PASS in handoff; documented the correction to `DEPLOYMENT_GATE.md`. Sheet *schema/data parity* remains untested.
 
 **Decision gate:** these four missing implementations prevent an honest parity signoff. Do not substitute fabricated no-op functions, remove safety throws, or deploy recovery prefixes. Authentic complete sources or separately authorized reconstruction are required.
+
+## 2026-10-21 original-only follow-through: independent blob check
+
+The owner approved **authentic original recovery only**, explicitly rejecting rewritten/reimplemented missing functions.
+
+Checked the three staging sources via both `fetch_file` and `fetch_blob` using their exact Git blob SHA. Both methods return the same incomplete source ending at line 1000 (line count reported as 1001 including final empty split):
+- `staging/回答確認.gs` SHA `248d39a48c052f64b5f0dd7668ad0a0843b1de2f`: 18,013 characters, ends in the middle of `loadLatestUnconfirmedQuestion_`.
+- `staging/内申点自動判定.gs` SHA `d6b73a669bd555301b199b0797bf62d533b8b6da`: 15,928 characters, ends in the middle of `getRouteCandidateSchoolContext_`.
+- `staging/回答モード切替.gs` SHA `96a177c6949b02be988ff907646443461b64ac75`: 13,997 characters, ends in the middle of `processOneRouteDelayedReply_`.
+
+This establishes truncation in the **stored Git blobs**, not just the connector response length. The exact 1000-line boundaries suggest these could have been captured as line-limited source snapshots; origin of truncation is not independently proven. Further historical backup branches tested for a matching `TEST/QA/gas/staging/回答確認.gs` path did not contain a file at that location. No claim is made about other paths or external original GAS source.
+
+**Result:** Not possible to certify phases ④/⑤ from these original-only GitHub artifacts. Missing source must be located unchanged before further source-parity closure. The owner has prohibited source reconstruction, Work, owner manual operations, and production mutation; none were performed.
