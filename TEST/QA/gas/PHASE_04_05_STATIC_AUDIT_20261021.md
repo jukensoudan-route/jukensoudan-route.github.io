@@ -35,3 +35,15 @@ Safety boundary: `main`, production GAS/Sheets/LINE, Stripe LIVE, and actual cus
 - GitHub write re-fetched and verified: file blob SHA `abf07961e845c1cdec0851eb41cced12a17417f5`; all cited guards present.
 - This source remains explicitly **NOT deployable**: code isolation under indirect calls, runtime schema and TEST adapters for authentication/AI/Stripe/messaging remain incomplete.
 - Phase ④ and ⑤ remain **対応中**; no GAS or production changes have been made.
+
+## Continued changes — 2026-10-21 (Chat + GitHub only)
+
+- Created an additional fail-closed boundary `02_external_boundary.gs`. Calls `routeqQaRejectExternalFetch_` always throw after the isolated-environment check. No HTTP transport is present in this implementation.
+- Replaced **12** direct `UrlFetchApp.fetch(...)` call sites across the TEST Q&A core (5), material registration (5), and Stripe (2) with `routeqQaRejectExternalFetch_(...)`. Source code re-fetched after each commit; no direct `UrlFetchApp.fetch(...)` patterns remain in the 13 listed TEST GAS implementation modules.
+- Changed the archived delayed-reply queued Sheet ID usage to an explicit equality check against `ROUTEQ_QA_TEST.sheetId` and `openRouteqQaTestSpreadsheet_()`.
+- Removed production `/route-qa/payment-complete.html` return URL from isolated Stripe candidate; replacement TEST return URL existence has **not** been confirmed and Stripe execution remains blocked.
+- Across 13 TEST implementation modules, a limited regex check found **197** named function declarations and **zero** duplicates. This count is not a JavaScript parse or runtime dependency pass.
+- Remaining `ScriptApp.newTrigger` appearances are in intentionally blocked trigger-setup paths; those paths must remain disabled. A review of user-defined source outside the enumerated files and dynamic execution paths has not been completed.
+- **Execution safety:** these findings show reduced direct network exposure but do not prove that every Apps Script service or indirect route is isolated; production-parity functionality is not demonstrated.
+- **Status:** phase ④ = 対応中, phase ⑤ = 対応中. Do not copy the blocked candidate into GAS until complete test wiring and runtime verification.
+
