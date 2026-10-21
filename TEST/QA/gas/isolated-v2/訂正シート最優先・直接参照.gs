@@ -3321,6 +3321,25 @@ function saveQuestionForWeb_(p) {
 
   try {
 
+    // One signed confirmation token identifies one submission. Check under
+    // the same Script Lock before changing Questions or Users.
+    const existingQuestionCount = questions.getLastRow() - 1;
+    if (existingQuestionCount > 0) {
+      const submissionTokens = questions.getRange(2, 18, existingQuestionCount, 1).getValues();
+      for (let index = 0; index < submissionTokens.length; index++) {
+        if (String(submissionTokens[index][0] || '') !== validationToken) continue;
+        const existingQuestionRow = index + 2;
+        const sameOwner = String(questions.getRange(existingQuestionRow, 2).getValue() || '') === String(user.sub);
+        const sameQuestion = String(questions.getRange(existingQuestionRow, 8).getValue() || '') === question;
+        if (!sameOwner || !sameQuestion) {
+          throw new Error('質問送信IDの内容が一致しません。管理者へお問い合わせください。');
+        }
+        // A previous Users write could have failed with incomplete compensation.
+        // Never charge or insert a second time until that row is reconciled.
+        throw new Error('この質問送信は受付記録が既にあります。二重受付は行いません。');
+      }
+    }
+
     userRow =
       findRouteUserRow_(
         users,
@@ -3461,7 +3480,7 @@ function saveQuestionForWeb_(p) {
         questionRow,
         1,
         1,
-        17
+        18
       )
       .setValues([[
         new Date(),                // A 受付日時
@@ -3483,7 +3502,8 @@ function saveQuestionForWeb_(p) {
         '',                        // N LINE送信日時
         new Date(),                // O 最終更新日時
         ticketLabel,               // P 利用チケット
-        newRemaining               // Q 質問後残り回数
+        newRemaining,              // Q 質問後残り回数
+        validationToken             // R 同一送信の二重受付防止ID
       ]]);
 
 
