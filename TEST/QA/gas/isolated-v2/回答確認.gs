@@ -1443,14 +1443,15 @@ function saveFinalAnswer() {
 
 
   if (
-    !row ||
-    row < 2
+    !Number.isSafeInteger(row) ||
+    row < 2 ||
+    row > questions.getLastRow()
   ) {
 
     SpreadsheetApp
       .getUi()
       .alert(
-        '回答確認画面に質問が読み込まれていません。'
+        '回答確認画面に有効な質問が読み込まれていません。'
       );
 
     return;
