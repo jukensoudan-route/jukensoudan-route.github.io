@@ -263,10 +263,9 @@ function ensureHeaders_(sheet, headers) {
 
 function doGet() {
   assertRouteqQaTestEnvironment_();
-  routeqQaBlockSensitiveEntry_('doGet');
   return HtmlService.createHtmlOutput(
-    '<h2>ROUTE受験Q&A API</h2>' +
-    '<p>回数券・Stripe対応版が正常に稼働しています。</p>'
+    '<h2>ROUTEQ Q&A ISOLATED TEST</h2>' +
+    '<p>TEST環境の識別のみ完了。質問送信・LINE・決済等は停止中です。</p>'
   );
 }
 
@@ -282,6 +281,17 @@ function doGet() {
  */
 function doPost(e) {
   assertRouteqQaTestEnvironment_();
+  const testParams = e && e.parameter ? e.parameter : {};
+  if (String(testParams.action || '') === 'testPing') {
+    return makeResponse_({
+      ok: true,
+      type: 'testPing',
+      requestId: String(testParams.requestId || ''),
+      environment: 'ISOLATED_TEST',
+      externalSend: false,
+      livePayment: false
+    });
+  }
   routeqQaBlockSensitiveEntry_('doPost');
   let requestId = '';
 
