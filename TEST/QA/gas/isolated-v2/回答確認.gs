@@ -139,6 +139,8 @@ function onOpen() {
 ========================================================= */
 
 function setupReviewSheet() {
+  assertRouteqQaTestEnvironment_();
+  routeqQaBlockSensitiveEntry_('setupReviewSheet');
 
   const ss =
     openRouteqQaTestSpreadsheet_();
