@@ -1,7 +1,7 @@
 /**
  * ROUTEQ LINE isolated-v2: durable intent journal, fail-closed.
- * Does not send to LINE. Callers must use the same script lock.
- * This module is not wired to send entrypoints until regression is verified.
+ * Does not send to LINE. All send paths enter through the same script-lock-backed
+ * journal before transport, so manual and delayed delivery fail closed together.
  */
 function routeqLineJournalKey_(questionId) {
   var id = String(questionId || '').trim();

@@ -20,6 +20,16 @@ assert.match(sender, /routeqQaBlockSensitiveEntry_\('sendLinePushMessage_'\)/,
   'external LINE send must stay blocked in isolated TEST');
 assert.match(sender, /routeqQaRejectExternalFetch_\(/,
   'isolated TEST must never enable outbound LINE network');
+assert.match(sender, /routeqLinePrepareIntent_\(\{/,
+  'send entrypoint must durably prepare intent before transport');
+assert.match(sender, /routeqLineMarkInProgress_\(/,
+  'send entrypoint must mark the shared intent in progress');
+assert.ok(sender.indexOf('routeqLinePrepareIntent_') < sender.indexOf('routeqQaRejectExternalFetch_'),
+  'intent must be persisted before the transport attempt');
+assert.match(sender, /routeqLineSetOutcome_\([\s\S]*?true[\s\S]*?\)/,
+  'accepted transport must be journaled');
+assert.match(sender, /catch\s*\(error\)[\s\S]*?routeqLineSetOutcome_\([\s\S]*?false[\s\S]*?\)/,
+  'transport or acceptance-record failure must remain UNKNOWN');
 // The following are mandatory pre-release invariants.
 // They intentionally expose today's failures until source is repaired.
 const keyManual = manual.match(/sendLinePushMessage_\(\s*lineUserId,\s*answer,\s*'([^']+)'\s*\+\s*row/s);
@@ -48,4 +58,10 @@ for (const [name, sendBody] of [['manual', manualSendBody], ['delayed', delayedS
   assert.match(sendBody, /catch\s*\(error\)[\s\S]*?\\.setValue\(\s*'送信結果不明'/,
     name + ': delivery exception must be treated as UNKNOWN');
 }
-console.log('LINE delivery regression gate: PASS (no outbound requests)');
+assert.match(manualSendBody, /catch\s*\(uiError\)/,
+  'post-acceptance UI refresh failure must be isolated');
+assert.match(delayedSendBody, /recoveryHold\s*=\s*true/,
+  'interrupted delayed delivery must retain a recovery hold');
+assert.match(delayedSendBody, /props\.setProperty\(propertyKey,\s*JSON\.stringify\(item\)\)/,
+  'interrupted delayed delivery must preserve its journal');
+console.log('LINE delivery regression gate: PASS; UI-refresh failure isolated; delayed interruption held; no outbound requests');

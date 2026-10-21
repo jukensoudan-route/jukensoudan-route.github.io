@@ -45,5 +45,15 @@ ctx.routeqLinePrepareIntent_({...request,questionId:'Q103'});
 ctx.routeqLineMarkInProgress_('Q103','fixed-key');
 assert.equal(ctx.routeqLineSetOutcome_('Q103','fixed-key',true).state,'ACCEPTED');calls++;
 assert.equal(ctx.routeqLinePrepareIntent_({...request,questionId:'Q103'}).allowed,false);calls++;
+// LINE accepted the request, but persisting ACCEPTED failed. The caller's
+// recovery path must retain UNKNOWN and permanently block blind retry.
+ctx.routeqLinePrepareIntent_({...request,questionId:'Q104'});
+ctx.routeqLineMarkInProgress_('Q104','fixed-key');
+failure=true;
+assert.throws(()=>ctx.routeqLineSetOutcome_('Q104','fixed-key',true),/INJECT_WRITE_FAILURE/);calls++;
+failure=false;
+assert.equal(ctx.routeqLineSetOutcome_('Q104','fixed-key',false).state,'UNKNOWN');calls++;
+assert.equal(ctx.routeqLinePrepareIntent_({...request,questionId:'Q104'}).allowed,false);calls++;
+assert.equal(JSON.parse(data.get('ROUTEQ_LINE_INTENT_V1_Q104')).state,'UNKNOWN');calls++;
 assert.ok(writes>0);
-console.log('LINE journal offline fault injection: '+calls+'/'+calls+' PASS; network requests: 0');
+console.log('LINE journal offline fault injection: '+calls+'/'+calls+' PASS; concurrency/timeout/write-failure/post-acceptance-record-failure; network requests: 0');

@@ -6988,10 +6988,28 @@ function sendLinePushMessage_(
       dedupeKey
     );
 
-  const response =
-    routeqQaRejectExternalFetch_(
-      'https://api.line.me/v2/bot/message/push',
-      {
+  const intent =
+    routeqLinePrepareIntent_({
+      questionId: dedupeKey,
+      to: String(lineUserId).trim(),
+      body: text,
+      retryKey: retryKey
+    });
+
+  if (!intent.allowed) {
+    return false;
+  }
+
+  routeqLineMarkInProgress_(
+    dedupeKey,
+    retryKey
+  );
+
+  try {
+    const response =
+      routeqQaRejectExternalFetch_(
+        'https://api.line.me/v2/bot/message/push',
+        {
         method:
           'post',
 
@@ -7029,43 +7047,67 @@ function sendLinePushMessage_(
 
         muteHttpExceptions:
           true
-      }
-    );
+        }
+      );
 
-  const status =
-    response.getResponseCode();
+    const status =
+      response.getResponseCode();
 
-  const body =
-    response.getContentText();
+    const body =
+      response.getContentText();
 
   /*
    * 200系 = 今回送信成功
    * 409   = 同一Retry KeyをLINE側がすでに受理済み
    *         2通目は送られていないため正常扱い
    */
-  if (
-    (
-      status >= 200 &&
-      status < 300
-    ) ||
-    status === 409
-  ) {
+    if (
+      (
+        status >= 200 &&
+        status < 300
+      ) ||
+      status === 409
+    ) {
 
-    if (status === 409) {
-      console.log(
-        'LINE二重送信を防止しました。'
+      routeqLineSetOutcome_(
+        dedupeKey,
+        retryKey,
+        true
+      );
+
+      if (status === 409) {
+        console.log(
+          'LINE二重送信を防止しました。'
+        );
+      }
+
+      return true;
+    }
+
+    throw new Error(
+      'LINE Messaging API エラー：HTTP ' +
+      status +
+      '\n' +
+      body
+    );
+  }
+  catch (error) {
+    try {
+      routeqLineSetOutcome_(
+        dedupeKey,
+        retryKey,
+        false
+      );
+    }
+    catch (journalError) {
+      console.error(
+        'LINE送信結果UNKNOWNの記録失敗：' +
+        journalError
       );
     }
 
-    return true;
+    throw error;
   }
-
-  throw new Error(
-    'LINE Messaging API エラー：HTTP ' +
-    status +
-    '\n' +
-    body
-  );
 }
 
 
