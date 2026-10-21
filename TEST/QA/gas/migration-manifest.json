@@ -78,7 +78,10 @@
       "lines": 1001,
       "status": "TRUNCATED",
       "repair": "ORIGINAL_ONLY",
-      "deployable": false
+      "deployable": false,
+      "recovered_original": "staging/restored/回答確認.js",
+      "recovered_blob_sha": "36f75e9031849c120e5ae893a2effb019c4f489d",
+      "restoration_status": "COMPLETE_PREVIOUSLY_UPLOADED_SOURCE_SYNTAX_PASS_PRODUCTION_PARITY_UNVERIFIED"
     },
     {
       "file": "内申点自動判定.gs",
@@ -87,7 +90,10 @@
       "lines": 1001,
       "status": "TRUNCATED",
       "repair": "ORIGINAL_ONLY",
-      "deployable": false
+      "deployable": false,
+      "recovered_original": "staging/restored/内申点自動判定.gs",
+      "recovered_blob_sha": "167c14f6535d9827a60791aa60822bab199ed664",
+      "restoration_status": "COMPLETE_PREVIOUSLY_UPLOADED_SOURCE_SYNTAX_PASS_PRODUCTION_PARITY_UNVERIFIED"
     },
     {
       "file": "回答モード切替.gs",
@@ -96,7 +102,10 @@
       "lines": 1001,
       "status": "TRUNCATED",
       "repair": "ORIGINAL_ONLY",
-      "deployable": false
+      "deployable": false,
+      "recovered_original": "staging/restored/回答モード切替.js",
+      "recovered_blob_sha": "79993083f55f683ce38e694c8cd80798bed49359",
+      "restoration_status": "COMPLETE_PREVIOUSLY_UPLOADED_SOURCE_SYNTAX_PASS_PRODUCTION_PARITY_UNVERIFIED"
     },
     {
       "file": "AI修正反映.gs",
@@ -105,7 +114,10 @@
       "lines": null,
       "status": "ORIGINAL_NOT_FOUND",
       "repair": "ORIGINAL_ONLY",
-      "deployable": false
+      "deployable": false,
+      "recovered_original": "staging/restored/AI修正反映.js",
+      "recovered_blob_sha": "802d6a11627aacabfd10df53e7c4b4c645968c7a",
+      "restoration_status": "COMPLETE_PREVIOUSLY_UPLOADED_SOURCE_SYNTAX_PASS_PRODUCTION_PARITY_UNVERIFIED"
     }
   ],
   "candidate_files": [
@@ -222,5 +234,6 @@
       "deployable": false
     }
   ],
-  "note": "JS syntax PASS does not imply Apps Script runtime or parity validation. No GAS deployment authorized."
+  "note": "JS syntax PASS does not imply Apps Script runtime or parity validation. No GAS deployment authorized.",
+  "restoration_note": "All four previously missing files recovered from user-provided ChatGPT Library originals. Not verified against deployed production revision; original staging snapshots are preserved unchanged."
 }
