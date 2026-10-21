@@ -64,7 +64,7 @@ function getRouteReplyMode_(questions) {
   ) {
 
     ss =
-      questions.getParent();
+      routeqQaAssertAllowedSpreadsheet_(questions.getParent());
   }
 
 
@@ -130,7 +130,7 @@ function getRouteReplySettings_(questions) {
   const ss =
     questions &&
     typeof questions.getParent === 'function'
-      ? questions.getParent()
+      ? routeqQaAssertAllowedSpreadsheet_(questions.getParent())
       : openRouteqQaTestSpreadsheet_();
 
 
@@ -605,8 +605,8 @@ function scheduleRouteDelayedReply_(
 
 
   const ss =
-    questions
-      .getParent();
+    routeqQaAssertAllowedSpreadsheet_(questions
+      .getParent());
 
 
   if (!ss) {
