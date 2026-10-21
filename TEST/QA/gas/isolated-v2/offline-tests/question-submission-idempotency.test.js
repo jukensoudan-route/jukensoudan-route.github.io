@@ -46,7 +46,7 @@ const questions = {
     if (failQuestionDelete) throw new Error('injected Questions rollback failure');
     questionRows.splice(row - 2, 1);
   },
-  getRange(row, column) {
+  getRange(row, column, rowCount = 1, columnCount = 1) {
     return {
       setValues(values) {
         questionRows[row - 2] = values[0].slice();
@@ -57,6 +57,12 @@ const questions = {
       },
       getValue() {
         return questionRows[row - 2] ? questionRows[row - 2][column - 1] : '';
+      },
+      getValues() {
+        return Array.from({ length: rowCount }, (_, offset) => {
+          const source = questionRows[row - 2 + offset] || [];
+          return source.slice(column - 1, column - 1 + columnCount);
+        });
       }
     };
   }
@@ -115,13 +121,19 @@ assert.equal(questionWrites, 1);
 assert.equal(userValues[6], 1);
 assert.equal(userValues[7], 2);
 
+propertyData.delete(context.getRouteQuestionSubmissionKey_(tokenA));
+const replayFromSheet = context.saveQuestionForWeb_({ ...baseParams, validationToken: tokenA });
+assert.equal(replayFromSheet.questionRow, 2);
+assert.equal(replayFromSheet.alreadyAccepted, true);
+assert.equal(questionWrites, 1);
+
 const intentionalSecond = context.saveQuestionForWeb_({ ...baseParams, validationToken: tokenB });
 assert.equal(intentionalSecond.questionRow, 3);
 assert.equal(questionWrites, 2);
 assert.equal(userValues[6], 2);
 assert.throws(
   () => context.saveQuestionForWeb_({ ...baseParams, question: '改ざんされた別内容', validationToken: tokenA }),
-  /質問送信IDと内容が一致しません/
+  /質問送信ID(?:と|の)内容が一致しません/
 );
 
 resetState();
@@ -149,4 +161,4 @@ assert.throws(
 );
 assert.equal(questionWrites, 1);
 
-console.log('Question submission idempotency: 20/20 PASS');
+console.log('Question submission idempotency: 23/23 PASS');

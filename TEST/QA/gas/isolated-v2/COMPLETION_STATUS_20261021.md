@@ -14,7 +14,7 @@
 - 全GAS連結構文：PASS
 - グローバル関数宣言230件、重複0件：PASS
 - Stripe付与中復旧・障害注入8件：PASS
-- 質問送信ID・二重受付防止・障害注入20件：PASS
+- 質問送信ID・二重受付防止・障害注入23件：PASS
 - 外部境界・LINE安全模擬・OAuth拒否8件：PASS、ネットワーク要求0件
 - 直接の `UrlFetchApp.*`、`DriveApp.*`、`ScriptApp.newTrigger/deleteTrigger/getOAuthToken`、`.setTrashed()` 残存0件：PASS
 - GitHub Actions run `39552966245`：success

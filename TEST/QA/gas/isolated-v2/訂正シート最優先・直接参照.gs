@@ -219,7 +219,8 @@ function setupSheets() {
     'LINE送信日時',
     '最終更新日時',
     '利用チケット',
-    '質問後残り回数'
+    '質問後残り回数',
+    '質問送信ID'
   ]);
 
   // Payments
@@ -3428,6 +3429,49 @@ function saveQuestionForWeb_(p) {
       );
     }
 
+    // Keep the token in Questions as a durable fallback if Script Properties
+    // is unavailable or later cleaned up. Check under the same Script Lock.
+    const existingQuestionCount = questions.getLastRow() - 1;
+    if (existingQuestionCount > 0) {
+      const submissionTokens = questions.getRange(2, 18, existingQuestionCount, 1).getValues();
+      for (let index = 0; index < submissionTokens.length; index++) {
+        if (String(submissionTokens[index][0] || '') !== validationToken) continue;
+        const existingQuestionRow = index + 2;
+        const sameOwner = String(questions.getRange(existingQuestionRow, 2).getValue() || '') === String(user.sub);
+        const sameQuestion = String(questions.getRange(existingQuestionRow, 8).getValue() || '') === question;
+        if (!sameOwner || !sameQuestion) {
+          throw new Error('質問送信IDの内容が一致しません。管理者へお問い合わせください。');
+        }
+
+        const existingUserRow = findRouteUserRow_(users, user.sub);
+        if (existingUserRow === -1) {
+          throw new Error('受付記録とUsersが一致しません。管理者による整合確認が必要です。');
+        }
+        const existingQuestion = questions.getRange(existingQuestionRow, 1, 1, 18).getValues()[0];
+        const existingUser = users.getRange(existingUserRow, 1, 1, 12).getValues()[0];
+        const recordedRemaining = Number(existingQuestion[ROUTE_QA.QUESTION_COL.REMAINING_AFTER - 1]);
+        const currentRemaining = Number(existingUser[ROUTE_QA.USER_COL.REMAINING - 1]);
+        if (!Number.isSafeInteger(recordedRemaining) || currentRemaining !== recordedRemaining) {
+          throw new Error('受付記録と利用回数が一致しません。管理者による整合確認が必要です。');
+        }
+
+        return {
+          ticketLabel: String(existingQuestion[ROUTE_QA.QUESTION_COL.TICKET_LABEL - 1] || ''),
+          usedCount: Number(existingUser[ROUTE_QA.USER_COL.USED_COUNT - 1]),
+          remainingCount: recordedRemaining,
+          canSubmit: recordedRemaining > 0,
+          aiGenerated: String(existingQuestion[ROUTE_QA.QUESTION_COL.AI_STATUS - 1]) === '生成済',
+          questionRow: existingQuestionRow,
+          submissionId: validationToken,
+          alreadyAccepted: true,
+          dayCount: 0,
+          weekCount: 0,
+          maxDay: 999999,
+          maxWeek: 999999
+        };
+      }
+    }
+
     saveRouteQuestionSubmission_(
       submissionProperties,
       submissionKey,
@@ -3581,7 +3625,7 @@ function saveQuestionForWeb_(p) {
         questionRow,
         1,
         1,
-        17
+        18
       )
       .setValues([[
         new Date(),                // A 受付日時
@@ -3603,7 +3647,8 @@ function saveQuestionForWeb_(p) {
         '',                        // N LINE送信日時
         new Date(),                // O 最終更新日時
         ticketLabel,               // P 利用チケット
-        newRemaining               // Q 質問後残り回数
+        newRemaining,              // Q 質問後残り回数
+        validationToken             // R 同一送信の二重受付防止ID
       ]]);
 
     questionPersisted = true;
