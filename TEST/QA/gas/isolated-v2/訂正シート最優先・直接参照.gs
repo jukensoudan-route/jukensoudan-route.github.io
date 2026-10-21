@@ -3633,16 +3633,22 @@ function saveQuestionForWeb_(p) {
      * 設定!B2 が「自動返信」の場合だけ、
      * そのままLINEへ1回送信。
      */
-    autoSendRouteAnswerIfEnabled_(
-      questions,
-      questionRow,
-      user.sub,
-      draft
-    );
-
-
     aiGenerated =
       true;
+
+    // Reply scheduling is independent of AI draft generation. A TEST-disabled
+    // scheduler must never overwrite a successfully saved draft as AI failure.
+    try {
+      autoSendRouteAnswerIfEnabled_(
+        questions,
+        questionRow,
+        user.sub,
+        draft
+      );
+    } catch (replyError) {
+      console.error('ROUTE返信予約エラー：' +
+        (replyError && replyError.message ? replyError.message : String(replyError)));
+    }
 
   }
   catch (aiError) {
