@@ -1827,11 +1827,13 @@ function sendCurrentAnswerToLine() {
 
   if (
     sendStatus ===
-    '送信済'
+    '送信済' ||
+    sendStatus === '送信結果不明' ||
+    sendStatus === '送信処理中'
   ) {
 
     ui.alert(
-      'この回答はすでにLINEへ送信済です。'
+      'この回答は送信済み、または送信状況の確認待ちです。'
     );
 
     return;
@@ -1969,7 +1971,7 @@ function sendCurrentAnswerToLine() {
         c.SEND_STATUS
       )
       .setValue(
-        '送信エラー'
+        '送信結果不明'
       );
 
 
