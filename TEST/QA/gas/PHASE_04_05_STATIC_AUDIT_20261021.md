@@ -47,3 +47,17 @@ Safety boundary: `main`, production GAS/Sheets/LINE, Stripe LIVE, and actual cus
 - **Execution safety:** these findings show reduced direct network exposure but do not prove that every Apps Script service or indirect route is isolated; production-parity functionality is not demonstrated.
 - **Status:** phase ④ = 対応中, phase ⑤ = 対応中. Do not copy the blocked candidate into GAS until complete test wiring and runtime verification.
 
+
+## Syntax-check result and blocking finding
+
+Used V8 JavaScript function compilation without executing GAS methods on the 13 migration modules, both separately and concatenated. Individual PASS 10/13. FAIL 3/13:
+
+- `回答確認.gs`: `SyntaxError: Unexpected token ')'`
+- `内申点自動判定.gs`: `SyntaxError: Unexpected end of input`
+- `回答モード切替.gs`: `SyntaxError: Unexpected token ')'`
+
+Each of the three source snapshots in `staging/` ends abruptly near line 1000, and retrieval after line 1001 produced no additional code. The active candidates have the same incomplete trailing source. Do not invent missing closing logic or copy these files into TEST GAS.
+
+Overall concatenated V8 compile: FAIL. Runtime check: NOT EXECUTED. Phase ④/⑤ cannot be accepted until full authentic source is obtained or isolated TEST-equivalent implementations with audited behavior are prepared, reviewed and compiled.
+
+Prohibited without further validation: GAS code deployment, enabling Web endpoints, live/TEST external communication, automatic triggers.
