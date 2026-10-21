@@ -1173,7 +1173,7 @@ function processOneRouteDelayedReply_(
       sendLinePushMessage_(
         lineUserId,
         draft,
-        'question-row-' +
+        'question-row:' +
         row
       );
 
