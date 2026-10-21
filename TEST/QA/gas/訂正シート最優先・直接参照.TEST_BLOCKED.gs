@@ -444,7 +444,7 @@ function verifyLineUser_(token) {
 
 
     const response =
-      UrlFetchApp.fetch(
+      routeqQaRejectExternalFetch_(
         'https://api.line.me/oauth2/v2.1/verify',
         {
           method:
@@ -512,7 +512,7 @@ function verifyLineUser_(token) {
    * liff.getAccessToken() を送っているためこちらを使用。
    */
   const profileResponse =
-    UrlFetchApp.fetch(
+    routeqQaRejectExternalFetch_(
       'https://api.line.me/v2/profile',
       {
         method:
@@ -5058,7 +5058,7 @@ function callRouteOpenAiResponse_(
   let fetchError = null;
 
   try {
-    response = UrlFetchApp.fetch(
+    response = routeqQaRejectExternalFetch_(
       'https://api.openai.com/v1/responses',
       {
         method:
@@ -6759,7 +6759,7 @@ function sendLinePushMessage_(
     );
 
   const response =
-    UrlFetchApp.fetch(
+    routeqQaRejectExternalFetch_(
       'https://api.line.me/v2/bot/message/push',
       {
         method:
@@ -7003,7 +7003,7 @@ function testLineToken() {
 function authorizeUrlFetch() {
   assertRouteqQaTestEnvironment_();
   throw new Error('TEST isolation: arbitrary external URL fetch is disabled');
-  const response = UrlFetchApp.fetch(
+  const response = routeqQaRejectExternalFetch_(
     'https://www.google.com/',
     { muteHttpExceptions: true }
   );
