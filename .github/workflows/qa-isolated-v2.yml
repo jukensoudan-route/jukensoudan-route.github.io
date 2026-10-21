@@ -1,0 +1,36 @@
+name: QA isolated-v2 offline checks
+
+on:
+  push:
+    branches:
+      - test/qa-full-copy-isolated-20261021
+    paths:
+      - TEST/QA/gas/isolated-v2/**
+      - .github/workflows/qa-isolated-v2.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: qa-isolated-v2-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  offline-checks:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Check out TEST branch
+        uses: actions/checkout@v4
+
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Check GAS syntax and global declarations
+        run: node TEST/QA/gas/isolated-v2/offline-tests/syntax.test.js
+
+      - name: Test Stripe interrupted-grant recovery
+        run: node TEST/QA/gas/isolated-v2/offline-tests/stripe-grant-recovery.test.js
