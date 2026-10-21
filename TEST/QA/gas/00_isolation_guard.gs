@@ -5,11 +5,15 @@
  */
 const ROUTEQ_QA_TEST = Object.freeze({
   sheetId: '11pWeP_LKbL7tAVAn6DBWvhqRo_1l0rIHHBdLjjx7lz8',
+  scriptId: '1XFmCxARSHiYd3Hy1F7AvhbWQmPtz3TrbUr_nZDRXYZ11U8HMqTMMd8GQ',
   requiredEnvironment: 'ISOLATED_TEST',
   blockedProductionSheetId: '12QPlcvkLLVFStZ9bMahpfQvMo1mpwSxUB41el7rTQTE'
 });
 
 function assertRouteqQaTestEnvironment_() {
+  if (ScriptApp.getScriptId() !== ROUTEQ_QA_TEST.scriptId) {
+    throw new Error('TEST only: unexpected Apps Script project ID');
+  }
   const props = PropertiesService.getScriptProperties();
   if (props.getProperty('ROUTEQ_QA_ENVIRONMENT') !== ROUTEQ_QA_TEST.requiredEnvironment) {
     throw new Error('TEST only: ROUTEQ_QA_ENVIRONMENT must be ISOLATED_TEST');
@@ -29,5 +33,9 @@ function assertRouteqQaTestEnvironment_() {
 
 function openRouteqQaTestSpreadsheet_() {
   assertRouteqQaTestEnvironment_();
-  return SpreadsheetApp.openById(ROUTEQ_QA_TEST.sheetId);
+  const sheet = SpreadsheetApp.openById(ROUTEQ_QA_TEST.sheetId);
+  if (sheet.getId() !== ROUTEQ_QA_TEST.sheetId) {
+    throw new Error('TEST only: spreadsheet identity mismatch');
+  }
+  return sheet;
 }
