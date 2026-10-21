@@ -371,6 +371,22 @@ function applyPaidStripeSession_(session) {
       }
     }
 
+    // Claim the Session before touching Users. Ambiguous prior attempts must not replay.
+    if (paymentRow > 0) {
+      const state = String(payments.getRange(paymentRow, 10).getValue() || '');
+      if (state === '付与処理中' || state === '要整合確認') {
+        throw new Error('Stripe付与状態が未確定です。二重付与防止のため手動照合してください。');
+      }
+      payments.getRange(paymentRow, 10).setValue('付与処理中');
+    } else {
+      payments.appendRow([
+        new Date(), lineUserId, String(metadata.display_name || ''),
+        ticketCode, def.amount, def.count, session.id, paymentIntentId,
+        '支払済', '付与処理中', '', new Date()
+      ]);
+      paymentRow = payments.getLastRow();
+    }
+
     let userRow = findRouteUserRow_(users, lineUserId);
 
     if (userRow === -1) {
@@ -426,40 +442,11 @@ function applyPaidStripeSession_(session) {
     updatedUserValues[ROUTE_QA.USER_COL.UPDATED_AT - 1] = new Date();
     users.getRange(userRow, 1, 1, 12).setValues([updatedUserValues]);
 
-    if (paymentRow <= 0) {
-      payments.appendRow([
-        new Date(),
-        lineUserId,
-        String(metadata.display_name || ''),
-        ticketCode,
-        def.amount,
-        def.count,
-        session.id,
-        paymentIntentId,
-        '支払済',
-        '付与済',
-        new Date(),
-        new Date()
-      ]);
+    // Users was updated; never leave a replayable blank marker on failure.
+    payments.getRange(paymentRow, 10).setValue('付与済');
+    payments.getRange(paymentRow, 11).setValue(new Date());
+    payments.getRange(paymentRow, 12).setValue(new Date());
 
-      paymentRow = payments.getLastRow();
-
-    } else {
-      payments.getRange(paymentRow, 8)
-        .setValue(paymentIntentId);
-
-      payments.getRange(paymentRow, 9)
-        .setValue('支払済');
-
-      payments.getRange(paymentRow, 10)
-        .setValue('付与済');
-
-      payments.getRange(paymentRow, 11)
-        .setValue(new Date());
-
-      payments.getRange(paymentRow, 12)
-        .setValue(new Date());
-    }
 
     return {
       granted: true,
