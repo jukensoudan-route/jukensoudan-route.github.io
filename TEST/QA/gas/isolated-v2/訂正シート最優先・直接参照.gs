@@ -3379,6 +3379,10 @@ function saveQuestionForWeb_(p) {
       );
 
 
+    if (!Number.isSafeInteger(remaining) || remaining < 0) {
+      throw new Error('利用回数データが不正です。管理者へお問い合わせください。');
+    }
+
     if (
       remaining <= 0
     ) {
@@ -3397,6 +3401,10 @@ function saveQuestionForWeb_(p) {
         0
       );
 
+
+    if (!Number.isSafeInteger(usedCount) || usedCount < 0 || !Number.isSafeInteger(usedCount + 1)) {
+      throw new Error('利用履歴データが不正です。管理者へお問い合わせください。');
+    }
 
     const freeTrialUsed =
       String(
