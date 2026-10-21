@@ -17,3 +17,19 @@ Safe candidates in `gas/` are incomplete and must not be deployed as a complete 
 Isolated spreadsheet: `11pWeP_LKbL7tAVAn6DBWvhqRo_1l0rIHHBdLjjx7lz8`
 TEST branch: `test/qa-full-copy-isolated-20261021`
 Production: **read-only**.
+
+## 2026-10-21 status update — deployment is explicitly prohibited
+
+The isolated GAS project and spreadsheet already exist; the 14-sheet connection smoke test has **PASS** per the 2026-10-21 handoff. This supersedes historical statements above suggesting that the test was never performed.
+
+**Source integrity blockers:**
+- `回答確認.gs`, `内申点自動判定.gs`, and `回答モード切替.gs` in the TEST candidate and staging source are truncated mid-function.
+- `recovery/` contains only their verified complete-prefix declarations. These are audit/recovery materials, not replacement production-parity source files.
+- `訂正シート最優先・直接参照.TEST_BLOCKED.gs` contains intentional entrypoint halts.
+- `02_external_boundary.gs` now rejects network calls. The 12 archived direct HTTP call sites in the copied core, Stripe and material files were routed to the rejecting boundary.
+- All TEST sources remain unapproved for GAS placement, trigger installation, public Web deployment or real external access. No combination of `recovery/` and main candidate files constitutes an approved deployable set.
+- A composite JavaScript syntax PASS with recovery prefixes does not demonstrate missing-function correctness or runtime behavior.
+
+**Non-negotiable ④/⑤ exit gates:** recover complete original bodies (or use a separately approved exact-function replacement), resolve all dependencies and syntax errors, confirm every TEST source binds to isolated-only data, keep all external calls fail-closed or TEST-only under separately approved settings, establish regression fixtures, and only then issue explicit step-⑥ placement instructions.
+
+This update is a documentation correction and safety gate only. It does not authorize any operation in GAS, production, Stripe or LINE.
