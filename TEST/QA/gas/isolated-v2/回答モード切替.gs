@@ -542,6 +542,8 @@ function calculateRouteReplyDueAt_(questions, fromDate) {
  * =========================================================
  */
 function ensureRouteDelayedReplyTrigger_() {
+  assertRouteqQaTestEnvironment_();
+  routeqQaBlockSensitiveEntry_('ensureRouteDelayedReplyTrigger_');
 
   const handler =
     ROUTE_DELAYED_REPLY
