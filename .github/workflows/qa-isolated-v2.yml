@@ -6,6 +6,7 @@ on:
       - test/qa-full-copy-isolated-20261021
     paths:
       - TEST/QA/gas/isolated-v2/**
+      - TEST/QA/hyogo/index.html
       - .github/workflows/qa-isolated-v2.yml
   workflow_dispatch:
 
