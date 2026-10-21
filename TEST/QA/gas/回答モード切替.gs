@@ -919,14 +919,12 @@ function processOneRouteDelayedReply_(
 
 
   try {
+    if (!item || String(item.spreadsheetId || '') !== ROUTEQ_QA_TEST.sheetId) {
+      throw new Error('TEST isolation: queued spreadsheet ID does not belong to isolated TEST');
+    }
 
     const ss =
-      SpreadsheetApp
-        .openById(
-          String(
-            item.spreadsheetId
-          )
-        );
+      openRouteqQaTestSpreadsheet_();
 
 
     const questions =
