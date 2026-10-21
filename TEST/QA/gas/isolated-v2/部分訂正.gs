@@ -93,6 +93,7 @@ function submitRoutePartialCorrection(formData) {
 
 
 function applyRoutePartialCorrection_(formData, spreadsheet, options) {
+  routeqQaAssertAllowedSpreadsheet_(spreadsheet);
   const request = normalizeRoutePartialCorrectionRequest_(formData);
   const ss = spreadsheet;
   const safeOptions = options || {};
