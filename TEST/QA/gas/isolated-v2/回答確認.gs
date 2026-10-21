@@ -1948,19 +1948,13 @@ function sendCurrentAnswerToLine() {
       );
 
 
-    loadQuestionToReview_(
-      row,
-      true
-    );
-
-
-    SpreadsheetApp
-      .getActive()
-      .toast(
-        'LINEへ送信しました。',
-        'ROUTE Q&A',
-        4
-      );
+    // UI refresh is not a LINE transport failure: never overwrite SENT.
+    try {
+      loadQuestionToReview_(row, true);
+      SpreadsheetApp.getActive().toast('LINEへ送信しました。', 'ROUTE Q&A', 4);
+    } catch (uiError) {
+      console.error('LINE受付後の画面更新失敗：' + uiError);
+    }
 
   }
   catch (error) {
