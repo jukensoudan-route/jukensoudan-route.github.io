@@ -1459,6 +1459,15 @@ function saveFinalAnswer() {
   }
 
 
+  // A valid row number alone does not prove the row contains a question.
+  const savedQuestion = String(
+    questions.getRange(row, ROUTE_QA.QUESTION_COL.QUESTION).getValue() || ''
+  ).trim();
+  if (!savedQuestion) {
+    SpreadsheetApp.getUi().alert('対象の質問が存在しないため保存しませんでした。');
+    return;
+  }
+
   const answer =
     String(
       review
