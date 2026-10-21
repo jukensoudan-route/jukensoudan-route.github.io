@@ -61,3 +61,9 @@ Each of the three source snapshots in `staging/` ends abruptly near line 1000, a
 Overall concatenated V8 compile: FAIL. Runtime check: NOT EXECUTED. Phase ④/⑤ cannot be accepted until full authentic source is obtained or isolated TEST-equivalent implementations with audited behavior are prepared, reviewed and compiled.
 
 Prohibited without further validation: GAS code deployment, enabling Web endpoints, live/TEST external communication, automatic triggers.
+
+## Follow-up source recovery (same date)
+- GitHub default-branch code search for the three missing module filenames yielded no matches.
+- Queried the named release branch `release/qa-copy-current-production-20261015` for each missing module at the staging paths; none was found.
+- This does NOT prove source is unavailable in other historical branches, external backups or the original GAS project.
+- IMPORTANT: The previous 10/13 JavaScript syntax pass does not imply Apps Script runtime compatibility or isolation completeness. The three incomplete modules remain BLOCKERS. Do not deploy this bundle.
