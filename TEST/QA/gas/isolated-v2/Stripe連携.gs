@@ -371,6 +371,15 @@ function applyPaidStripeSession_(session) {
       }
     }
 
+    // A different Session sharing this Payment Intent must not bypass an
+    // earlier ambiguous grant attempt.
+    if (paymentIntentId) {
+      const intentRow = findPaymentRowByPaymentIntent_(payments, paymentIntentId);
+      if (intentRow > 0 && intentRow !== paymentRow) {
+        throw new Error('Stripe Payment Intentは別セッションで登録済みです。手動整合確認が必要です。');
+      }
+    }
+
     // Claim the Session before touching Users. Ambiguous prior attempts must not replay.
     if (paymentRow > 0) {
       const state = String(payments.getRange(paymentRow, 10).getValue() || '');
