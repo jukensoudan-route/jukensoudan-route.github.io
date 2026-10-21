@@ -1,0 +1,87 @@
+{
+  "purpose": "non-destructive original-versus-TEST comparison",
+  "branch": "test/qa-full-copy-isolated-20261021",
+  "method": "same-line comparison only; insertions shift line alignment, not a semantic diff",
+  "files": [
+    {
+      "file": "資料DB参照.gs",
+      "original": "62b5dc1824bb7928d965a801faeb6763ea7f6f4b",
+      "candidate": "a3dabd187035dce1428499d6dd404104bdb87bda",
+      "original_lines": 394,
+      "candidate_lines": 394,
+      "changed_at_same_line": 2,
+      "complete_original": "UNPROVEN",
+      "candidate_ready": false
+    },
+    {
+      "file": "部分訂正.gs",
+      "original": "0699351b87cf37996309538d2d3de7b6c070a787",
+      "candidate": "64a2a7a80513824a367e351878604ab971fe08f3",
+      "original_lines": 443,
+      "candidate_lines": 443,
+      "changed_at_same_line": 4,
+      "complete_original": "UNPROVEN",
+      "candidate_ready": false
+    },
+    {
+      "file": "資料ファイル登録.gs",
+      "original": "23e26dfe61f13e0f9678d5149c87d16b96fca913",
+      "candidate": "69ae951721bd26e96f29e323fe82330647f8a6bb",
+      "original_lines": 579,
+      "candidate_lines": 593,
+      "changed_at_same_line": 515,
+      "complete_original": "UNPROVEN",
+      "candidate_ready": false
+    },
+    {
+      "file": "自動バックアップ.gs",
+      "original": "e322e004c1a22855b6d9e5659d77c849883b3da2",
+      "candidate": "e80274029069ca98702de35a97fbe7f3d5d6262b",
+      "original_lines": 96,
+      "candidate_lines": 104,
+      "changed_at_same_line": 79,
+      "complete_original": "UNPROVEN",
+      "candidate_ready": false
+    },
+    {
+      "file": "Stripe連携.gs",
+      "original": "64ee3e18a12cd8b7235dc49ba303996d9e3324b6",
+      "candidate": "5b8b1daf150c037a942060471cc3f7f097c8c41b",
+      "original_lines": 806,
+      "candidate_lines": 820,
+      "changed_at_same_line": 744,
+      "complete_original": "UNPROVEN",
+      "candidate_ready": false
+    },
+    {
+      "file": "回答確認.gs",
+      "original": "248d39a48c052f64b5f0dd7668ad0a0843b1de2f",
+      "candidate": "95fb9071ab4327ab5c6b520d41f0c9c4bf0b346f",
+      "original_lines": 1001,
+      "candidate_lines": 1005,
+      "changed_at_same_line": 528,
+      "complete_original": "TRUNCATED",
+      "candidate_ready": false
+    },
+    {
+      "file": "内申点自動判定.gs",
+      "original": "d6b73a669bd555301b199b0797bf62d533b8b6da",
+      "candidate": "5ccfd1bb29cefbddf26d4f872e56ce5e96196049",
+      "original_lines": 1001,
+      "candidate_lines": 1001,
+      "changed_at_same_line": 2,
+      "complete_original": "TRUNCATED",
+      "candidate_ready": false
+    },
+    {
+      "file": "回答モード切替.gs",
+      "original": "96a177c6949b02be988ff907646443461b64ac75",
+      "candidate": "617d3f6f07eb13b7f620d575fc3dc8a30685c8d0",
+      "original_lines": 1001,
+      "candidate_lines": 1008,
+      "changed_at_same_line": 838,
+      "complete_original": "TRUNCATED",
+      "candidate_ready": false
+    }
+  ]
+}
