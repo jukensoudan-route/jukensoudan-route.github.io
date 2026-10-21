@@ -38,5 +38,8 @@ jobs:
       - name: Test question submission idempotency
         run: node TEST/QA/gas/isolated-v2/offline-tests/question-submission-idempotency.test.js
 
+      - name: Test isolated frontend demo
+        run: node TEST/QA/gas/isolated-v2/offline-tests/frontend-isolated-demo.test.js
+
       - name: Test external boundary and LINE-safe mock
         run: node TEST/QA/gas/isolated-v2/offline-tests/external-boundary.test.js

@@ -17,6 +17,7 @@
 - 質問送信ID・二重受付防止・障害注入23件：PASS
 - 外部境界・LINE安全模擬・OAuth拒否8件：PASS、ネットワーク要求0件
 - 直接の `UrlFetchApp.*`、`DriveApp.*`、`ScriptApp.newTrigger/deleteTrigger/getOAuthToken`、`.setTrashed()` 残存0件：PASS
+- 隔離ブラウザ模擬UI（認証・質問確認・受付・残回数更新）：利用可能／外部接続0件
 - GitHub Actions run `39552966245`：success
 
 ## 完了条件別の客観判定

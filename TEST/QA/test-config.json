@@ -3,6 +3,7 @@
   "frontendPath": "/TEST/QA/",
   "testSpreadsheetId": "11pWeP_LKbL7tAVAn6DBWvhqRo_1l0rIHHBdLjjx7lz8",
   "integration": {
+    "isolatedDemoMode": true,
     "gasWebAppUrl": null,
     "questionOptionsUrl": null,
     "lineLiffId": null,
@@ -22,5 +23,5 @@
     "livePayments": "deny",
     "allowOnlyTestData": true
   },
-  "status": "configuration_template_only_not_wired"
+  "status": "isolated_browser_demo_ready_external_integrations_disabled"
 }

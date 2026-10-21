@@ -443,7 +443,7 @@
     @media(max-width:600px){ .qa-back-nav { padding:8px 12px; } .qa-back-nav a { font-size:15px; } .routeq-site-footer { padding:3px 8px; } .routeq-site-footer__inner { gap:6px; } .routeq-site-footer small, .routeq-site-footer a { font-size:clamp(10px, 3vw, 12px); } }
 </style>
 </head>
-<body><header class="hero image-hero" aria-label="キケルート高校受験Q&A"><img src="/QA/hyogo/qalogo.png" width="1443" height="1090" alt="キケルート兵庫県版。高校受験で気になった事をここから質問。" fetchpriority="high" decoding="async"><img src="/QA/hyogo/qa-four-steps.webp" width="2172" height="563" alt="チケット購入、ここで質問、専門家が回答、LINEで受け取る、の4工程。" loading="lazy" decoding="async"></header>
+<body><div style="position:sticky;top:0;z-index:9999;padding:10px 16px;background:#fff3cd;color:#664d03;text-align:center;font-weight:800;border-bottom:1px solid #ffda6a;">隔離TEST模擬モード：外部送信・課金・LINE連携は行いません</div><header class="hero image-hero" aria-label="キケルート高校受験Q&A"><img src="/QA/hyogo/qalogo.png" width="1443" height="1090" alt="キケルート兵庫県版。高校受験で気になった事をここから質問。" fetchpriority="high" decoding="async"><img src="/QA/hyogo/qa-four-steps.webp" width="2172" height="563" alt="チケット購入、ここで質問、専門家が回答、LINEで受け取る、の4工程。" loading="lazy" decoding="async"></header>
 
 <nav class="qa-back-nav" aria-label="Q&A案内ページへ戻る">
   <a href="/TEST/QA/">← Q&Aに戻る</a>
@@ -752,7 +752,8 @@
 
   <iframe name="backendFrame" class="backend-frame"></iframe>
 
-  <script type="text/plain" id="routeq-test-original-disabled">
+  <script type="text/javascript" id="routeq-isolated-demo">
+    const ISOLATED_DEMO = true;
     const GAS_WEB_APP_URL = "";
     const QUESTION_OPTIONS_URL = "";
     const QUESTION_OPTIONS_CACHE_KEY = "route_hyogo_question_options_v3";
@@ -1521,6 +1522,7 @@
     }
 
     async function loadQuestionOptions() {
+      if (ISOLATED_DEMO) return;
       try {
         const cached = JSON.parse(localStorage.getItem(QUESTION_OPTIONS_CACHE_KEY) || "null");
         if (cached && cached.savedAt && Date.now() - cached.savedAt < QUESTION_OPTIONS_CACHE_MS) {
@@ -1565,6 +1567,66 @@
     }
 
     function postToGas(data) {
+      if (ISOLATED_DEMO) {
+        return new Promise(function(resolve, reject) {
+          window.setTimeout(function() {
+            const usageKey = "routeq-isolated-demo-usage";
+            const receiptsKey = "routeq-isolated-demo-receipts";
+            const usage = JSON.parse(localStorage.getItem(usageKey) || '{"usedCount":0,"remainingCount":3}');
+            const receipts = JSON.parse(localStorage.getItem(receiptsKey) || "{}");
+
+            if (data.action === "usage") {
+              resolve({
+                ticketLabel:"隔離TEST 3回",
+                usedCount:Number(usage.usedCount || 0),
+                remainingCount:Number(usage.remainingCount || 0),
+                canSubmit:Number(usage.remainingCount || 0) > 0
+              });
+              return;
+            }
+
+            if (data.action === "validateQuestion") {
+              const submissionId = "demo." + Date.now() + "." + Math.random().toString(36).slice(2);
+              resolve({ allowed:true, validationToken:submissionId, submissionId:submissionId });
+              return;
+            }
+
+            if (data.action === "submit") {
+              const submissionId = String(data.validationToken || "");
+              if (!submissionId) {
+                reject(new Error("質問送信IDがありません。"));
+                return;
+              }
+              if (receipts[submissionId]) {
+                resolve(receipts[submissionId]);
+                return;
+              }
+              if (Number(usage.remainingCount || 0) <= 0) {
+                reject(new Error("隔離TESTの質問回数を使い切りました。"));
+                return;
+              }
+              usage.usedCount = Number(usage.usedCount || 0) + 1;
+              usage.remainingCount = Number(usage.remainingCount || 0) - 1;
+              const result = {
+                ticketLabel:"隔離TEST 3回",
+                usedCount:usage.usedCount,
+                remainingCount:usage.remainingCount,
+                canSubmit:usage.remainingCount > 0,
+                aiGenerated:false,
+                submissionId:submissionId,
+                alreadyAccepted:false
+              };
+              receipts[submissionId] = result;
+              localStorage.setItem(usageKey, JSON.stringify(usage));
+              localStorage.setItem(receiptsKey, JSON.stringify(receipts));
+              resolve(result);
+              return;
+            }
+
+            reject(new Error("隔離TEST模擬モードでは決済・外部連携を利用できません。"));
+          }, 120);
+        });
+      }
       return new Promise(function(resolve, reject) {
         const requestId = "route_" + Date.now() + "_" + Math.random().toString(36).slice(2);
         pendingRequests[requestId] = { resolve:resolve, reject:reject };
@@ -2281,8 +2343,10 @@
 
 
         showMessage(
-          "質問を受け付けました",
-          "送信が完了しました。ROUTEQで内容を確認後、LINEで回答します。",
+          ISOLATED_DEMO ? "模擬質問を受け付けました" : "質問を受け付けました",
+          ISOLATED_DEMO
+            ? "隔離TEST内で受付と回数更新を確認しました。LINE送信やAI回答生成は行っていません。"
+            : "送信が完了しました。ROUTEQで内容を確認後、LINEで回答します。",
           "✓"
         );
 
@@ -2393,6 +2457,16 @@
 
     function initializeLiff() {
       if (liffInitialization) return liffInitialization;
+      if (ISOLATED_DEMO) {
+        lineAccessToken = "ISOLATED_DEMO_TOKEN";
+        lineProfile = { userId:"U_ISOLATED_DEMO", displayName:"隔離TEST利用者" };
+        document.getElementById("loginStatus").innerHTML =
+          '<div class="status-icon is-authenticated">✓</div><div class="status-text">隔離TEST認証済み（模擬）</div>';
+        document.getElementById("usageStatus").textContent = "隔離TESTの利用状況を確認しています。";
+        liffInitialization = postToGas({ action:"usage", idToken:lineAccessToken })
+          .then(function(result) { updateUsage(result); return result; });
+        return liffInitialization;
+      }
       liffInitialization = (async function() {
         const startedAt = performance.now();
         const timings = { cacheHit:false };
@@ -2505,7 +2579,7 @@
       }
       changeTheme(false);
       renderSchoolTypeButtons("schoolTypeGrid", "", 1);
-      if (!/^(localhost|127\.0\.0\.1)$/.test(location.hostname)) initializeLiff();
+      if (ISOLATED_DEMO || !/^(localhost|127\.0\.0\.1)$/.test(location.hostname)) initializeLiff();
     });
   </script>
 
