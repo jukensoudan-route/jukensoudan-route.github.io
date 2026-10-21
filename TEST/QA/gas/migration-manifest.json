@@ -1,5 +1,5 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "branch": "test/qa-full-copy-isolated-20261021",
   "base_path": "TEST/QA/gas",
   "source_snapshot": "staging/",
@@ -107,5 +107,120 @@
       "repair": "ORIGINAL_ONLY",
       "deployable": false
     }
-  ]
+  ],
+  "candidate_files": [
+    {
+      "file": "00_isolation_guard.gs",
+      "git_blob_sha": "36173e37e8393e003dd772d768c227d4e5a3d0d0",
+      "syntax_check_js": "PASS",
+      "purpose": "TEST_SUPPORT",
+      "deployable": false
+    },
+    {
+      "file": "01_sheet_structure_smoke_test.gs",
+      "git_blob_sha": "6410d20547622cf1a2994f42c2bac7d8e2819373",
+      "syntax_check_js": "PASS",
+      "purpose": "TEST_SUPPORT",
+      "deployable": false
+    },
+    {
+      "file": "02_external_boundary.gs",
+      "git_blob_sha": "e918ece3f8cd39df4891ad9de66860a504027737",
+      "syntax_check_js": "PASS",
+      "purpose": "TEST_SUPPORT",
+      "deployable": false
+    },
+    {
+      "file": "AI修正反映.gs",
+      "git_blob_sha": "0e844f9ae6f511121295f35194edf02ac6c962ad",
+      "syntax_check_js": "PASS",
+      "purpose": "TEST_CANDIDATE",
+      "deployable": false
+    },
+    {
+      "file": "資料DB参照.gs",
+      "git_blob_sha": "a3dabd187035dce1428499d6dd404104bdb87bda",
+      "syntax_check_js": "PASS",
+      "purpose": "TEST_CANDIDATE",
+      "deployable": false
+    },
+    {
+      "file": "部分訂正.gs",
+      "git_blob_sha": "64a2a7a80513824a367e351878604ab971fe08f3",
+      "syntax_check_js": "PASS",
+      "purpose": "TEST_CANDIDATE",
+      "deployable": false
+    },
+    {
+      "file": "資料ファイル登録.gs",
+      "git_blob_sha": "69ae951721bd26e96f29e323fe82330647f8a6bb",
+      "syntax_check_js": "PASS",
+      "purpose": "TEST_CANDIDATE",
+      "deployable": false
+    },
+    {
+      "file": "自動バックアップ.gs",
+      "git_blob_sha": "e80274029069ca98702de35a97fbe7f3d5d6262b",
+      "syntax_check_js": "PASS",
+      "purpose": "TEST_CANDIDATE",
+      "deployable": false
+    },
+    {
+      "file": "Stripe連携.gs",
+      "git_blob_sha": "5b8b1daf150c037a942060471cc3f7f097c8c41b",
+      "syntax_check_js": "PASS",
+      "purpose": "TEST_CANDIDATE",
+      "deployable": false
+    },
+    {
+      "file": "回答確認.gs",
+      "git_blob_sha": "95fb9071ab4327ab5c6b520d41f0c9c4bf0b346f",
+      "syntax_check_js": "FAIL",
+      "purpose": "TEST_CANDIDATE",
+      "deployable": false
+    },
+    {
+      "file": "内申点自動判定.gs",
+      "git_blob_sha": "5ccfd1bb29cefbddf26d4f872e56ce5e96196049",
+      "syntax_check_js": "FAIL",
+      "purpose": "TEST_CANDIDATE",
+      "deployable": false
+    },
+    {
+      "file": "回答モード切替.gs",
+      "git_blob_sha": "617d3f6f07eb13b7f620d575fc3dc8a30685c8d0",
+      "syntax_check_js": "FAIL",
+      "purpose": "TEST_CANDIDATE",
+      "deployable": false
+    },
+    {
+      "file": "訂正シート最優先・直接参照.TEST_BLOCKED.gs",
+      "git_blob_sha": "66b918ab36be2f525807375bde6a43b038ba111e",
+      "syntax_check_js": "PASS",
+      "purpose": "TEST_CANDIDATE",
+      "deployable": false
+    },
+    {
+      "file": "recovery/回答確認.gs",
+      "git_blob_sha": "ca1a3a0f8367938af4e92b5396ed80ae86876986",
+      "syntax_check_js": "PASS",
+      "purpose": "INCOMPLETE_AUDIT_ONLY",
+      "deployable": false
+    },
+    {
+      "file": "recovery/内申点自動判定.gs",
+      "git_blob_sha": "caa8105204ac47d42c4fe167c9103f80f0df1469",
+      "syntax_check_js": "PASS",
+      "purpose": "INCOMPLETE_AUDIT_ONLY",
+      "deployable": false
+    },
+    {
+      "file": "recovery/回答モード切替.gs",
+      "git_blob_sha": "367b518f556b8df8bba1d6f45235de7f67974b5e",
+      "syntax_check_js": "PASS",
+      "purpose": "INCOMPLETE_AUDIT_ONLY",
+      "deployable": false
+    }
+  ],
+  "note": "JS syntax PASS does not imply Apps Script runtime or parity validation. No GAS deployment authorized."
 }
