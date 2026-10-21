@@ -406,6 +406,14 @@ function applyPaidStripeSession_(session) {
       uv[ROUTE_QA.USER_COL.REMAINING - 1] || 0
     );
 
+    if (![currentPaid, currentGranted, currentRemaining, def.count, def.amount].every(
+      function(v) { return Number.isSafeInteger(v) && v >= 0; }
+    ) || !Number.isSafeInteger(currentPaid + def.amount) ||
+        !Number.isSafeInteger(currentGranted + def.count) ||
+        !Number.isSafeInteger(currentRemaining + def.count)) {
+      throw new Error('Stripeチケット付与の数値が不正です。');
+    }
+
     const newRemaining = currentRemaining + def.count;
 
     // Keep all Users ticket counters in a single row write.
