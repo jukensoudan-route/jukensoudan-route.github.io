@@ -1930,7 +1930,8 @@ function bytesToRouteHex_(
 
 function makeRouteValidationSignature_(
   issuedAt,
-  fingerprint
+  fingerprint,
+  nonce
 ) {
 
   const secret =
@@ -1943,6 +1944,10 @@ function makeRouteValidationSignature_(
     '\n---ROUTE-QCHECK---\n' +
     String(
       fingerprint || ''
+    ) +
+    '\n---ROUTE-SUBMISSION-ID---\n' +
+    String(
+      nonce || ''
     );
 
   const signature =
@@ -1975,10 +1980,14 @@ function saveRouteValidationToken_(
       Date.now()
     );
 
+  const nonce =
+    Utilities.getUuid();
+
   const signature =
     makeRouteValidationSignature_(
       issuedAt,
-      fingerprint
+      fingerprint,
+      nonce
     );
 
 
@@ -1989,6 +1998,8 @@ function saveRouteValidationToken_(
    */
   return (
     issuedAt +
+    '.' +
+    nonce +
     '.' +
     signature
   );
@@ -2016,7 +2027,8 @@ function consumeRouteValidationToken_(
       '.'
     );
   if (
-    parts.length !== 2
+    parts.length !== 2 &&
+    parts.length !== 3
   ) {
     return false;
   }
@@ -2029,8 +2041,13 @@ function consumeRouteValidationToken_(
 
   const suppliedSignature =
     String(
-      parts[1] || ''
+      parts[parts.length - 1] || ''
     );
+
+  const nonce =
+    parts.length === 3
+      ? String(parts[1] || '')
+      : '';
 
 
   if (
@@ -2069,7 +2086,8 @@ function consumeRouteValidationToken_(
       String(
         issuedAt
       ),
-      fingerprint
+      fingerprint,
+      nonce
     );
 
 
@@ -2077,6 +2095,46 @@ function consumeRouteValidationToken_(
     suppliedSignature ===
     expectedSignature
   );
+}
+
+
+function getRouteQuestionSubmissionKey_(validationToken) {
+  const parts = String(validationToken || '').trim().split('.');
+  const signature = String(parts[parts.length - 1] || '').toLowerCase();
+  if ((parts.length !== 2 && parts.length !== 3) || !/^[0-9a-f]{64}$/.test(signature)) {
+    throw new Error('質問送信IDが不正です。もう一度内容確認を行ってください。');
+  }
+  return 'ROUTE_QA_SUBMISSION_' + signature;
+}
+
+
+function loadRouteQuestionSubmission_(properties, key) {
+  const raw = properties.getProperty(key);
+  if (!raw) return null;
+  try {
+    const receipt = JSON.parse(raw);
+    if (!receipt || !receipt.state || !receipt.lineUserId || !receipt.fingerprint) {
+      throw new Error('invalid receipt');
+    }
+    return receipt;
+  } catch (error) {
+    throw new Error('質問送信記録が壊れています。管理者による整合確認が必要です。');
+  }
+}
+
+
+function saveRouteQuestionSubmission_(properties, key, receipt) {
+  properties.setProperty(key, JSON.stringify(receipt));
+}
+
+
+function assertRouteQuestionSubmissionMatch_(receipt, lineUserId, fingerprint) {
+  if (
+    String(receipt.lineUserId) !== String(lineUserId) ||
+    String(receipt.fingerprint) !== String(fingerprint)
+  ) {
+    throw new Error('質問送信IDと内容が一致しません。処理を停止しました。');
+  }
 }
 
 
@@ -3024,6 +3082,10 @@ function validateQuestionForWeb_(
     validationToken:
       validationToken,
 
+    // The signed validation token is also the server-issued idempotency key.
+    submissionId:
+      validationToken,
+
     replyMode:
       replySchedule.replyMode,
 
@@ -3280,6 +3342,20 @@ function saveQuestionForWeb_(p) {
     );
   }
 
+  const submissionFingerprint =
+    makeRouteValidationFingerprint_(
+      user.sub,
+      validationData
+    );
+
+  const submissionKey =
+    getRouteQuestionSubmissionKey_(
+      validationToken
+    );
+
+  const submissionProperties =
+    PropertiesService.getScriptProperties();
+
 
   const ss =
     openRouteqQaTestSpreadsheet_();
@@ -3303,6 +3379,10 @@ function saveQuestionForWeb_(p) {
   let newUsedCount = 0;
   let newRemaining = 0;
   let questionRow = 0;
+  let questionPersisted = false;
+  let submissionCreated = false;
+  let submissionCommitted = false;
+  let committedResult = null;
 
 
   /*
@@ -3320,6 +3400,46 @@ function saveQuestionForWeb_(p) {
 
 
   try {
+
+    const existingSubmission =
+      loadRouteQuestionSubmission_(
+        submissionProperties,
+        submissionKey
+      );
+
+    if (existingSubmission) {
+      assertRouteQuestionSubmissionMatch_(
+        existingSubmission,
+        user.sub,
+        submissionFingerprint
+      );
+
+      if (
+        existingSubmission.state === 'COMMITTED' &&
+        existingSubmission.result
+      ) {
+        return existingSubmission.result;
+      }
+
+      throw new Error(
+        existingSubmission.state === 'NEEDS_REVIEW'
+          ? '前回の質問送信は整合確認が必要です。再送せず管理者へお問い合わせください。'
+          : '同じ質問を処理中です。しばらく待ってから状態を確認してください。'
+      );
+    }
+
+    saveRouteQuestionSubmission_(
+      submissionProperties,
+      submissionKey,
+      {
+        state: 'PROCESSING',
+        lineUserId: String(user.sub),
+        fingerprint: submissionFingerprint,
+        questionRow: 0,
+        updatedAt: new Date().toISOString()
+      }
+    );
+    submissionCreated = true;
 
     userRow =
       findRouteUserRow_(
@@ -3486,6 +3606,8 @@ function saveQuestionForWeb_(p) {
         newRemaining               // Q 質問後残り回数
       ]]);
 
+    questionPersisted = true;
+
 
     /* Update all user counters in one row write to avoid split counter states. */
     const nextUserValues = uv.slice();
@@ -3509,6 +3631,7 @@ function saveQuestionForWeb_(p) {
         if (questions.getLastRow() === questionRow && matchesOwner && matchesQuestion) {
           questions.deleteRow(questionRow);
           rollbackComplete = true;
+          questionPersisted = false;
         }
       } catch (rollbackError) {
         console.error('質問行の補償削除に失敗：' + String(rollbackError));
@@ -3519,6 +3642,61 @@ function saveQuestionForWeb_(p) {
       throw usersError;
     }
 
+    committedResult = {
+      ticketLabel: ticketLabel,
+      usedCount: newUsedCount,
+      remainingCount: newRemaining,
+      canSubmit: newRemaining > 0,
+      aiGenerated: false,
+      questionRow: questionRow,
+      submissionId: validationToken,
+      dayCount: 0,
+      weekCount: 0,
+      maxDay: 999999,
+      maxWeek: 999999
+    };
+
+    saveRouteQuestionSubmission_(
+      submissionProperties,
+      submissionKey,
+      {
+        state: 'COMMITTED',
+        lineUserId: String(user.sub),
+        fingerprint: submissionFingerprint,
+        questionRow: questionRow,
+        result: committedResult,
+        updatedAt: new Date().toISOString()
+      }
+    );
+    submissionCommitted = true;
+
+  }
+  catch (submissionError) {
+    if (submissionCreated && !submissionCommitted) {
+      try {
+        if (!questionPersisted) {
+          submissionProperties.deleteProperty(submissionKey);
+        } else {
+          saveRouteQuestionSubmission_(
+            submissionProperties,
+            submissionKey,
+            {
+              state: 'NEEDS_REVIEW',
+              lineUserId: String(user.sub),
+              fingerprint: submissionFingerprint,
+              questionRow: questionRow,
+              updatedAt: new Date().toISOString(),
+              error: submissionError && submissionError.message
+                ? submissionError.message
+                : String(submissionError)
+            }
+          );
+        }
+      } catch (receiptError) {
+        console.error('質問送信記録の更新に失敗：' + String(receiptError));
+      }
+    }
+    throw submissionError;
   }
   finally {
 
@@ -3668,7 +3846,7 @@ function saveQuestionForWeb_(p) {
   }
 
 
-  return {
+  const finalResult = {
     ticketLabel:
       ticketLabel,
 
@@ -3684,6 +3862,12 @@ function saveQuestionForWeb_(p) {
     aiGenerated:
       aiGenerated,
 
+    questionRow:
+      questionRow,
+
+    submissionId:
+      validationToken,
+
     // 前の質問ページとの互換用
     dayCount:
       0,
@@ -3697,6 +3881,25 @@ function saveQuestionForWeb_(p) {
     maxWeek:
       999999
   };
+
+  try {
+    saveRouteQuestionSubmission_(
+      submissionProperties,
+      submissionKey,
+      {
+        state: 'COMMITTED',
+        lineUserId: String(user.sub),
+        fingerprint: submissionFingerprint,
+        questionRow: questionRow,
+        result: finalResult,
+        updatedAt: new Date().toISOString()
+      }
+    );
+  } catch (receiptUpdateError) {
+    console.error('質問送信結果の更新に失敗：' + String(receiptUpdateError));
+  }
+
+  return finalResult;
 }
 
 /* =========================================================
