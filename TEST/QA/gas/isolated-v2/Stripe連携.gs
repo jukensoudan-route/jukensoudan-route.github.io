@@ -380,23 +380,42 @@ function applyPaidStripeSession_(session) {
       }
     }
 
-    // Claim the Session before touching Users. Ambiguous prior attempts must not replay.
+    // Recover an interrupted grant from the immutable before/after counters saved
+    // in Payments. Only exact matches are safe to resume or finalize.
     if (paymentRow > 0) {
       const state = String(payments.getRange(paymentRow, 10).getValue() || '');
-      if (state === '付与処理中' || state === '要整合確認') {
-        throw new Error('Stripe付与状態が未確定です。二重付与防止のため手動照合してください。');
+      if (state === '要整合確認') {
+        throw new Error('Stripe付与状態が不整合です。手動照合してください。');
       }
+      if (state === '付与処理中') {
+        return recoverInterruptedStripeGrant_(
+          payments, paymentRow, users, session, def
+        );
+      }
+    }
+
+    let userRow = findRouteUserRow_(users, lineUserId);
+
+    const beforeValues = userRow > 0
+      ? users.getRange(userRow, 1, 1, 12).getValues()[0]
+      : ['', '', '', '', 0, 0, 0, 0, '', '', '', ''];
+    const grantJournal = buildStripeGrantJournal_(
+      session, lineUserId, ticketCode, def, beforeValues
+    );
+
+    // Persist the recovery journal before the claim marker and before Users.
+    if (paymentRow > 0) {
+      payments.getRange(paymentRow, 13).setValue(JSON.stringify(grantJournal));
       payments.getRange(paymentRow, 10).setValue('付与処理中');
+      payments.getRange(paymentRow, 12).setValue(new Date());
     } else {
       payments.appendRow([
         new Date(), lineUserId, String(metadata.display_name || ''),
         ticketCode, def.amount, def.count, session.id, paymentIntentId,
-        '支払済', '付与処理中', '', new Date()
+        '支払済', '付与処理中', '', new Date(), JSON.stringify(grantJournal)
       ]);
       paymentRow = payments.getLastRow();
     }
-
-    let userRow = findRouteUserRow_(users, lineUserId);
 
     if (userRow === -1) {
       users.appendRow([
@@ -452,9 +471,10 @@ function applyPaidStripeSession_(session) {
     users.getRange(userRow, 1, 1, 12).setValues([updatedUserValues]);
 
     // Users was updated; never leave a replayable blank marker on failure.
-    payments.getRange(paymentRow, 10).setValue('付与済');
-    payments.getRange(paymentRow, 11).setValue(new Date());
-    payments.getRange(paymentRow, 12).setValue(new Date());
+    const grantedAt = new Date();
+    payments.getRange(paymentRow, 10, 1, 3).setValues([[
+      '付与済', grantedAt, grantedAt
+    ]]);
 
 
     return {
@@ -466,6 +486,153 @@ function applyPaidStripeSession_(session) {
   } finally {
     lock.releaseLock();
   }
+}
+
+
+function buildStripeGrantJournal_(session, lineUserId, ticketCode, def, userValues) {
+  const before = stripeGrantCountersFromUserValues_(userValues);
+  const numericValues = [
+    before.totalPaid, before.totalGranted, before.remaining,
+    def.amount, def.count
+  ];
+  if (!numericValues.every(function(v) {
+    return Number.isSafeInteger(v) && v >= 0;
+  })) {
+    throw new Error('Stripeチケット付与の数値が不正です。');
+  }
+
+  const after = {
+    totalPaid: before.totalPaid + def.amount,
+    totalGranted: before.totalGranted + def.count,
+    remaining: before.remaining + def.count
+  };
+  if (![after.totalPaid, after.totalGranted, after.remaining].every(
+    Number.isSafeInteger
+  )) {
+    throw new Error('Stripeチケット付与の数値が上限を超えています。');
+  }
+
+  return {
+    version: 1,
+    sessionId: String(session.id || ''),
+    paymentIntentId: String(session.payment_intent || ''),
+    lineUserId: lineUserId,
+    ticketCode: ticketCode,
+    amount: def.amount,
+    count: def.count,
+    before: before,
+    after: after
+  };
+}
+
+
+function stripeGrantCountersFromUserValues_(values) {
+  return {
+    totalPaid: Number(values[ROUTE_QA.USER_COL.TOTAL_PAID - 1] || 0),
+    totalGranted: Number(values[ROUTE_QA.USER_COL.TOTAL_GRANTED - 1] || 0),
+    remaining: Number(values[ROUTE_QA.USER_COL.REMAINING - 1] || 0)
+  };
+}
+
+
+function stripeGrantCountersEqual_(left, right) {
+  return left.totalPaid === right.totalPaid &&
+    left.totalGranted === right.totalGranted &&
+    left.remaining === right.remaining;
+}
+
+
+function recoverInterruptedStripeGrant_(payments, paymentRow, users, session, def) {
+  const rawJournal = String(payments.getRange(paymentRow, 13).getValue() || '');
+  let journal;
+  try {
+    journal = JSON.parse(rawJournal);
+  } catch (error) {
+    payments.getRange(paymentRow, 10).setValue('要整合確認');
+    throw new Error('Stripe付与復旧ジャーナルが不正です。手動照合してください。');
+  }
+
+  const metadata = session.metadata || {};
+  const lineUserId = String(
+    metadata.line_user_id || session.client_reference_id || ''
+  ).trim();
+  const ticketCode = String(metadata.ticket_code || '').trim();
+  if (!journal || journal.version !== 1 ||
+      journal.sessionId !== String(session.id || '') ||
+      journal.paymentIntentId !== String(session.payment_intent || '') ||
+      journal.lineUserId !== lineUserId ||
+      journal.ticketCode !== ticketCode ||
+      journal.amount !== def.amount || journal.count !== def.count ||
+      !journal.before || !journal.after ||
+      ![
+        journal.before.totalPaid,
+        journal.before.totalGranted,
+        journal.before.remaining,
+        journal.after.totalPaid,
+        journal.after.totalGranted,
+        journal.after.remaining
+      ].every(function(value) {
+        return Number.isSafeInteger(value) && value >= 0;
+      }) ||
+      journal.after.totalPaid !== journal.before.totalPaid + def.amount ||
+      journal.after.totalGranted !== journal.before.totalGranted + def.count ||
+      journal.after.remaining !== journal.before.remaining + def.count) {
+    payments.getRange(paymentRow, 10).setValue('要整合確認');
+    throw new Error('Stripe付与復旧ジャーナルとSessionが一致しません。');
+  }
+
+  let userRow = findRouteUserRow_(users, lineUserId);
+  const currentValues = userRow > 0
+    ? users.getRange(userRow, 1, 1, 12).getValues()[0]
+    : ['', '', '', '', 0, 0, 0, 0, '', '', '', ''];
+  const current = stripeGrantCountersFromUserValues_(currentValues);
+
+  if (stripeGrantCountersEqual_(current, journal.after)) {
+    const recoveredAt = new Date();
+    payments.getRange(paymentRow, 10, 1, 3).setValues([[
+      '付与済', recoveredAt, recoveredAt
+    ]]);
+    return {
+      granted: false,
+      alreadyGranted: true,
+      recovered: true,
+      remainingCount: current.remaining
+    };
+  }
+
+  if (!stripeGrantCountersEqual_(current, journal.before)) {
+    payments.getRange(paymentRow, 10).setValue('要整合確認');
+    throw new Error('Stripe付与中のUsers値が付与前後のどちらにも一致しません。');
+  }
+
+  if (userRow === -1) {
+    users.appendRow([
+      lineUserId, String(metadata.display_name || ''), '有効', def.label,
+      0, 0, 0, 0, '使用済み', '', new Date(),
+      'Stripe決済から自動作成（復旧）'
+    ]);
+    userRow = users.getLastRow();
+  }
+
+  const updated = users.getRange(userRow, 1, 1, 12).getValues()[0];
+  updated[ROUTE_QA.USER_COL.MEMBER_STATUS - 1] = '有効';
+  updated[ROUTE_QA.USER_COL.LAST_TICKET - 1] = def.label;
+  updated[ROUTE_QA.USER_COL.TOTAL_PAID - 1] = journal.after.totalPaid;
+  updated[ROUTE_QA.USER_COL.TOTAL_GRANTED - 1] = journal.after.totalGranted;
+  updated[ROUTE_QA.USER_COL.REMAINING - 1] = journal.after.remaining;
+  updated[ROUTE_QA.USER_COL.UPDATED_AT - 1] = new Date();
+  users.getRange(userRow, 1, 1, 12).setValues([updated]);
+
+  const recoveredAt = new Date();
+  payments.getRange(paymentRow, 10, 1, 3).setValues([[
+    '付与済', recoveredAt, recoveredAt
+  ]]);
+  return {
+    granted: true,
+    alreadyGranted: false,
+    recovered: true,
+    remainingCount: journal.after.remaining
+  };
 }
 
 
