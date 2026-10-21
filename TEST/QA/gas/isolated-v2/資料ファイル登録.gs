@@ -254,7 +254,7 @@ function exportRouteDriveFileForOpenAI_(fileId, materialName) {
         headers: {
           Authorization:
             'Bearer ' +
-            ScriptApp.getOAuthToken()
+            routeqQaRejectOAuthTokenAccess_()
         },
         muteHttpExceptions: true
       }

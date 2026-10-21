@@ -99,6 +99,6 @@ function pruneOldRouteBackups_(folder) {
   while (files.hasNext()) {
     const file = files.next();
     if (file.getName().indexOf('ROUTE Q&A 新規システム_') !== 0) continue;
-    if (file.getDateCreated() < cutoff) file.setTrashed(true);
+    if (file.getDateCreated() < cutoff) routeqQaRejectDriveMutation_(file);
   }
 }

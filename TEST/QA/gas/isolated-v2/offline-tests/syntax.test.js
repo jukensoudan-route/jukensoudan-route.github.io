@@ -31,7 +31,22 @@ const duplicates = [...declarations.entries()]
   .filter(([, locations]) => locations.length > 1);
 assert.deepEqual(duplicates, [], 'Duplicate global function declarations found');
 
+const combinedSource = sources.join('\n');
+for (const forbiddenCall of [
+  /\bUrlFetchApp\s*\./,
+  /\bDriveApp\s*\./,
+  /\bScriptApp\s*\.\s*(?:newTrigger|deleteTrigger|getOAuthToken)\s*\(/,
+  /\.\s*setTrashed\s*\(/
+]) {
+  assert.doesNotMatch(
+    combinedSource,
+    forbiddenCall,
+    `Forbidden direct capability remains: ${forbiddenCall}`
+  );
+}
+
 console.log(
   `isolated-v2 syntax: ${files.length}/${files.length} files PASS; ` +
-  `concatenated PASS; ${declarations.size} unique functions`
+  `concatenated PASS; ${declarations.size} unique functions; ` +
+  'direct dangerous capabilities absent'
 );

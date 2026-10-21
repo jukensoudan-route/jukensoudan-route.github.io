@@ -71,6 +71,10 @@ assert.throws(
   () => context.routeqQaOpenAllowedSpreadsheet_('12QPlcvkLLVFStZ9bMahpfQvMo1mpwSxUB41el7rTQTE'),
   /non-TEST spreadsheet rejected/
 );
+assert.throws(
+  () => context.routeqQaRejectOAuthTokenAccess_(),
+  /OAuth token access disabled/
+);
 assert.equal(directNetworkCalls, 0);
 
 properties.set('ROUTEQ_QA_EXTERNAL_SEND', 'ENABLED');
@@ -79,4 +83,4 @@ assert.throws(
   /external send must remain DISABLED/
 );
 
-console.log('External boundary and LINE-safe mock: 7/7 PASS; network requests: 0');
+console.log('External boundary and LINE-safe mock: 8/8 PASS; network requests: 0');
