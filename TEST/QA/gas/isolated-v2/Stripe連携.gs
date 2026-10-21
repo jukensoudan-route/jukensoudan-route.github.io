@@ -408,35 +408,15 @@ function applyPaidStripeSession_(session) {
 
     const newRemaining = currentRemaining + def.count;
 
-    users.getRange(
-      userRow,
-      ROUTE_QA.USER_COL.MEMBER_STATUS
-    ).setValue('有効');
-
-    users.getRange(
-      userRow,
-      ROUTE_QA.USER_COL.LAST_TICKET
-    ).setValue(def.label);
-
-    users.getRange(
-      userRow,
-      ROUTE_QA.USER_COL.TOTAL_PAID
-    ).setValue(currentPaid + def.amount);
-
-    users.getRange(
-      userRow,
-      ROUTE_QA.USER_COL.TOTAL_GRANTED
-    ).setValue(currentGranted + def.count);
-
-    users.getRange(
-      userRow,
-      ROUTE_QA.USER_COL.REMAINING
-    ).setValue(newRemaining);
-
-    users.getRange(
-      userRow,
-      ROUTE_QA.USER_COL.UPDATED_AT
-    ).setValue(new Date());
+    // Keep all Users ticket counters in a single row write.
+    const updatedUserValues = uv.slice();
+    updatedUserValues[ROUTE_QA.USER_COL.MEMBER_STATUS - 1] = '有効';
+    updatedUserValues[ROUTE_QA.USER_COL.LAST_TICKET - 1] = def.label;
+    updatedUserValues[ROUTE_QA.USER_COL.TOTAL_PAID - 1] = currentPaid + def.amount;
+    updatedUserValues[ROUTE_QA.USER_COL.TOTAL_GRANTED - 1] = currentGranted + def.count;
+    updatedUserValues[ROUTE_QA.USER_COL.REMAINING - 1] = newRemaining;
+    updatedUserValues[ROUTE_QA.USER_COL.UPDATED_AT - 1] = new Date();
+    users.getRange(userRow, 1, 1, 12).setValues([updatedUserValues]);
 
     if (paymentRow <= 0) {
       payments.appendRow([
