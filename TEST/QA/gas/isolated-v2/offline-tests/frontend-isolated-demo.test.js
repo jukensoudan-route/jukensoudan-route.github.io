@@ -16,4 +16,7 @@ assert.match(html, /外部送信・課金・LINE連携は行いません/);
 assert.doesNotMatch(match[1], /const GAS_WEB_APP_URL = "https?:/);
 assert.doesNotMatch(match[1], /const LIFF_ID = "[^"\s]+"/);
 
-console.log('Frontend isolated demo: 8/8 PASS; external endpoints configured: 0');
+assert.doesNotMatch(html, /<link\b[^>]*\brel\s*=\s*["']?(?:preconnect|dns-prefetch)["']?/i, 'External preconnect or DNS prefetch is prohibited');
+assert.doesNotMatch(html, /\bhttps?:\/\/[^\s"'<>]+/i, 'Isolated demo must not contain external HTTP URLs');
+
+console.log('Frontend isolated demo: 10/10 PASS; external endpoints configured: 0');
