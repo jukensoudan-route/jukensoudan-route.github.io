@@ -171,6 +171,7 @@ app.post("/stripe/webhook", express.raw({type:"application/json"}), async (req,r
 });
 
 async function runGasIdempotencySelfTest() {
+  if (!qaWebhookEnabled) return;
   const sessionId = String(process.env.SELFTEST_SESSION_ID || "").trim();
   if (!sessionId) return;
 
@@ -202,5 +203,7 @@ async function runGasIdempotencySelfTest() {
 
 app.listen(port, () => {
   console.log("listening", port);
-  runGasIdempotencySelfTest();
+  if (qaWebhookEnabled) {
+    runGasIdempotencySelfTest();
+  }
 });
