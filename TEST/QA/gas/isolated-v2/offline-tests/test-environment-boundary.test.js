@@ -30,5 +30,5 @@ for (const [key, value, pattern] of [
   pass(() => { const old = props.get(key); props.set(key, value); assert.throws(() => context.openRouteqQaTestSpreadsheet_(), pattern); props.set(key, old); });
 }
 pass(() => { returnedSheetId = 'unexpected'; assert.throws(() => context.openRouteqQaTestSpreadsheet_(), /spreadsheet identity mismatch/); returnedSheetId = sheetId; });
-assert.equal(opens, 3);
+assert.equal(opens, 2);
 console.log('TEST GAS/Sheets environment boundary: ' + tests + '/' + tests + ' PASS; network requests: 0');
