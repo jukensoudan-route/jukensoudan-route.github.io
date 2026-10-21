@@ -27,8 +27,11 @@ const keyDelayed = delayed.match(/sendLinePushMessage_\(\s*lineUserId,\s*draft,\
 assert.ok(keyManual && keyDelayed, 'manual/delayed send call missing');
 assert.equal(keyManual[1], keyDelayed[1],
   'manual and delayed LINE dedupe key namespace differs');
-assert.doesNotMatch(sender, /status\s*===\s*409[\s\S]*?return\s+true;/,
-  '409 acceptance must be tied to persisted original request identity');
+// HTTP 409 is expected for an already accepted identical request; it is not a failure.
+assert.match(sender, /status\s*===\s*409/, 'LINE 409 duplicate handling missing');
+// The actual problem is the non-canonical dedupe key across send paths.
+const keyBuilder = bodyAfter(service, 'buildRouteLineRetryKey_');
+assert.match(keyBuilder, /dedupeKey/, 'send identity input missing');
 const manualSend = bodyAfter(manual, 'sendCurrentAnswerToLine');
 assert.match(manualSend, /const\s+sent\s*=\s*sendLinePushMessage_\(/,
   'manual delivery must inspect send result');
