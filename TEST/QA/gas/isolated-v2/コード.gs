@@ -257,7 +257,7 @@ function routeqQaArchived_scheduleRouteDelayedReply_(
     ss.getId();
 
   const delayMs =
-    getRouteRandomReplyDelayMs_();
+    routeqQaArchived_getRouteRandomReplyDelayMs_();
 
   const dueAt =
     Date.now() +
@@ -327,7 +327,7 @@ function routeqQaArchived_scheduleRouteDelayedReply_(
     );
 
 
-  ensureRouteDelayedReplyTrigger_();
+  routeqQaArchived_ensureRouteDelayedReplyTrigger_();
 
 
   console.log(
@@ -842,7 +842,7 @@ function routeqQaArchived_testRouteRandomReplyDelay() {
   ) {
 
     const ms =
-      getRouteRandomReplyDelayMs_();
+      routeqQaArchived_getRouteRandomReplyDelayMs_();
 
     const minutes =
       ms /
