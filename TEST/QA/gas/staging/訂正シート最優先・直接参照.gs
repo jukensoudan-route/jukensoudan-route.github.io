@@ -498,7 +498,8 @@ function verifyLineUser_(token) {
    *
    * 現在のGitHub質問ページは
    * liff.getAccessToken() を送っているためこちらを使用。
-   */  const profileResponse =
+   */
+  const profileResponse =
     UrlFetchApp.fetch(
       'https://api.line.me/v2/profile',
       {
@@ -997,7 +998,8 @@ function isRouteSchoolPopulationComparisonQuestion_(
 ) {
 
   const text =
-    [      data && data.category,
+    [
+      data && data.category,
       data && data.categoryLabel,
       data && data.theme,
       data && data.districtLabel,
@@ -1496,7 +1498,8 @@ const ROUTE_PRESET_QUESTION_TEMPLATES = {
       "{school}の合格ラインの目安を教えてください。"
     ],
     "当日点の目安": [
-      "{school}の入試当日点の目安を教えてください。"    ],
+      "{school}の入試当日点の目安を教えてください。"
+    ],
     "内申点と当日点の仕組み": [
       "兵庫県公立高校入試の内申点と当日点の計算方法を教えてください。"
     ],
@@ -4490,7 +4493,8 @@ function isRouteCostQuestion_(data) {
       data && data.theme,
       data && data.question
     ]
-      .filter(Boolean)      .join(' ');
+      .filter(Boolean)
+      .join(' ');
 
   return /いくら|費用|学費|諸経費|初年度|授業料以外|入学金|施設費|制服|教材|ICT|端末/.test(
     text
@@ -4989,7 +4993,8 @@ function ensureRouteTuitionSupportNote_(
 
   return (
     text +
-    '\n\n' +    note
+    '\n\n' +
+    note
   )
     .trim();
 }
@@ -5488,7 +5493,8 @@ function generateAiDraft_(data) {
   /*
    * =====================================================
    * 第1段階：確認済み同一回答を再利用
-   * APIを1回も呼ばない。   * =====================================================
+   * APIを1回も呼ばない。
+   * =====================================================
    */
   const cachedAnswer =
     findRouteConfirmedExactAnswer_(
@@ -5987,7 +5993,8 @@ ${
      * max_output_tokens は可視回答＋推論トークンを含む。
      * 低すぎると検索後に本文が出る前に incomplete になるため余裕を持たせる。
      */
-    max_output_tokens:      isCostQuestion
+    max_output_tokens:
+      isCostQuestion
         ? 3000
         : (
             (
@@ -6985,7 +6992,8 @@ function authorizeUrlFetch() {
   console.log(
     'HTTPステータス：' +
     response.getResponseCode()
-  );}
+  );
+}
 
 
 
@@ -7484,7 +7492,8 @@ function testRouteQuestionSchemaReadOnly() {
   console.log(
     '学区列追加済み=' +
     (
-      headers[5] ===      '学区'
+      headers[5] ===
+      '学区'
     )
   );
 }
