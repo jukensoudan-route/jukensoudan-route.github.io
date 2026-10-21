@@ -3496,7 +3496,27 @@ function saveQuestionForWeb_(p) {
     }
     nextUserValues[ROUTE_QA.USER_COL.LAST_QUESTION_AT - 1] = new Date();
     nextUserValues[ROUTE_QA.USER_COL.UPDATED_AT - 1] = new Date();
-    users.getRange(userRow, 1, 1, 12).setValues([nextUserValues]);
+    try {
+      users.getRange(userRow, 1, 1, 12).setValues([nextUserValues]);
+    } catch (usersError) {
+      // Compensate only the new, still-last Questions row we just created.
+      // Never delete an unrelated row if its identity or location changed.
+      let rollbackComplete = false;
+      try {
+        const matchesOwner = String(questions.getRange(questionRow, ROUTE_QA.QUESTION_COL.LINE_USER_ID).getValue() || '') === String(user.sub);
+        const matchesQuestion = String(questions.getRange(questionRow, ROUTE_QA.QUESTION_COL.QUESTION).getValue() || '') === question;
+        if (questions.getLastRow() === questionRow && matchesOwner && matchesQuestion) {
+          questions.deleteRow(questionRow);
+          rollbackComplete = true;
+        }
+      } catch (rollbackError) {
+        console.error('質問行の補償削除に失敗：' + String(rollbackError));
+      }
+      if (!rollbackComplete) {
+        throw new Error('Users更新失敗・質問行の補償削除未完了。手動整合確認が必要です。元エラー：' + String(usersError));
+      }
+      throw usersError;
+    }
 
   }
   finally {
