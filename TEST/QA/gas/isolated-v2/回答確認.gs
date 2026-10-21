@@ -1898,11 +1898,18 @@ function sendCurrentAnswerToLine() {
 
   try {
 
-    sendLinePushMessage_(
+    const sent = sendLinePushMessage_(
       lineUserId,
       answer,
       'question-row:' + row
     );
+
+    if (!sent) {
+      questions.getRange(row, c.SEND_STATUS).setValue('重複送信防止');
+      questions.getRange(row, c.UPDATED_AT).setValue(new Date());
+      ui.alert('LINE送信は実施されませんでした。送信履歴を確認してください。');
+      return;
+    }
 
 
     const now =
