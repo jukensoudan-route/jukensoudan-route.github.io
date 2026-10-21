@@ -37,4 +37,15 @@ assert.match(manualSend, /const\s+sent\s*=\s*sendLinePushMessage_\(/,
   'manual delivery must inspect send result');
 assert.match(manualSend, /if\s*\(\s*!sent\s*\)/,
   'manual delivery must not mark unsent result as delivered');
+// Uncertain outcomes must never be retried automatically or marked as sent.
+const manualSendBody = bodyAfter(manual, 'sendCurrentAnswerToLine');
+const delayedSendBody = bodyAfter(delayed, 'processOneRouteDelayedReply_');
+for (const [name, sendBody] of [['manual', manualSendBody], ['delayed', delayedSendBody]]) {
+  assert.match(sendBody, /sendStatus\\s*===\\s*'送信結果不明'/,
+    name + ': UNKNOWN send must block later attempts');
+  assert.match(sendBody, /sendStatus\\s*===\\s*'送信処理中'/,
+    name + ': IN_PROGRESS must block later attempts');
+  assert.match(sendBody, /catch\\s*\\(error\\)[\\s\\S]*?\\.setValue\\(\\s*'送信結果不明'/,
+    name + ': delivery exception must be treated as UNKNOWN');
+}
 console.log('LINE delivery regression gate: PASS (no outbound requests)');
