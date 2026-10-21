@@ -29,7 +29,7 @@ assert.equal(keyManual[1], keyDelayed[1],
   'manual and delayed LINE dedupe key namespace differs');
 assert.doesNotMatch(sender, /status\s*===\s*409[\s\S]*?return\s+true;/,
   '409 acceptance must be tied to persisted original request identity');
-const manualSend = bodyAfter(manual, 'sendFinalAnswerToLine');
+const manualSend = bodyAfter(manual, 'sendCurrentAnswerToLine');
 assert.match(manualSend, /const\s+sent\s*=\s*sendLinePushMessage_\(/,
   'manual delivery must inspect send result');
 assert.match(manualSend, /if\s*\(\s*!sent\s*\)/,
