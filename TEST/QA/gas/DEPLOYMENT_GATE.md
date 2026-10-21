@@ -33,3 +33,8 @@ The isolated GAS project and spreadsheet already exist; the 14-sheet connection 
 **Non-negotiable ④/⑤ exit gates:** recover complete original bodies (or use a separately approved exact-function replacement), resolve all dependencies and syntax errors, confirm every TEST source binds to isolated-only data, keep all external calls fail-closed or TEST-only under separately approved settings, establish regression fixtures, and only then issue explicit step-⑥ placement instructions.
 
 This update is a documentation correction and safety gate only. It does not authorize any operation in GAS, production, Stripe or LINE.
+
+## Owner decision — 2026-10-21
+The owner **forbids reconstruction or reimplementation of missing functions**. Complete restoration from the authentic original source is the **only** permissible path for phase ④/⑤. Work, owner manual actions, and production changes remain forbidden. Do not infer code from call sites, invent replacement bodies, bypass disabled functions, or mark any source-parity requirement PASS using the recovery-prefix files.
+
+Additional GitHub checks covered `main`, `release/qa-copy-current-production-20261015`, `backup/pre-qa-production-20261015`, and `backup/pre-site-restructure-20261016` using the previously known GAS file paths; no matching complete source was found at those paths. This is not an exhaustive search of other paths, accounts, historical Git objects or GAS versions. No user operation requested. The blocked original-source issue remains unresolved.
