@@ -46,7 +46,7 @@ function createStripeCheckoutForWeb_(idToken, ticketCode) {
   // Stripe決済後はいったん通常ブラウザ用の完了ページへ戻す。
   // Q&A本体（LIFF）は決済確認が成功するまで開かない。
   const paymentCompleteUrl =
-    'https://jukensoudan-route.github.io/route-qa/payment-complete.html';
+    'https://jukensoudan-route.github.io/TEST/QA/payment-complete.html';
 
   const successUrl = appendQuery_(
     paymentCompleteUrl,
