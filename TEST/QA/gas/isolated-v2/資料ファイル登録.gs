@@ -227,6 +227,8 @@ function extractRouteDriveFileId_(value) {
  * PDF等の通常ファイルはそのまま使用。
  */
 function exportRouteDriveFileForOpenAI_(fileId, materialName) {
+  assertRouteqQaTestEnvironment_();
+  routeqQaBlockSensitiveEntry_('exportRouteDriveFileForOpenAI_');
 
   const file = routeqQaRejectDriveMutation_(fileId);
   const mimeType = file.getMimeType();
@@ -293,6 +295,8 @@ function exportRouteDriveFileForOpenAI_(fileId, materialName) {
  * OpenAI Files APIへアップロード
  */
 function uploadRouteFileToOpenAI_(blob) {
+  assertRouteqQaTestEnvironment_();
+  routeqQaBlockSensitiveEntry_('uploadRouteFileToOpenAI_');
 
   const apiKey = getRouteOpenAiApiKey_();
 
@@ -347,6 +351,8 @@ function uploadRouteFileToOpenAI_(blob) {
  * ROUTE専用Vector Storeを初回のみ自動作成
  */
 function ensureRouteVectorStore_() {
+  assertRouteqQaTestEnvironment_();
+  routeqQaBlockSensitiveEntry_('ensureRouteVectorStore_');
 
   const props =
     PropertiesService.getScriptProperties();
@@ -419,6 +425,8 @@ function attachRouteFileToVectorStore_(
   openAiFileId,
   attributes
 ) {
+  assertRouteqQaTestEnvironment_();
+  routeqQaBlockSensitiveEntry_('attachRouteFileToVectorStore_');
 
   const apiKey = getRouteOpenAiApiKey_();
 
@@ -465,6 +473,8 @@ function waitForRouteVectorStoreFile_(
   vectorStoreId,
   openAiFileId
 ) {
+  assertRouteqQaTestEnvironment_();
+  routeqQaBlockSensitiveEntry_('waitForRouteVectorStoreFile_');
 
   const apiKey = getRouteOpenAiApiKey_();
 
@@ -534,6 +544,8 @@ function waitForRouteVectorStoreFile_(
  * OpenAI APIキー取得
  */
 function getRouteOpenAiApiKey_() {
+  assertRouteqQaTestEnvironment_();
+  routeqQaBlockSensitiveEntry_('getRouteOpenAiApiKey_');
 
   const apiKey =
     PropertiesService
