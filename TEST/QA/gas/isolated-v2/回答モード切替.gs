@@ -592,6 +592,9 @@ function scheduleRouteDelayedReply_(
   questions,
   questionRow
 ) {
+  // Until a TEST-only scheduler is verified, reject before writing script properties.
+  assertRouteqQaTestEnvironment_();
+  routeqQaBlockSensitiveEntry_('scheduleRouteDelayedReply_');
 
   if (
     !questions ||
