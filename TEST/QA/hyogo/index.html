@@ -6,11 +6,11 @@
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
-  <title>TEST｜兵庫県高校受験Q&A 表示確認</title>
-  <meta name="robots" content="noindex,nofollow">
+  <title>KIKEROUTE（キケルート）受験Q&A｜ROUTEQ</title>
+  <meta name="robots" content="index,follow">
   
   <link rel="preconnect" href="https://static.line-scdn.net">
-  
+  <script defer src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
   <style>
     #loadingText {
       white-space: pre-line;
@@ -432,16 +432,28 @@
       .card select,.school-picker-panel select{min-height:0;height:auto;padding:9px 36px 9px 12px;font-size:16px}
       #question{font-size:15px}
     }
-  </style>
+      /* Q&Aへの戻り導線とサイトフッター */
+    .qa-back-nav { padding:10px 14px; background:#fff; border-bottom:1px solid var(--border); }
+    .qa-back-nav a { display:inline-flex; align-items:center; min-height:44px; color:#1768c9; font-size:16px; font-weight:800; text-decoration:underline; text-underline-offset:3px; }
+    .qa-back-nav a:focus-visible, .routeq-site-footer a:focus-visible { outline:3px solid #ffe23f; outline-offset:4px; border-radius:3px; }
+    .routeq-site-footer { width:100%; padding:3px 12px; background:var(--blue); color:#fff; text-align:center; }
+    .routeq-site-footer__inner { width:100%; display:flex; align-items:center; justify-content:space-between; flex-wrap:nowrap; gap:8px; }
+    .routeq-site-footer small { font-size:13px; line-height:1.35; font-weight:700; letter-spacing:.02em; white-space:nowrap; }
+    .routeq-site-footer a, .routeq-site-footer a:link, .routeq-site-footer a:visited, .routeq-site-footer a:hover, .routeq-site-footer a:active { display:inline-flex; align-items:center; justify-content:center; padding:2px 7px; border:1.5px solid #fff; border-radius:5px; background:transparent; color:#fff !important; -webkit-text-fill-color:#fff; font-size:13px; line-height:1.35; font-weight:800; text-decoration:none; white-space:nowrap; }
+    @media(max-width:600px){ .qa-back-nav { padding:8px 12px; } .qa-back-nav a { font-size:15px; } .routeq-site-footer { padding:3px 8px; } .routeq-site-footer__inner { gap:6px; } .routeq-site-footer small, .routeq-site-footer a { font-size:clamp(10px, 3vw, 12px); } }
+</style>
 </head>
-<body>
-<div role="status" style="position:sticky;top:0;z-index:2147483647;padding:13px;background:#fff0c7;border-bottom:2px solid #d79619;text-align:center;color:#623e00;font:800 16px/1.6 sans-serif;">TEST 表示プレビュー｜認証・質問送信・購入は無効　<a href="/TEST/">TESTトップへ</a></div><header class="hero image-hero" aria-label="キケルート高校受験Q&A"><img src="/QA/hyogo/qalogo.png" width="1443" height="1090" alt="キケルート兵庫県版。高校受験で気になった事をここから質問。" fetchpriority="high" decoding="async"><img src="/QA/hyogo/qa-four-steps.webp" width="2172" height="563" alt="チケット購入、ここで質問、専門家が回答、LINEで受け取る、の4工程。" loading="lazy" decoding="async"></header>
+<body><header class="hero image-hero" aria-label="キケルート高校受験Q&A"><img src="qalogo.png" width="1443" height="1090" alt="キケルート兵庫県版。高校受験で気になった事をここから質問。" fetchpriority="high" decoding="async"><img src="qa-four-steps.webp" width="2172" height="563" alt="チケット購入、ここで質問、専門家が回答、LINEで受け取る、の4工程。" loading="lazy" decoding="async"></header>
+
+<nav class="qa-back-nav" aria-label="Q&A案内ページへ戻る">
+  <a href="/TEST/QA/">← Q&Aに戻る</a>
+</nav>
 
   <main class="page">
     <section class="card usage-card">
       <div class="login-status" id="loginStatus" role="status" aria-live="polite">
         <div class="status-icon is-pending">…</div>
-        <div class="status-text">TEST：認証は無効です</div>
+        <div class="status-text">LINE認証を確認しています</div>
       </div>
 
       <div class="usage-title">Q&A利用状況</div>
@@ -455,7 +467,7 @@
           <div class="usage-value" id="remainingUsage">-</div>
         </div>
       </div>
-      <div class="usage-note"><span id="usageStatus" role="status" aria-live="polite">TEST表示のみ。顧客データには接続しません。</span><br>質問を1回送信するごとに、残り回数を1回使用します。</div>
+      <div class="usage-note"><span id="usageStatus" role="status" aria-live="polite">LINE認証後に利用状況を確認します。</span><br>質問を1回送信するごとに、残り回数を1回使用します。</div>
 
       <div class="ticket-area" id="ticketArea">
         <div class="ticket-title">質問回数を追加する</div>
@@ -466,15 +478,15 @@
           <span class="pay-mark mastercard" aria-label="Mastercard"><i></i><i></i></span>
           <span class="pay-mark jcb" aria-label="JCB">JCB</span>
           <span class="pay-label">電子決済</span>
-          <span class="pay-mark paypay" aria-label="PayPay"><img class="paypay-logo" src="/assets/paypay-logo.svg" alt="" aria-hidden="true"><span>PayPay</span></span>
-          <img class="applepay-logo" src="/assets/apple-pay-logo.svg" alt="Apple Pay">
+          <span class="pay-mark paypay" aria-label="PayPay"><img class="paypay-logo" src="../../../assets/paypay-logo.svg" alt="" aria-hidden="true"><span>PayPay</span></span>
+          <img class="applepay-logo" src="../../../assets/apple-pay-logo.svg" alt="Apple Pay">
         </div>
         <div class="ticket-grid">
-          <button type="button" class="ticket-button" disabled>
+          <button type="button" class="ticket-button" onclick="buyTicket('ticket3')">
             3回券　1,000円
             <span>1回あたり約333円</span>
           </button>
-          <button type="button" class="ticket-button" disabled>
+          <button type="button" class="ticket-button" onclick="buyTicket('ticket10')">
             10回券　3,000円
             <span>1回あたり300円</span>
           </button>
@@ -496,8 +508,8 @@
           <li>送信完了前は、確認画面で戻って質問を修正したり、送信を取りやめたりできます。</li>
         </ul>
         <div class="policy-links">
-          <button type="button" class="refund-link" disabled>返金・キャンセルについて</button>
-          <button type="button" class="refund-link" disabled>回答内容についての免責</button>
+          <button type="button" class="refund-link" onclick="document.getElementById('refundPolicy').showModal()">返金・キャンセルについて</button>
+          <button type="button" class="refund-link" onclick="document.getElementById('answerDisclaimer').showModal()">回答内容についての免責</button>
         </div>
       </div>
       </section>
@@ -507,7 +519,7 @@
 
       <div class="field">
         <div class="field-label"><span class="num">1</span><span class="icon">📂</span><span>相談したい内容</span></div>
-        <select id="category" disabled>
+        <select id="category" onchange="changeTheme(true)">
           <option value="">内容を選択してください</option>
           <option value="school">志望校・高校選び</option>
           <option value="score">成績・入試得点</option>
@@ -522,7 +534,7 @@
 
       <div class="field">
         <div class="field-label"><span class="num">2</span><span class="icon">📝</span><span>質問テーマ</span></div>
-        <select id="theme" disabled><option value="">①を先に選んでから選択してください</option></select>
+        <select id="theme" onchange="renderQuestionOptions()"><option value="">①を先に選んでから選択してください</option></select>
       </div>
 
       <div class="field">
@@ -533,11 +545,12 @@
         </div>
 
         <div class="school-type-grid" id="schoolTypeGrid" aria-label="高校の種類を選ぶ"></div>
-        <input type="hidden" id="district" value="" disabled>
+        <input type="hidden" id="district" value="">
 
         <button
           id="districtHelpButton"
           type="button"
+          onclick="openDistrictHelp()"
           style="
             margin-top:10px;
             padding:0;
@@ -550,7 +563,7 @@
             text-decoration:underline;
             cursor:pointer;
           "
-         disabled>
+        >
           学区がわからない方はこちら
         </button>
 
@@ -569,14 +582,14 @@
 
         <div id="schoolPickerPanel" class="school-picker-panel" hidden>
           <p class="school-picker-title" id="schoolPickerTitle" hidden aria-hidden="true">高校を選択してください</p>
-          <select id="school" disabled>
+          <select id="school" onchange="handleSchoolSelection(1)" disabled>
             <option value="">高校の種類を選択してください</option>
           </select>
           <div class="school-count" id="schoolCount"></div>
           <div class="compare-school-row" id="compareSchoolRow" hidden>
             <p class="school-picker-title">比較する2校目</p>
             <div class="school-type-grid" id="schoolTypeGrid2" aria-label="2校目の高校の種類を選ぶ"></div>
-            <select id="school2" style="margin-top:10px;" disabled>
+            <select id="school2" style="margin-top:10px;" onchange="handleSchoolSelection(2)" disabled>
               <option value="">2校目の種類を選択してください</option>
             </select>
             <div class="school-count" id="schoolCount2"></div>
@@ -604,19 +617,19 @@
         <div class="field-label question-heading"><span class="num">4</span><span class="icon">💬</span><span>質問内容</span><span class="manual-input-hint">「入力ボタン」を押すと、ご自分で入力できます。</span></div>
 
         <div class="question-input-mode">
-          <button type="button" id="questionModeDropdown" class="active" disabled>
+          <button type="button" id="questionModeDropdown" class="active" onclick="setQuestionMode('dropdown')">
             選択肢から選ぶ
           </button>
-          <button type="button" id="questionModeManual" disabled>
+          <button type="button" id="questionModeManual" onclick="setQuestionMode('manual')">
             入力ボタン
           </button>
         </div>
 
-        <select id="question" disabled>
+        <select id="question">
           <option value="">質問内容を選択してください</option>
         </select>
 
-        <textarea id="questionManual" placeholder="聞きたいことを1つに絞って入力してください。" disabled></textarea>
+        <textarea id="questionManual" placeholder="聞きたいことを1つに絞って入力してください。"></textarea>
 
         <div class="question-option-help">
           「相談したい内容」と「質問テーマ」を選ぶと、プルダウンの質問内容が表示されます。自由に聞きたい場合は「入力ボタン」を選んでください。
@@ -627,7 +640,7 @@
         <div class="agreement-box-title">ご利用ルールへの同意</div>
         <p>「ご利用ルール」「返金・キャンセルについて」「回答内容についての免責」を確認してください。</p>
         <label class="consent-check" for="rulesAgree">
-          <input type="checkbox" id="rulesAgree" disabled>
+          <input type="checkbox" id="rulesAgree" onchange="updateSubmitState()">
           <span>すべての内容を確認し、同意します</span>
         </label>
       </div>
@@ -635,9 +648,16 @@
     </section>
 
     <div class="submit-wrap">
-      <button class="submit" id="submitBtn" disabled>この内容で質問する</button>
+      <button class="submit" id="submitBtn" onclick="openConfirm()" disabled>この内容で質問する</button>
     </div>
   </main>
+
+<footer class="routeq-site-footer" aria-label="運営者情報">
+  <div class="routeq-site-footer__inner">
+    <small>© 2026 ROUTEQ</small>
+    <a href="/TEST/QA/">高校受験Q&amp;A キケルート</a>
+  </div>
+</footer>
 
   <div class="modal-bg" id="districtHelpModal">
     <div class="modal">
@@ -684,7 +704,8 @@
       >
         <button
           class="modal-button primary"
-         disabled>
+          onclick="closeDistrictHelp()"
+        >
           閉じる
         </button>
       </div>
@@ -699,13 +720,13 @@
       <div class="confirm-box" id="confirmBox"></div>
       <div class="confirm-consent">
         <label class="consent-check" for="confirmRulesAgree">
-          <input type="checkbox" id="confirmRulesAgree" disabled>
+          <input type="checkbox" id="confirmRulesAgree" onchange="updateConfirmConsent()">
           <span>ご利用ルール・返金条件・免責事項への同意を再確認しました</span>
         </label>
       </div>
       <div class="modal-buttons">
-        <button class="modal-button secondary" disabled>修正する</button>
-        <button class="modal-button primary" id="confirmSendBtn" disabled>同意して質問を送信</button>
+        <button class="modal-button secondary" onclick="closeConfirm()">修正する</button>
+        <button class="modal-button primary" id="confirmSendBtn" onclick="sendQuestion()" disabled>同意して質問を送信</button>
       </div>
     </div>
   </div>
@@ -716,7 +737,7 @@
       <div class="modal-title" id="messageTitle"></div>
       <div class="modal-text" id="messageText"></div>
       <div class="modal-buttons" style="grid-template-columns:1fr;">
-        <button class="modal-button primary" disabled>閉じる</button>
+        <button class="modal-button primary" onclick="closeMessage()">閉じる</button>
       </div>
     </div>
   </div>
@@ -731,10 +752,1765 @@
 
   <iframe name="backendFrame" class="backend-frame"></iframe>
 
-  
+  <script type="text/plain" id="routeq-test-original-disabled">
+    const GAS_WEB_APP_URL = "";
+    const QUESTION_OPTIONS_URL = "";
+    const QUESTION_OPTIONS_CACHE_KEY = "route_hyogo_question_options_v3";
+    const QUESTION_OPTIONS_CACHE_MS = 0;
+    const LIFF_ID = "";
+    const CONSENT_POLICY_VERSION = "2026-09-11-v1";
+    const CONSENT_SUMMARY = "ご利用ルール／返金・キャンセルについて／回答内容についての免責";
+
+    const USAGE_CACHE_PREFIX = "routeQaUsage:v2:";
+    const USAGE_CACHE_TTL_MS = 24 * 60 * 60 * 1000;
+    let liffInitialization = null;
+    let lineProfile = null;
+    let lineAccessToken = null;
+    let usageData = null;
+    let isSending = false;
+    let isValidatingQuestion = false;
+    let validatedQuestionToken = "";
+    let validatedQuestionSignature = "";
+    let scrollTopAfterMessage = false;
+    const pendingRequests = {};
+
+    function clearApprovedValidation_() {
+      validatedQuestionToken = "";
+      validatedQuestionSignature = "";
+    }
+
+
+    let questionTemplates = {
+      school:{
+        "学校の特徴・強み":["{school}の特徴や強みを教えてください。"],
+        "コース・学科":["{school}にはどのようなコース・学科がありますか？"],
+        "校風・学校生活":["{school}の校風や学校生活の特徴を教えてください。"],
+        "部活動":["{school}の部活動の特徴を教えてください。","{school}の部活動の最近の実績を教えてください。","{district}で希望する競技の強豪校を教えてください。"],
+        "通学・立地":["{school}への通学や立地について教えてください。"],
+        "学校設備":["{school}の学校設備について教えてください。"],
+        "学校行事":["{school}の主な学校行事を教えてください。"],
+        "制服・学校生活費":["{school}の制服や学校生活で必要になる費用を教えてください。"]
+      },
+      score:{
+        "内申点":["兵庫県公立高校入試の内申点の仕組みを教えてください。","{school}の受験で内申点はどのように扱われますか？"],
+        "実力テスト":["高校受験で実力テストはどのように見られますか？"],
+        "定期テスト":["高校受験で定期テストの結果はどのように関係しますか？"],
+        "模試・偏差値":["{school}の偏差値や模試での目安を教えてください。"],
+        "合格ライン":["{school}の合格ラインの目安を教えてください。"],
+        "当日点の目安":["{school}の入試当日点の目安を教えてください。"],
+        "内申点と当日点の仕組み":["兵庫県公立高校入試の内申点と当日点の計算方法を教えてください。"],
+        "加点・減点の仕組み":["兵庫県高校入試の加点・減点の仕組みを教えてください。"]
+      },
+      exam:{
+        "一般入試":["{school}の一般入試について教えてください。"],
+        "推薦入試":["{school}の推薦入試について教えてください。"],
+        "特色選抜":["{school}の特色選抜について教えてください。"],
+        "専願・併願":["{school}の専願・併願の扱いを教えてください。"],
+        "複数志願選抜":["兵庫県公立高校の複数志願選抜について教えてください。"],
+        "学区・出願資格":["{school}の学区と出願資格を教えてください。"],
+        "試験科目・配点":["{school}の試験科目と配点を教えてください。"],
+        "面接":["{school}の入試で面接はありますか？"],
+        "作文・小論文":["{school}の入試で作文・小論文はありますか？"],
+        "私立高校の入試方式":["{school}の入試方式を教えてください。"]
+      },
+      qualification:{
+        "英検":["{school}では英検はどのように扱われますか？"],
+        "漢検・数検":["{school}では漢検・数検はどのように扱われますか？"],
+        "加点":["{school}の入試で資格による加点はありますか？"],
+        "得点換算":["{school}の入試で資格による得点換算はありますか？"],
+        "試験免除":["{school}の入試で資格による試験免除はありますか？"],
+        "出願条件":["{school}の出願条件を教えてください。"],
+        "推薦条件":["{school}の推薦条件を教えてください。"],
+        "資格の活用方法":["{school}の入試で資格をどのように活用できますか？"]
+      },
+      university:{
+        "国公立大学":["{school}の国公立大学への進学実績を教えてください。"],
+        "関関同立":["{school}の関関同立への進学実績を教えてください。"],
+        "産近甲龍":["{school}の産近甲龍への進学実績を教えてください。"],
+        "その他大学の進学実績":["{school}の大学進学実績を教えてください。"],
+        "指定校推薦":["{school}の指定校推薦について教えてください。"],
+        "内部進学":["{school}の内部進学制度について教えてください。"],
+        "大学進学率":["{school}の大学進学率を教えてください。"],
+        "大学合格実績":["{school}の最新の大学合格実績を教えてください。"],
+        "進路指導":["{school}の進路指導の特徴を教えてください。"],
+        "大学附属・系列校":["{school}の大学附属・系列校としての特徴を教えてください。"]
+      },
+      cost:{
+        "授業料":["{school}の授業料はいくらですか？"],
+        "入学金":["{school}の入学金はいくらですか？"],
+        "初年度費用":["{school}の初年度に必要な費用を教えてください。"],
+        "授業料以外の諸経費":["{school}で授業料以外に必要な諸経費を教えてください。"],
+        "制服・教材費":["{school}の制服・教材費を教えてください。"],
+        "ICT端末":["{school}のICT端末に必要な費用を教えてください。"],
+        "修学旅行・行事費":["{school}の修学旅行・行事費について教えてください。"],
+        "部活動費":["{school}の部活動に必要な費用について教えてください。"],
+        "授業料無償化・就学支援金":["{school}で利用できる授業料無償化・就学支援金について教えてください。"],
+        "公立・私立の費用比較":["公立高校と私立高校の費用を比較してください。"]
+      },
+      confirm:{
+        "中学校の先生の見立て":["{school}を第一志望として考えています。現在の内申・実力テストの状況で、中学校として受験を勧められる水準ですか？難しい場合は何が不足していますか？","{school}について、中学校の先生は現在の成績をどの程度の合格可能性として見ていますか？","{school}をこのまま第一志望として維持してよいか、中学校の先生に何を確認すればよいですか？"],
+        "私立専願の事前確認":["{school}を専願で受験する場合、中学校から出願を勧めてもらえる状態ですか？学校との事前相談・個別相談で合格可能性はどこまで確認されていますか？","{school}を専願に決める前に、中学校と高校の個別相談で最低限何を確認しておくべきですか？","{school}の専願で『ほぼ大丈夫』と言える状態かどうかは、誰にどのように確認すればよいですか？"],
+        "私立併願の安全度":["{school}を併願校にした場合、現在の成績で中学校・塾から見てどの程度安全性がありますか？過去の同程度の成績の生徒の結果も教えてください。","{school}を併願校にする場合、本当に安全校と言えるか中学校・塾に何を確認すればよいですか？","{school}の併願で不合格になる可能性があるのは、どのようなケースですか？学校・塾に確認すべき点を教えてください。"],
+        "同じ中学校からの過去合否実績":["同じ中学校から{school}を受験した生徒で、近年どの程度の内申・実力テスト成績の生徒が合格・不合格になっていますか？","同じ中学校から{school}に合格した生徒の内申点や実力テストの目安を先生に確認するには、どう聞けばよいですか？","{school}について、自分の中学校からの過去の合否実績を志望校判断にどう使えばよいですか？"],
+        "塾の合格者データ":["塾の過去データでは、{school}の合格者は模試・実力テスト・過去問でどの程度取れていますか？不合格者との差も教えてください。","{school}の合格者と不合格者で、塾の模試成績にどの程度の差があるか確認したいです。何を聞けばよいですか？","{school}を受験する場合、塾の過去データでどの数字を最も重視すべきですか？"],
+        "志望校変更を勧める基準":["中学校の進路指導では、どの成績・どの時期になったら{school}から志望校変更を勧めますか？","{school}を第一志望にしていますが、どの時点の成績までなら志望校を維持してよいか先生に確認したいです。","{school}から志望校を下げる判断をする場合、内申・実力テスト・模試のどれを基準にすべきか学校や塾に確認したいです。"],
+        "推薦を出してもらう校内基準":["{school}の推薦を希望する場合、中学校内で推薦してもらうための実質的な基準はありますか？内申・欠席・生活態度等で何を重視しますか？","{school}の推薦を受けるために、中学校内でどのような条件を満たしておく必要がありますか？","{school}の推薦について、成績以外に欠席・生活態度・委員会活動などはどの程度影響するか確認したいです。"],
+        "欠席・遅刻・生活態度の影響":["{school}の推薦・専願を考える場合、欠席・遅刻・早退・生活態度はどの程度影響しますか？注意すべき基準はありますか？","{school}の受験で欠席日数が多い場合、学校や高校にどこまで確認しておくべきですか？","{school}の推薦・専願で、遅刻や生活態度が不利になる基準があるか確認したいです。"],
+        "内申を上げるための具体策":["{school}を目指すために内申を上げたいです。今の通知表で、どの教科をどのように改善すれば評定が上がる可能性がありますか？","次の通知表で評定を上げるために、各教科の先生へ何を確認すればよいですか？","{school}を目指すうえで、残り期間に内申を上げられる教科を学校の先生とどう確認すればよいですか？"],
+        "私立個別相談で確認できる範囲":["{school}の個別相談では、内申・実力テスト・資格を示したうえで、受験方式や合格可能性についてどこまで確認できますか？","{school}の個別相談には何を持参し、どんな質問をすれば合格可能性を最も具体的に確認できますか？","{school}の個別相談で『受験して大丈夫か』を確認するとき、どのような聞き方をすればよいですか？"],
+        "回し合格・コース変更の実態":["{school}で希望コースに届かなかった場合、別コースへの回し合格や入学後のコース変更は実際にどのように扱われていますか？","{school}で回し合格がある場合、どのコースからどのコースへ回る可能性があるのか確認したいです。","{school}で入学後にコース変更できるか、条件や時期を高校に確認したいです。"],
+        "指定校推薦の実際の利用状況":["{school}の指定校推薦は、実際にどの大学・学部の枠を何人程度が利用し、校内選考ではどの程度の評定が必要になることが多いですか？","{school}の指定校推薦について、関関同立・産近甲龍などの枠が実際にどの程度使われているか確認したいです。","{school}の指定校推薦は、枠があっても実際には取りにくいのか、校内選考の実態を確認したいです。"],
+        "部活動・スポーツ推薦の事前相談":["{school}で部活動推薦・スポーツ推薦・実技評価等を考える場合、顧問やクラブとの事前相談は必要ですか？いつまでに何を確認すべきですか？","{school}で競技実績を受験に活かしたい場合、中学校の顧問・高校の顧問・学校のどこへ先に相談すべきですか？","{school}の部活動推薦について、声がかかっていなくてもこちらから相談できるのか確認したいです。"],
+        "入学後の実際の学習負担":["{school}では、入学後の宿題量・補習・追試・土曜授業・塾通いの実態はどの程度ですか？","{school}では塾に通わず学校の授業・補習だけで大学受験に対応できる生徒はどの程度いますか？","{school}で部活動と勉強を両立する場合、実際の帰宅時間・宿題量・補習の負担を確認したいです。"],
+        "大学進学実績の実態":["{school}の大学合格実績について、延べ合格数ではなく実際の進学先やコース別の進学状況はどうですか？学校内で把握している範囲を教えてください。","{school}の大学合格実績は延べ人数ではなく、実際にどの大学へ何人程度進学しているのか確認したいです。","{school}の進学実績について、上位コースだけでなく自分が入るコースの実績を確認するには何を聞けばよいですか？"]
+      },
+      schedule:{
+        "出願日":["{school}の出願日はいつですか？"],
+        "入試日":["{school}の入試日はいつですか？"],
+        "合格発表":["{school}の合格発表日はいつですか？"],
+        "学校説明会":["{school}の今後の学校説明会の日程を教えてください。","{district}で今後学校説明会がある高校を教えてください。"],
+        "オープンスクール":["{school}の今後のオープンスクールの日程を教えてください。","{district}で今後オープンスクール・学校見学がある高校を教えてください。"],
+        "進路希望調査":["中学校の進路希望調査はいつ頃行われますか？"],
+        "三者懇談":["高校受験の三者懇談はいつ頃行われますか？"],
+        "私立受験校を決める時期":["私立高校の受験校はいつ頃決めますか？"],
+        "公立受験校を決める時期":["公立高校の受験校はいつ頃決めますか？"],
+        "志望校変更の時期":["志望校はいつ頃まで変更できますか？"]
+      }
+    };
+
+
+    let routeQuestionMode =
+      'dropdown';
+
+
+    function setQuestionMode(mode) {
+
+      routeQuestionMode =
+        mode === 'manual'
+          ? 'manual'
+          : 'dropdown';
+
+      const dropdownMode =
+        routeQuestionMode === 'dropdown';
+
+      document.getElementById('questionModeDropdown')
+        .classList.toggle('active', dropdownMode);
+
+      document.getElementById('questionModeManual')
+        .classList.toggle('active', !dropdownMode);
+
+      document.getElementById('question')
+        .style.display =
+          dropdownMode
+            ? 'block'
+            : 'none';
+
+      document.getElementById('questionManual')
+        .style.display =
+          dropdownMode
+            ? 'none'
+            : 'block';
+
+      clearApprovedValidation_();
+
+      if (!dropdownMode) {
+        document.getElementById('questionManual').focus();
+      }
+    }
+
+
+    function getCurrentQuestionText() {
+
+      if (routeQuestionMode === 'manual') {
+        return String(
+          document.getElementById('questionManual').value || ''
+        ).trim();
+      }
+
+      return String(
+        document.getElementById('question').value || ''
+      ).trim();
+    }
+
+
+    function getQuestionTemplateContext() {
+      const district = document.getElementById('district');
+      const school = document.getElementById('school');
+      const school2 = document.getElementById('school2');
+      const typeLabel = (schoolTypeChoices.find(function(choice) { return choice[0] === district.value; }) || [])[1];
+
+      return {
+        district: typeLabel || '選択した学区',
+
+        school:
+          school.value ||
+          '選択した高校',
+        school2: school2.value || '比較する高校'
+      };
+    }
+
+
+    function buildQuestionFromTemplate(template) {
+      const context =
+        getQuestionTemplateContext();
+
+      return String(template || '')
+        .replace(/\{school\}/g, context.school)
+        .replace(/\{district\}/g, context.district)
+        .replace(/A高校/g, context.school)
+        .replace(/B高校/g, context.school2);
+    }
+
+
+    function renderQuestionOptions() {
+      updateComparisonPicker();
+      const category =
+        document.getElementById('category').value;
+
+      const theme =
+        document.getElementById('theme').value;
+
+      const questionSelect =
+        document.getElementById('question');
+
+      questionSelect.innerHTML =
+        '<option value="">質問内容を選択してください</option>';
+
+
+      if (
+        !category ||
+        !theme
+      ) {
+        return;
+      }
+
+
+      const templates =
+        (
+          questionTemplates[category] &&
+          questionTemplates[category][theme]
+        ) ||
+        [];
+
+
+      templates.forEach(
+        function(template) {
+          const text =
+            buildQuestionFromTemplate(template);
+
+          const option =
+            document.createElement('option');
+
+          option.value =
+            text;
+
+          option.textContent =
+            text;
+
+          questionSelect.appendChild(
+            option
+          );
+        }
+      );
+
+
+      clearApprovedValidation_();
+    }
+
+
+    const schoolOptions = {
+      district1: [
+        "県立東灘高校",
+        "県立御影高校",
+        "県立神戸高校",
+        "県立兵庫工業高校",
+        "県立神戸鈴蘭台高校",
+        "県立北神戸総合高校",
+        "県立夢野台高校",
+        "県立兵庫高校",
+        "県立長田高校",
+        "県立須磨東高校",
+        "県立北須磨高校",
+        "県立須磨友が丘高校",
+        "県立星陵高校",
+        "県立舞子高校",
+        "県立神戸商業高校",
+        "県立神戸学園都市高校",
+        "県立神戸高塚高校",
+        "県立芦屋高校",
+        "県立国際高校",
+        "県立洲本高校",
+        "県立洲本実業高校",
+        "県立津名高校",
+        "県立淡路高校",
+        "県立淡路三原高校",
+
+        "神戸市立六甲アイランド高校",
+        "神戸市立科学技術高校",
+        "神戸市立葺合高校",
+        "神戸市立神港橘高校",
+        "神戸市立須磨翔風高校"
+      ],
+
+      district2: [
+        "県立尼崎高校",
+        "県立尼崎北高校",
+        "県立尼崎稲園高校",
+        "県立尼崎西高校",
+        "県立尼崎小田高校",
+        "県立尼崎工業高校",
+        "県立武庫荘総合高校",
+        "県立西宮高校",
+        "県立西宮苦楽園高校",
+        "県立鳴尾高校",
+        "県立西宮南高校",
+        "県立西宮今津高校",
+        "県立伊丹高校",
+        "県立伊丹西高校",
+        "県立伊丹北高校",
+        "県立宝塚高校",
+        "県立宝塚東高校",
+        "県立宝塚西高校",
+        "県立宝塚北高校",
+        "県立川西緑台高校",
+        "県立川西北陵高校",
+        "県立川西明峰高校",
+        "県立有馬高校",
+        "県立北摂三田高校",
+        "県立三田西陵高校",
+        "県立三田祥雲館高校",
+        "県立猪名川高校",
+        "県立篠山鳳鳴高校",
+        "県立篠山産業高校",
+        "県立篠山東雲高校",
+        "県立柏原高校",
+        "県立氷上西高校",
+        "県立氷上高校",
+
+        "尼崎市立尼崎高校",
+        "尼崎市立尼崎双星高校",
+        "伊丹市立伊丹高校",
+        "西宮市立西宮高校",
+        "西宮市立西宮東高校"
+      ],
+
+      district3: [
+        "県立明石高校",
+        "県立明石南高校",
+        "県立明石西高校",
+        "県立明石北高校",
+        "県立明石清水高校",
+        "県立明石城西高校",
+        "県立加古川東高校",
+        "県立加古川西高校",
+        "県立加古川北高校",
+        "県立加古川南高校",
+        "県立農業高校",
+        "県立東播工業高校",
+        "県立高砂高校",
+        "県立高砂南高校",
+        "県立松陽高校",
+        "県立東播磨高校",
+        "県立播磨南高校",
+        "県立西脇高校",
+        "県立西脇工業高校",
+        "県立三木高校",
+        "県立三木総合高校",
+        "県立小野高校",
+        "県立小野工業高校",
+        "県立北条高校",
+        "県立播磨農業高校",
+        "県立社高校",
+        "県立多可高校",
+
+        "明石市立明石商業高校"
+      ],
+
+      district4: [
+        "県立姫路東高校",
+        "県立姫路西高校",
+        "県立飾磨工業高校",
+        "県立姫路海稜高校",
+        "県立姫路別所高校",
+        "県立姫路飾西高校",
+        "県立姫路商業高校",
+        "県立姫路工業高校",
+        "県立播磨福崎高校",
+        "県立神崎高校",
+        "県立香寺高校",
+        "県立相生高校",
+        "県立相生産業高校",
+        "県立龍野高校",
+        "県立龍野北高校",
+        "県立赤穂高校",
+        "県立太子高校",
+        "県立上郡高校",
+        "県立大学附属高校",
+        "県立佐用高校",
+        "県立山崎高校",
+        "県立伊和高校",
+        "県立千種高校",
+
+        "姫路市立高等学校"
+      ],
+
+      district5: [
+        "県立豊岡高校",
+        "県立豊岡総合高校",
+        "県立香住高校",
+        "県立日高高校",
+        "県立出石高校",
+        "県立村岡高校",
+        "県立浜坂高校",
+        "県立八鹿高校",
+        "県立但馬農業高校",
+        "県立生野高校",
+        "県立和田山高校"
+      ],
+
+      private: [
+        "三田学園高等学校",
+        "三田松聖高等学校",
+        "仁川学院高等学校",
+        "六甲学院高等学校",
+        "兵庫大学附属須磨ノ浦高等学校",
+        "啓明学院高等学校",
+        "園田学園高等学校",
+        "報徳学園高等学校",
+        "夙川高等学校",
+        "姫路女学院高等学校",
+        "小林聖心女子学院高等学校",
+        "市川高等学校",
+        "彩星工科高等学校",
+        "愛徳学園高等学校",
+        "日ノ本学園高等学校",
+        "東洋大学附属姫路高等学校",
+        "松蔭高等学校",
+        "武庫川女子大学附属高等学校",
+        "淳心学院高等学校",
+        "滝川第二高等学校",
+        "滝川高等学校",
+        "灘高等学校",
+        "生野学園高等学校",
+        "甲南女子高等学校",
+        "甲南高等学校",
+        "甲子園学院高等学校",
+        "甲陽学院高等学校",
+        "白陵高等学校",
+        "百合学院高等学校",
+        "神戸国際高等学校",
+        "神戸国際大学附属高等学校",
+        "神戸女学院高等学部",
+        "神戸学院大学附属高等学校",
+        "神戸山手グローバル高等学校",
+        "神戸常盤女子高等学校",
+        "神戸弘陵学園高等学校",
+        "神戸星城高等学校",
+        "神戸海星女子学院高等学校",
+        "神戸第一高等学校",
+        "神戸野田高等学校",
+        "神戸龍谷高等学校",
+        "神港学園高等学校",
+        "育英高等学校",
+        "芦屋学園高等学校",
+        "蒼開高等学校",
+        "親和女子高等学校",
+        "賢明女子学院高等学校",
+        "近畿大学附属豊岡高等学校",
+        "関西学院高等部",
+        "雲雀丘学園高等学校",
+        "須磨学園高等学校"
+      ],
+      nationalKosen: [
+        "神戸大学附属中等教育学校（後期課程）",
+        "国立明石工業高等専門学校",
+        "神戸市立工業高等専門学校"
+      ],
+      flexible: [
+        "県立神戸工業高校（定時制）", "県立湊川高校（定時制）", "県立長田商業高校（定時制）",
+        "県立神崎工業高校（定時制）", "県立西宮香風高校（多部制）", "県立阪神昆陽高校（多部制）",
+        "県立有馬高校（定時制）", "県立錦城高校（定時制）", "県立農業高校（定時制）",
+        "県立松陽高校（定時制）", "県立小野工業高校（定時制）", "県立西脇北高校（多部制）",
+        "県立飾磨工業高校（多部制）", "県立姫路北高校（定時制）", "県立龍野北高校（定時制）",
+        "県立相生産業高校（定時制）", "県立赤穂高校（定時制）", "県立豊岡高校（定時制）",
+        "県立洲本高校（定時制）", "神戸市立神戸工科高校（定時制）", "神戸市立摩耶兵庫高校（定時制）",
+        "神戸市立楠高校（定時制）", "尼崎市立琴ノ浦高校（定時制）",
+        "県立青雲高校（通信制）", "県立網干高校（通信制）", "相生学院高校（通信制）",
+        "第一学院高校 養父校（通信制）", "AIE国際高校（通信制）", "小林聖心女子学院高校（通信制）"
+      ]
+    };
+
+
+    const schoolTypeChoices = [
+      ["district1","第1学区"], ["district2","第2学区"], ["district3","第3学区"],
+      ["district4","第4学区"], ["district5","第5学区"], ["private","私立高校"],
+      ["nationalKosen","国立・高専"], ["flexible","通信制・定時制"], ["undecided","まだ決まってない"]
+    ];
+    let secondSchoolType = "";
+
+    function isCompareQuestion() {
+      return document.getElementById("theme").value === "学校同士の客観比較";
+    }
+
+    function renderSchoolTypeButtons(containerId, selected, slot) {
+      const container = document.getElementById(containerId);
+      container.innerHTML = "";
+      schoolTypeChoices.forEach(function(choice) {
+        if (slot === 2 && choice[0] === "undecided") return;
+        const button = document.createElement("button");
+        button.type = "button";
+        button.className = "school-type-btn" + (choice[0] === selected ? " active" : "");
+        button.textContent = choice[1];
+        button.setAttribute("aria-pressed", String(choice[0] === selected));
+        button.onclick = function() { selectSchoolType(choice[0], slot); };
+        container.appendChild(button);
+      });
+    }
+
+    function populateSchoolSelect(selectId, type, countId) {
+      const select = document.getElementById(selectId);
+      const schools = schoolOptions[type] || [];
+      select.innerHTML = '<option value="">高校を選択してください</option>';
+      schools.forEach(function(name) {
+        const option = document.createElement("option");
+        option.value = name;
+        option.textContent = name;
+        select.appendChild(option);
+      });
+      select.disabled = schools.length === 0;
+      document.getElementById(countId).textContent = schools.length ? schools.length + "校から選択" : "";
+    }
+
+    function selectSchoolType(type, slot) {
+      if (slot === 2) {
+        secondSchoolType = type;
+        renderSchoolTypeButtons("schoolTypeGrid2", type, 2);
+        populateSchoolSelect("school2", type, "schoolCount2");
+        handleSchoolSelection(2);
+        return;
+      }
+      document.getElementById("district").value = type === "undecided" ? "" : type;
+      document.getElementById("school").value = "";
+      renderSchoolTypeButtons("schoolTypeGrid", type, 1);
+      const undecided = type === "undecided";
+      document.getElementById("schoolPickerPanel").hidden = undecided;
+      document.getElementById("undecidedNote").hidden = !undecided;
+      document.getElementById("districtHelpButton").style.display = type.indexOf("district") === 0 ? "inline-block" : "none";
+      document.getElementById("districtScopeNote").style.display = type.indexOf("district") === 0 ? "block" : "none";
+      if (!undecided) {
+        document.getElementById("schoolPickerTitle").textContent = type.indexOf("district") === 0 ? "この学区の高校" : "高校を選択してください";
+        populateSchoolSelect("school", type, "schoolCount");
+      }
+      if (undecided) document.getElementById("theme").focus();
+      updateComparisonPicker();
+      renderQuestionOptions();
+    }
+
+    function updateComparisonPicker() {
+      const row = document.getElementById("compareSchoolRow");
+      row.hidden = !isCompareQuestion() || document.getElementById("schoolPickerPanel").hidden;
+      if (!row.hidden) renderSchoolTypeButtons("schoolTypeGrid2", secondSchoolType, 2);
+      updateSchoolSelectionSummary();
+    }
+
+    function handleSchoolSelection(slot) {
+      if (slot === 2 && document.getElementById("school2").value === document.getElementById("school").value) {
+        document.getElementById("school2").value = "";
+        showMessage("同じ高校は選べません", "比較する2校目は、1校目と別の高校を選んでください。", "!");
+      }
+      updateSchoolSelectionSummary();
+      renderQuestionOptions();
+    }
+
+    function updateSchoolSelectionSummary() {
+      const first = document.getElementById("school").value;
+      const second = document.getElementById("school2").value;
+      document.getElementById("schoolSelectionSummary").textContent = isCompareQuestion()
+        ? (first || "1校目未選択") + " ／ " + (second || "2校目未選択")
+        : (first ? "選択中：" + first : "");
+    }
+
+    function changeDistrict() {
+      selectSchoolType(document.getElementById("district").value, 1);
+    }
+
+    renderSchoolTypeButtons("schoolTypeGrid", "", 1);
+
+
+    function openDistrictHelp() {
+
+      document
+        .getElementById("districtHelpModal")
+        .classList
+        .add("show");
+    }
+
+
+    function closeDistrictHelp() {
+
+      document
+        .getElementById("districtHelpModal")
+        .classList
+        .remove("show");
+    }
+
+
+    let themes = {
+      school:[
+        "学校の特徴・強み",
+        "コース・学科",
+        "校風・学校生活",
+        "部活動",
+        "通学・立地",
+        "学校設備",
+        "学校行事",
+        "制服・学校生活費"
+      ],
+
+      score:[
+        "内申点",
+        "実力テスト",
+        "定期テスト",
+        "模試・偏差値",
+        "合格ライン",
+        "当日点の目安",
+        "内申点と当日点の仕組み",
+        "加点・減点の仕組み"
+      ],
+
+      exam:[
+        "一般入試",
+        "推薦入試",
+        "特色選抜",
+        "専願・併願",
+        "複数志願選抜",
+        "学区・出願資格",
+        "試験科目・配点",
+        "面接",
+        "作文・小論文",
+        "私立高校の入試方式"
+      ],
+
+      qualification:[
+        "英検",
+        "漢検・数検",
+        "加点",
+        "得点換算",
+        "試験免除",
+        "出願条件",
+        "推薦条件",
+        "資格の活用方法"
+      ],
+
+      university:[
+        "国公立大学",
+        "関関同立",
+        "産近甲龍",
+        "その他大学の進学実績",
+        "指定校推薦",
+        "内部進学",
+        "大学進学率",
+        "大学合格実績",
+        "進路指導",
+        "大学附属・系列校"
+      ],
+
+      cost:[
+        "授業料",
+        "入学金",
+        "初年度費用",
+        "授業料以外の諸経費",
+        "制服・教材費",
+        "ICT端末",
+        "修学旅行・行事費",
+        "部活動費",
+        "授業料無償化・就学支援金",
+        "公立・私立の費用比較"
+      ],
+
+      confirm:[
+        "中学校の先生の見立て",
+        "私立専願の事前確認",
+        "私立併願の安全度",
+        "同じ中学校からの過去合否実績",
+        "塾の合格者データ",
+        "志望校変更を勧める基準",
+        "推薦を出してもらう校内基準",
+        "欠席・遅刻・生活態度の影響",
+        "内申を上げるための具体策",
+        "私立個別相談で確認できる範囲",
+        "回し合格・コース変更の実態",
+        "指定校推薦の実際の利用状況",
+        "部活動・スポーツ推薦の事前相談",
+        "入学後の実際の学習負担",
+        "大学進学実績の実態"
+      ],
+
+      schedule:[
+        "出願日",
+        "入試日",
+        "合格発表",
+        "学校説明会",
+        "オープンスクール",
+        "進路希望調査",
+        "三者懇談",
+        "私立受験校を決める時期",
+        "公立受験校を決める時期",
+        "志望校変更の時期"
+      ]
+    };
+
+    function applyQuestionOptions(data) {
+      if (!data || !data.ok || !Array.isArray(data.categories) || !data.categories.length) {
+        throw new Error("質問選択項目を取得できませんでした。");
+      }
+
+      const nextTemplates = {};
+      const nextThemes = {};
+      const categorySelect = document.getElementById("category");
+      categorySelect.innerHTML = '<option value="">内容を選択してください</option>';
+
+      data.categories.forEach(function(category) {
+        if (!category || !category.key || !category.label || !Array.isArray(category.themes)) return;
+        nextTemplates[category.key] = {};
+        nextThemes[category.key] = [];
+
+        category.themes.forEach(function(theme) {
+          if (!theme || !theme.name || theme.name === "学校同士の客観比較" || !Array.isArray(theme.questions) || !theme.questions.length) return;
+          nextThemes[category.key].push(theme.name);
+          nextTemplates[category.key][theme.name] = theme.questions.slice();
+        });
+
+        if (!nextThemes[category.key].length) return;
+        const option = document.createElement("option");
+        option.value = category.key;
+        option.textContent = category.label;
+        categorySelect.appendChild(option);
+      });
+
+      questionTemplates = nextTemplates;
+      themes = nextThemes;
+    }
+
+    function fetchQuestionOptions() {
+      return new Promise(function(resolve, reject) {
+        const callbackName = "routeQuestionOptions_" + Date.now() + "_" + Math.random().toString(36).slice(2);
+        const script = document.createElement("script");
+        const timeout = window.setTimeout(function() {
+          cleanup();
+          reject(new Error("質問選択項目の取得がタイムアウトしました。"));
+        }, 8000);
+
+        function cleanup() {
+          window.clearTimeout(timeout);
+          delete window[callbackName];
+          if (script.parentNode) script.parentNode.removeChild(script);
+        }
+
+        window[callbackName] = function(data) {
+          cleanup();
+          resolve(data);
+        };
+        script.onerror = function() {
+          cleanup();
+          reject(new Error("質問選択項目を読み込めませんでした。"));
+        };
+        script.src = QUESTION_OPTIONS_URL + "?action=getQuestionOptions&callback=" + encodeURIComponent(callbackName);
+        document.head.appendChild(script);
+      });
+    }
+
+    async function loadQuestionOptions() {
+      try {
+        const cached = JSON.parse(localStorage.getItem(QUESTION_OPTIONS_CACHE_KEY) || "null");
+        if (cached && cached.savedAt && Date.now() - cached.savedAt < QUESTION_OPTIONS_CACHE_MS) {
+          applyQuestionOptions(cached.data);
+          return;
+        }
+      } catch (error) {
+        localStorage.removeItem(QUESTION_OPTIONS_CACHE_KEY);
+      }
+
+      const data = await fetchQuestionOptions();
+      applyQuestionOptions(data);
+      try {
+        localStorage.setItem(QUESTION_OPTIONS_CACHE_KEY, JSON.stringify({ savedAt: Date.now(), data: data }));
+      } catch (error) {
+        console.warn("質問選択項目をブラウザに保存できませんでした。", error);
+      }
+    }
+
+    function changeTheme(resetSelection) {
+      const category = document.getElementById("category").value;
+      const theme = document.getElementById("theme");
+      const previousValue = resetSelection ? "" : theme.value;
+      theme.innerHTML = "";
+
+      const first = document.createElement("option");
+      first.value = "";
+      first.textContent = category && themes[category]
+        ? "質問テーマを選択してください"
+        : "①を先に選んでから選択してください";
+      theme.appendChild(first);
+
+      if (!category || !themes[category]) return;
+      themes[category].forEach(function(name) {
+        const option = document.createElement("option");
+        option.value = name;
+        option.textContent = name;
+        theme.appendChild(option);
+      });
+      if (previousValue && themes[category].includes(previousValue)) theme.value = previousValue;
+      renderQuestionOptions();
+    }
+
+    function postToGas(data) {
+      return new Promise(function(resolve, reject) {
+        const requestId = "route_" + Date.now() + "_" + Math.random().toString(36).slice(2);
+        pendingRequests[requestId] = { resolve:resolve, reject:reject };
+
+        const form = document.createElement("form");
+        form.method = "POST";
+        form.action = GAS_WEB_APP_URL;
+        form.target = "backendFrame";
+        form.style.display = "none";
+
+        const payload = Object.assign({}, data, { requestId:requestId });
+        Object.keys(payload).forEach(function(key) {
+          const input = document.createElement("input");
+          input.type = "hidden";
+          input.name = key;
+          input.value = payload[key] == null ? "" : String(payload[key]);
+          form.appendChild(input);
+        });
+
+        document.body.appendChild(form);
+        form.submit();
+
+        const timeoutMs =
+          data.action === "submit"
+            ? 120000
+            : 60000;
+
+        setTimeout(function() {
+          if (pendingRequests[requestId]) {
+            delete pendingRequests[requestId];
+            reject(new Error("サーバーからの応答がありませんでした。"));
+          }
+          if (form.parentNode) form.remove();
+        }, timeoutMs);
+      });
+    }
+
+    window.addEventListener("message", function(event) {
+
+      let message =
+        event.data;
+
+
+      /*
+       * Apps Script側から
+       * オブジェクト / JSON文字列のどちらで届いても受け取る。
+       */
+      if (
+        typeof message === "string"
+      ) {
+
+        try {
+          message =
+            JSON.parse(
+              message
+            );
+        }
+        catch(error) {
+          return;
+        }
+      }
+
+
+      if (
+        !message ||
+        message.source !== "route-qa-gas"
+      ) {
+        return;
+      }
+
+
+      let data =
+        message.payload;
+
+
+      /*
+       * 念のためpayloadも文字列ならJSON化
+       */
+      if (
+        typeof data === "string"
+      ) {
+
+        try {
+          data =
+            JSON.parse(
+              data
+            );
+        }
+        catch(error) {
+          return;
+        }
+      }
+
+
+      if (
+        !data ||
+        !data.requestId
+      ) {
+        return;
+      }
+
+
+      const pending =
+        pendingRequests[
+          data.requestId
+        ];
+
+
+      /*
+       * Apps Script側は複数回postMessageするので、
+       * 2回目以降はここで無視される。
+       */
+      if (!pending) {
+        return;
+      }
+
+
+      delete pendingRequests[
+        data.requestId
+      ];
+
+
+      if (data.ok) {
+
+        pending.resolve(
+          data.result
+        );
+
+      }
+      else {
+
+        pending.reject(
+          new Error(
+            data.message ||
+            "処理に失敗しました。"
+          )
+        );
+
+      }
+    });
+
+    function updateSubmitState() {
+      const agreed = document.getElementById("rulesAgree").checked;
+      document.getElementById("submitBtn").disabled =
+        !usageData ||
+        !usageData.canSubmit ||
+        !agreed ||
+        isValidatingQuestion ||
+        isSending;
+    }
+
+    function updateConfirmConsent() {
+      document.getElementById("confirmSendBtn").disabled =
+        !document.getElementById("confirmRulesAgree").checked ||
+        isSending;
+    }
+
+
+    function getCachedUsage(lineUserId) {
+      if (!lineUserId) return null;
+      try {
+        const raw = localStorage.getItem(USAGE_CACHE_PREFIX + lineUserId);
+        if (!raw) return null;
+        const cached = JSON.parse(raw);
+        if (!cached || !cached.savedAt || Date.now() - cached.savedAt > USAGE_CACHE_TTL_MS) {
+          localStorage.removeItem(USAGE_CACHE_PREFIX + lineUserId);
+          return null;
+        }
+        return cached.usage || null;
+      } catch (error) { return null; }
+    }
+
+    function saveCachedUsage(lineUserId, result) {
+      if (!lineUserId || !result) return;
+      try {
+        localStorage.setItem(USAGE_CACHE_PREFIX + lineUserId,
+          JSON.stringify({ savedAt:Date.now(), usage:result }));
+      } catch (error) { /* Storage is optional; server validation remains required. */ }
+    }
+
+    function updateUsage(result, options) {
+      if (!result) return;
+      const fromCache = !!(options && options.fromCache);
+      if (!fromCache) {
+        usageData = result;
+        saveCachedUsage(lineProfile && lineProfile.userId, result);
+      }
+      const remaining = Math.max(0, Number(result.remainingCount || 0));
+      let ticketLabel = result.ticketLabel || "無料お試し";
+      ticketLabel = String(ticketLabel)
+        .replace(/1,500円\s*[／/]\s*3回/g, "1,000円／3回")
+        .replace(/3,500円\s*[／/]\s*10回/g, "3,000円／10回")
+        .replace(/1,000円\s*[／/]\s*3回/g, "3回券　1,000円")
+        .replace(/3,000円\s*[／/]\s*10回/g, "10回券　3,000円");
+      document.getElementById("planUsage").textContent = ticketLabel;
+      document.getElementById("remainingUsage").textContent = remaining + "回";
+      document.getElementById("usageStatus").textContent = fromCache
+        ? "前回の利用状況です。最新の残り回数を確認しています。"
+        : "最新の利用状況を確認しました。";
+      // Cached values never authorize sending questions or show purchase prompts.
+      if (!fromCache) {
+        updateSubmitState();
+        document.getElementById("ticketArea").style.display = remaining <= 0 ? "block" : "none";
+      }
+    }
+
+    function setLoading(show, title, text) {
+      document.getElementById("loadingTitle").textContent =
+        title || "処理しています";
+
+      const loadingText =
+        document.getElementById("loadingText");
+
+      loadingText.style.whiteSpace =
+        "pre-line";
+
+      loadingText.textContent =
+        text || "そのまま少々お待ちください。";
+
+      document.getElementById("loadingModal")
+        .classList.toggle("show", !!show);
+    }
+
+    function escapeHtml(text) {
+      return String(text).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#039;");
+    }
+
+    function showMessage(title, text, icon) {
+      const iconElement = document.getElementById("messageIcon");
+      iconElement.textContent = icon || "✓";
+      iconElement.classList.toggle("error", icon === "!");
+      document.getElementById("messageTitle").textContent = title;
+      document.getElementById("messageText").textContent = text;
+      document.getElementById("messageModal").classList.add("show");
+    }
+
+    function closeMessage() {
+      document.getElementById("messageModal").classList.remove("show");
+
+      if (scrollTopAfterMessage) {
+        scrollTopAfterMessage = false;
+        requestAnimationFrame(function() {
+          window.scrollTo({ top:0, left:0, behavior:"auto" });
+        });
+      }
+    }
+
+    function getCurrentQuestionData() {
+      const category =
+        document.getElementById("category");
+
+      const district =
+        document.getElementById("district");
+      const typeLabel = (schoolTypeChoices.find(function(choice) { return choice[0] === district.value; }) || [])[1] || "";
+      const firstSchool = document.getElementById("school").value.trim();
+      const secondSchool = document.getElementById("school2").value.trim();
+
+      return {
+        category:
+          category.value,
+
+        categoryLabel:
+          category.options[
+            category.selectedIndex
+          ].text,
+
+        theme:
+          document.getElementById("theme").value,
+
+        district:
+          district.value,
+
+        districtLabel: typeLabel,
+
+        school:
+          isCompareQuestion() && secondSchool ? firstSchool + " ／ " + secondSchool : firstSchool,
+
+        school2: secondSchool,
+
+        question:
+          getCurrentQuestionText(),
+
+        questionSource:
+          routeQuestionMode === 'manual'
+            ? 'manual'
+            : 'preset'
+      };
+    }
+
+
+    function getQuestionSignature(data) {
+      return JSON.stringify({
+        category:
+          data.category || "",
+
+        categoryLabel:
+          data.categoryLabel || "",
+
+        theme:
+          data.theme || "",
+
+        district:
+          data.district || "",
+
+        districtLabel:
+          data.districtLabel || "",
+
+        school:
+          data.school || "",
+
+        question:
+          data.question || "",
+
+        questionSource:
+          data.questionSource || "manual"
+      });
+    }
+
+
+    async function openConfirm() {
+
+      if (!document.getElementById("rulesAgree").checked) {
+        showMessage(
+          "ご利用ルールをご確認ください",
+          "ご利用ルール・返金条件・免責事項を確認し、同意欄にチェックしてください。",
+          "!"
+        );
+        return;
+      }
+
+      if (
+        !usageData ||
+        !usageData.canSubmit
+      ) {
+        showMessage(
+          "質問回数がありません",
+          "回数券をご購入ください。",
+          "!"
+        );
+        return;
+      }
+
+      if (isValidatingQuestion) {
+        return;
+      }
+
+      const data =
+        getCurrentQuestionData();
+
+      if (!data.category) {
+        return showMessage(
+          "ご確認ください",
+          "相談したい内容を選択してください。",
+          "!"
+        );
+      }
+
+      if (!data.theme) {
+        return showMessage(
+          "ご確認ください",
+          "質問テーマを選択してください。",
+          "!"
+        );
+      }
+
+      if (isCompareQuestion() && (!document.getElementById("school").value || !data.school2)) {
+        return showMessage(
+          "比較する高校を選択してください",
+          "学校同士の客観比較では、1校目と2校目を選択してください。",
+          "!"
+        );
+      }
+
+      if (!data.question) {
+        return showMessage(
+          "ご確認ください",
+          "質問内容を入力してください。",
+          "!"
+        );
+      }
+
+      if (!lineAccessToken) {
+        return showMessage(
+          "接続をご確認ください",
+          "LINE認証情報を確認できません。LINEから開き直してください。",
+          "!"
+        );
+      }
+
+
+      isValidatingQuestion = true;
+      validatedQuestionToken = "";
+      validatedQuestionSignature = "";
+      document.getElementById("submitBtn").disabled = true;
+
+      setLoading(
+        true,
+        "質問内容を確認しています",
+        "ROUTEQでお答えできる内容か、入力内容を確認しています。\nこの確認では質問回数は使用しません。"
+      );
+
+
+      try {
+
+        const result =
+          await postToGas({
+            action:
+              "validateQuestion",
+
+            idToken:
+              lineAccessToken,
+
+            category:
+              data.category,
+
+            categoryLabel:
+              data.categoryLabel,
+
+            theme:
+              data.theme,
+
+            district:
+              data.district,
+
+            districtLabel:
+              data.districtLabel,
+
+            school:
+              data.school,
+
+            question:
+              data.question,
+
+            questionSource:
+              data.questionSource
+          });
+
+
+        setLoading(false);
+
+
+        if (
+          !result ||
+          result.allowed !== true ||
+          !result.validationToken
+        ) {
+
+          const title =
+            result &&
+            result.title
+              ? result.title
+              : "質問内容をご確認ください";
+
+          let message =
+            result &&
+            result.message
+              ? result.message
+              : "この内容では質問を受け付けできません。内容を修正してください。";
+
+          if (
+            result &&
+            result.suggestion
+          ) {
+            message +=
+              "\n\n修正例：\n" +
+              result.suggestion;
+          }
+
+          showMessage(
+            title,
+            message,
+            "!"
+          );
+
+          return;
+        }
+
+
+        validatedQuestionToken =
+          result.validationToken;
+
+        validatedQuestionSignature =
+          getQuestionSignature(
+            data
+          );
+
+
+        document.getElementById("confirmBox").innerHTML =
+          '<div class="confirm-row"><span class="confirm-label">第1項目：</span>' +
+          escapeHtml(
+            data.categoryLabel
+          ) +
+          '</div>' +
+          '<div class="confirm-row"><span class="confirm-label">質問テーマ：</span>' +
+          escapeHtml(
+            data.theme
+          ) +
+          '</div>' +
+          '<div class="confirm-row"><span class="confirm-label">学区：</span>' +
+          escapeHtml(
+            data.districtLabel || "未選択"
+          ) +
+          '</div>' +
+          '<div class="confirm-row"><span class="confirm-label">高校：</span>' +
+          escapeHtml(
+            data.school || "未選択"
+          ) +
+          '</div>' +
+          '<div class="confirm-row"><span class="confirm-label">質問内容：</span><br>' +
+          escapeHtml(
+            data.question
+          ) +
+          '</div>';
+
+
+        document.getElementById("confirmRulesAgree").checked = false;
+        updateConfirmConsent();
+
+        document
+          .getElementById("confirmModal")
+          .classList
+          .add("show");
+
+      }
+      catch(error) {
+
+        setLoading(false);
+
+        validatedQuestionToken = "";
+        validatedQuestionSignature = "";
+
+        showMessage(
+          "質問内容を確認できませんでした",
+          "確認処理でエラーが発生しました。質問回数は使用されていません。時間をおいてもう一度お試しください。",
+          "!"
+        );
+
+        console.error(
+          error
+        );
+
+      }
+      finally {
+
+        isValidatingQuestion = false;
+
+        updateSubmitState();
+      }
+    }
+
+
+    function closeConfirm() {
+      document.getElementById("confirmModal").classList.remove("show");
+      document.getElementById("confirmRulesAgree").checked = false;
+      updateConfirmConsent();
+    }
+
+    async function sendQuestion() {
+
+      if (isSending) {
+        return;
+      }
+
+      if (!document.getElementById("confirmRulesAgree").checked) {
+        showMessage(
+          "同意の確認が必要です",
+          "確認画面の同意欄にチェックしてください。",
+          "!"
+        );
+        return;
+      }
+
+
+      const data =
+        getCurrentQuestionData();
+
+      const currentSignature =
+        getQuestionSignature(
+          data
+        );
+
+
+      if (
+        !validatedQuestionToken ||
+        validatedQuestionSignature !==
+          currentSignature
+      ) {
+
+        closeConfirm();
+
+        validatedQuestionToken = "";
+        validatedQuestionSignature = "";
+
+        showMessage(
+          "もう一度内容をご確認ください",
+          "質問内容が変更されたか、事前確認の有効期限が切れています。もう一度「この内容で質問する」を押してください。",
+          "!"
+        );
+
+        return;
+      }
+
+
+      isSending = true;
+
+      document
+        .getElementById("confirmSendBtn")
+        .disabled = true;
+
+      closeConfirm();
+
+
+      setLoading(
+        true,
+        "質問を受け付けています",
+        "ご質問内容の登録処理を行っています。\n20〜30秒ほどかかる場合があります。そのままお待ちください。"
+      );
+
+
+      try {
+
+        if (!lineAccessToken) {
+          throw new Error(
+            "LINE認証情報を確認できません。LINEから開き直してください。"
+          );
+        }
+
+
+        const result =
+          await postToGas({
+            action:
+              "submit",
+
+            idToken:
+              lineAccessToken,
+
+            category:
+              data.category,
+
+            categoryLabel:
+              data.categoryLabel,
+
+            theme:
+              data.theme,
+
+            district:
+              data.district,
+
+            districtLabel:
+              data.districtLabel,
+
+            school:
+              data.school,
+
+            question:
+              data.question,
+
+            questionSource:
+              data.questionSource,
+
+            validationToken:
+              validatedQuestionToken,
+
+            consentAccepted:
+              true,
+
+            consentAcceptedAt:
+              new Date().toISOString(),
+
+            consentPolicyVersion:
+              CONSENT_POLICY_VERSION,
+
+            consentContents:
+              CONSENT_SUMMARY,
+
+            lineUserId:
+              lineProfile && lineProfile.userId ? lineProfile.userId : ""
+          });
+
+
+        validatedQuestionToken = "";
+        validatedQuestionSignature = "";
+
+
+        updateUsage(
+          result
+        );
+
+        document.getElementById("category").value =
+          "";
+
+        changeTheme(
+          true
+        );
+
+        document.getElementById("district").value =
+          "";
+
+        changeDistrict();
+
+        document.getElementById("question").value =
+          "";
+
+        document.getElementById("questionManual").value =
+          "";
+
+        document.getElementById("rulesAgree").checked =
+          false;
+
+        updateSubmitState();
+
+        scrollTopAfterMessage =
+          true;
+
+
+        showMessage(
+          "質問を受け付けました",
+          "送信が完了しました。ROUTEQで内容を確認後、LINEで回答します。",
+          "✓"
+        );
+
+      }
+      catch(error) {
+
+        validatedQuestionToken = "";
+        validatedQuestionSignature = "";
+
+        showMessage(
+          "送信できませんでした",
+          error.message ||
+          String(error),
+          "!"
+        );
+
+      }
+      finally {
+
+        setLoading(
+          false
+        );
+
+        isSending = false;
+
+        document
+          .getElementById("confirmSendBtn")
+          .disabled = false;
+      }
+    }
+
+
+    async function buyTicket(ticketCode) {
+      try {
+        if (!lineAccessToken) throw new Error("LINE認証情報を取得できませんでした。");
+        setLoading(true,"決済画面を準備しています","そのまま少々お待ちください。");
+
+        const result = await postToGas({
+          action:"createCheckout",
+          idToken:lineAccessToken,
+          ticketCode:ticketCode
+        });
+
+        if (!result || !result.checkoutUrl) throw new Error("決済画面を開けませんでした。");
+        window.location.href = result.checkoutUrl;
+      } catch(error) {
+        setLoading(false);
+        showMessage("決済画面を開けませんでした",error.message || String(error),"!");
+      }
+    }
+
+    function getStripeReturnParams() {
+      const params = new URLSearchParams(window.location.search);
+      let stripe = params.get("stripe");
+      let sessionId = params.get("session_id");
+
+      const liffState = params.get("liff.state");
+      if ((!stripe || !sessionId) && liffState) {
+        try {
+          const decoded = decodeURIComponent(liffState);
+          const q = decoded.includes("?") ? decoded.substring(decoded.indexOf("?") + 1) : decoded.replace(/^\?/,"");
+          const stateParams = new URLSearchParams(q);
+          stripe = stripe || stateParams.get("stripe");
+          sessionId = sessionId || stateParams.get("session_id");
+        } catch(error) {
+          console.warn(error);
+        }
+      }
+      return { stripe:stripe, sessionId:sessionId };
+    }
+
+    function cleanStripeReturnUrl() {
+      try {
+        const url = new URL(window.location.href);
+        url.searchParams.delete("stripe");
+        url.searchParams.delete("session_id");
+        history.replaceState({},document.title,url.pathname + (url.search ? url.search : "") + (url.hash || ""));
+      } catch(error) {
+        console.warn(error);
+      }
+    }
+
+    async function confirmStripeReturnIfNeeded() {
+      const payment = getStripeReturnParams();
+
+      if (payment.stripe === "cancel") {
+        cleanStripeReturnUrl();
+        showMessage("決済をキャンセルしました","質問回数は追加されていません。","!");
+        return;
+      }
+
+      if (payment.stripe !== "success" || !payment.sessionId) return;
+
+      setLoading(true,"決済を確認しています","支払い状況を確認しています。");
+      try {
+        const result = await postToGas({
+          action:"confirmCheckout",
+          idToken:lineAccessToken,
+          sessionId:payment.sessionId
+        });
+        cleanStripeReturnUrl();
+        showMessage("決済が完了しました","質問回数を追加しました。現在の残り回数は " + Number(result.remainingCount || 0) + "回です。","✓");
+      } finally {
+        setLoading(false);
+      }
+    }
+
+
+    function initializeLiff() {
+      if (liffInitialization) return liffInitialization;
+      liffInitialization = (async function() {
+        const startedAt = performance.now();
+        const timings = { cacheHit:false };
+        let authenticated = false;
+        let startupFailed = false;
+        try {
+          if (!window.liff) throw new Error("LINEの読み込みに失敗しました。ページを再読み込みしてください。");
+          // iOS Safari can return from LINE Login to the external browser repeatedly.
+          // Require an explicit login gesture on iOS instead of an automatic redirect loop.
+          const isIOSExternalBrowser = /iPad|iPhone|iPod/.test(navigator.userAgent);
+          await liff.init({ liffId:LIFF_ID, withLoginOnExternalBrowser:!isIOSExternalBrowser });
+          timings.liffInitMs = Math.round(performance.now() - startedAt);
+
+          if (!liff.isInClient() && !liff.isLoggedIn()) {
+            document.getElementById("loginStatus").innerHTML =
+              '<button type="button" id="lineManualLogin" style="display:block;width:100%;padding:18px 20px;border:0;border-radius:14px;background:#06C755;color:#fff;text-align:center;font-size:22px;font-weight:900;cursor:pointer;">LINEでログイン</button>';
+            document.getElementById("lineManualLogin").addEventListener("click", function() {
+              liff.login({ redirectUri: location.origin + location.pathname });
+            });;
+            document.getElementById("usageStatus").textContent = "";
+            setLoading(false);
+            return;
+          }
+          lineAccessToken = liff.getAccessToken();
+          if (!lineAccessToken) throw new Error("LINE認証情報を取得できませんでした。");
+          authenticated = true;
+          timings.authReadyMs = Math.round(performance.now() - startedAt);
+          document.getElementById("loginStatus").innerHTML =
+            '<div class="status-icon is-authenticated">✓</div><div class="status-text">LINE認証済み</div>';
+          document.getElementById("usageStatus").textContent = "最新の利用状況を確認しています。";
+
+          // The LINE profile request can run alongside GAS; GAS requests stay sequential
+          // because postToGas uses one shared iframe, and checkout must precede usage.
+          const profileTask = liff.getProfile().then(function(profile) {
+            if (startupFailed) return;
+            lineProfile = profile;
+            document.getElementById("loginStatus").innerHTML =
+              '<div class="status-icon is-authenticated">✓</div><div class="status-text">LINE認証済み　' +
+              escapeHtml(profile.displayName || "") + '</div>';
+            const cached = getCachedUsage(profile.userId);
+            if (cached) {
+              timings.cacheHit = true;
+              updateUsage(cached, { fromCache:true });
+            }
+            timings.profileReadyMs = Math.round(performance.now() - startedAt);
+          });
+          const usageTask = (async function() {
+            await confirmStripeReturnIfNeeded();
+            const usageStartedAt = performance.now();
+            const result = await postToGas({ action:"usage", idToken:lineAccessToken });
+            timings.usageApiMs = Math.round(performance.now() - usageStartedAt);
+            return result;
+          })();
+          const results = await Promise.all([profileTask, usageTask]);
+          updateUsage(results[1]);
+          timings.totalMs = Math.round(performance.now() - startedAt);
+          console.info("[KIKEROUTE] startup", timings);
+        } catch (error) {
+          startupFailed = true;
+          usageData = null;
+          updateSubmitState();
+          if (!authenticated) {
+            document.getElementById("loginStatus").innerHTML =
+              '<div class="status-icon">!</div><div class="status-text">LINE認証を確認できませんでした</div>';
+          }
+          document.getElementById("usageStatus").textContent =
+            "利用状況を確認できませんでした。通信環境を確認してページを再読み込みしてください。";
+          showMessage(authenticated ? "利用状況の確認エラー" : "接続エラー", error.message || String(error), "!");
+          console.warn("[KIKEROUTE] startup failed", { authenticated:authenticated });
+        }
+      })();
+      return liffInitialization;
+    }
+
+    document.addEventListener("change", function(event) {
+      const id = event && event.target && event.target.id;
+
+      if (
+        id === "category" ||
+        id === "theme" ||
+        id === "district" ||
+        id === "school"
+      ) {
+        renderQuestionOptions();
+      }
+
+      if (
+        id === "question" ||
+        id === "questionManual"
+      ) {
+        clearApprovedValidation_();
+      }
+    });
+
+    document.addEventListener("input", function(event) {
+      const id = event && event.target && event.target.id;
+
+      if (
+        id === "questionManual"
+      ) {
+        clearApprovedValidation_();
+      }
+    });
+
+    document.addEventListener("DOMContentLoaded", async function() {
+      try {
+        await loadQuestionOptions();
+      } catch (error) {
+        console.warn("シートの質問選択項目を取得できないため、内蔵データを使用します。", error);
+      }
+      changeTheme(false);
+      renderSchoolTypeButtons("schoolTypeGrid", "", 1);
+      if (!/^(localhost|127\.0\.0\.1)$/.test(location.hostname)) initializeLiff();
+    });
+  </script>
 
   <dialog id="refundPolicy" aria-labelledby="refundPolicyTitle">
-    <form method="dialog" action="#"><button class="refund-close" aria-label="返金・キャンセルについてを閉じる" disabled>閉じる</button></form>
+    <form method="dialog"><button class="refund-close" aria-label="返金・キャンセルについてを閉じる">閉じる</button></form>
     <h2 id="refundPolicyTitle">Q&Aサービスのキャンセル・返金について</h2>
     <h3>1. 質問送信前</h3>
     <p>質問を送信する前であれば、キャンセルできます。質問回数・チケットは消費しません。</p>
@@ -754,7 +2530,7 @@
   </dialog>
 
   <dialog id="answerDisclaimer" aria-labelledby="answerDisclaimerTitle">
-    <form method="dialog" action="#"><button class="refund-close" aria-label="回答内容についての免責を閉じる" disabled>閉じる</button></form>
+    <form method="dialog"><button class="refund-close" aria-label="回答内容についての免責を閉じる">閉じる</button></form>
     <h2 id="answerDisclaimerTitle">回答内容についての免責</h2>
     <p>キケルート受験Q&amp;Aは、高校受験・学校選びに関する情報提供および保護者の判断を支援するサービスです。</p>
     <p>回答作成時点で確認できる学校公式情報、兵庫県教育委員会等の公的情報、キケルートが保有する資料その他の情報をもとに回答します。</p>
