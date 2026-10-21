@@ -77,3 +77,14 @@ Prohibited without further validation: GAS code deployment, enabling Web endpoin
 - The **13-file composite**, substituting these recovery prefixes for the three truncated candidates, now passes an ordinary V8 JavaScript compile check (228591 characters); **194 named function definitions and zero duplicate named functions** in this limited scan.
 - **Not a functional PASS:** the 3 omitted implementations are needed for behavior parity; the composite has unresolved calls including `getRouteCandidateSchoolContext_` and `getRouteTopPriorityContext_`, and its GAS services and external integration are untested. Prefix variants must **not** be deployed or presented as complete replacements.
 - Next required source decision is factual, not design: locate the actual full original versions of the truncated modules. Do not infer or fabricate their missing bodies.
+
+## Additional dependency closure check
+
+Verified on the current TEST branch:
+- `getRouteCandidateSchoolContext_` is referenced but its original body is truncated in the active candidate; `recovery/内申点自動判定.gs` contains its callers but excludes its definition.
+- `processOneRouteDelayedReply_` is referenced in the delayed reply module; its original body is truncated and excluded from `recovery/回答モード切替.gs`.
+- `loadLatestUnconfirmedQuestion_` is referenced in the answer review module; its original body is truncated and excluded from `recovery/回答確認.gs`.
+- `getRouteTopPriorityContext_` is referenced by the core and does not appear among the 194 named function definitions in the compile-only candidate. Its original defining source still needs to be identified.
+- Existing 14-sheet connection check was reported PASS in handoff; documented the correction to `DEPLOYMENT_GATE.md`. Sheet *schema/data parity* remains untested.
+
+**Decision gate:** these four missing implementations prevent an honest parity signoff. Do not substitute fabricated no-op functions, remove safety throws, or deploy recovery prefixes. Authentic complete sources or separately authorized reconstruction are required.
