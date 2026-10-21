@@ -584,7 +584,7 @@ function stripePost_(
       .join('&');
 
   const response =
-    UrlFetchApp.fetch(
+    routeqQaRejectExternalFetch_(
       'https://api.stripe.com' + path,
       {
         method:
@@ -615,7 +615,7 @@ function stripePost_(
 function stripeGet_(path) {
   assertRouteqQaTestEnvironment_();
   throw new Error('TEST isolation: Stripe network/payment/reconciliation disabled until dedicated TEST integration');
-  const response = UrlFetchApp.fetch(
+  const response = routeqQaRejectExternalFetch_(
     'https://api.stripe.com' + path,
     {
       method: 'get',
