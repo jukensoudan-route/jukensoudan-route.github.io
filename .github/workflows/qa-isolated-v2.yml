@@ -5,6 +5,7 @@ on:
     branches:
       - test/qa-full-copy-isolated-20261021
     paths:
+      - webhook/**
       - TEST/QA/gas/isolated-v2/**
       - TEST/QA/hyogo/index.html
       - .github/workflows/qa-isolated-v2.yml
@@ -29,6 +30,14 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 22
+
+      - name: Install webhook test dependencies
+        working-directory: webhook
+        run: npm ci
+
+      - name: Test Stripe webhook security and consistency
+        working-directory: webhook
+        run: npm test
 
       - name: Check GAS syntax and global declarations
         run: node TEST/QA/gas/isolated-v2/offline-tests/syntax.test.js
