@@ -1110,11 +1110,16 @@ function processOneRouteDelayedReply_(
       sendStatus === '送信処理中'
     ) {
 
-      props
-        .deleteProperty(
-          propertyKey
-        );
-
+      // UNKNOWN / IN_PROGRESS: retain recovery journal, but postpone
+      // the job so that the scheduler never auto-retries a pending send.
+      if (sendStatus === '送信済') {
+        props.deleteProperty(propertyKey);
+      } else {
+        item.dueAt = '9999-12-31T23:59:59.999Z';
+        item.recoveryHold = true;
+        item.recoveryReason = sendStatus;
+        props.setProperty(propertyKey, JSON.stringify(item));
+      }
 
       console.log(
         'すでに送信済みのため遅延送信をスキップしました。行=' +
