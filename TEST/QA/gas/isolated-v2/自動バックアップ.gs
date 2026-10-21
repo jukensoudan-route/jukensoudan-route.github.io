@@ -66,6 +66,8 @@ function backupRouteQaSystem() {
 
 
 function getOrCreateRouteBackupFolder_() {
+  assertRouteqQaTestEnvironment_();
+  routeqQaBlockSensitiveEntry_('getOrCreateRouteBackupFolder_');
   const properties = PropertiesService.getScriptProperties();
   const savedId = properties.getProperty(ROUTE_BACKUP.FOLDER_ID_PROPERTY);
 
@@ -89,6 +91,8 @@ function getOrCreateRouteBackupFolder_() {
 
 
 function pruneOldRouteBackups_(folder) {
+  assertRouteqQaTestEnvironment_();
+  routeqQaBlockSensitiveEntry_('pruneOldRouteBackups_');
   const cutoff = new Date(Date.now() - ROUTE_BACKUP.RETENTION_DAYS * 24 * 60 * 60 * 1000);
   const files = folder.getFiles();
 
