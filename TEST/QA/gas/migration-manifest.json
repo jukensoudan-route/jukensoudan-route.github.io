@@ -1,0 +1,111 @@
+{
+  "schema_version": 1,
+  "branch": "test/qa-full-copy-isolated-20261021",
+  "base_path": "TEST/QA/gas",
+  "source_snapshot": "staging/",
+  "test_candidates": "TEST/QA/gas/",
+  "recovery_prefixes": "TEST/QA/gas/recovery/",
+  "deployment_allowed": false,
+  "source_parity_verified": false,
+  "files": [
+    {
+      "file": "コード.gs",
+      "source": "staging/コード.gs",
+      "git_blob_sha": "2c2c37ff628bc768347d7ec7be573662db664beb",
+      "lines": 884,
+      "status": "PRESERVED_SNAPSHOT",
+      "repair": "ORIGINAL_ONLY",
+      "deployable": false
+    },
+    {
+      "file": "訂正シート最優先・直接参照.gs",
+      "source": "staging/訂正シート最優先・直接参照.gs",
+      "git_blob_sha": "98ecca7daef991e875914f1c4ff8ed02adfd64bd",
+      "lines": 7883,
+      "status": "PRESERVED_SNAPSHOT",
+      "repair": "ORIGINAL_ONLY",
+      "deployable": false
+    },
+    {
+      "file": "資料DB参照.gs",
+      "source": "staging/資料DB参照.gs",
+      "git_blob_sha": "62b5dc1824bb7928d965a801faeb6763ea7f6f4b",
+      "lines": 394,
+      "status": "PRESERVED_SNAPSHOT",
+      "repair": "ORIGINAL_ONLY",
+      "deployable": false
+    },
+    {
+      "file": "部分訂正.gs",
+      "source": "staging/部分訂正.gs",
+      "git_blob_sha": "0699351b87cf37996309538d2d3de7b6c070a787",
+      "lines": 443,
+      "status": "PRESERVED_SNAPSHOT",
+      "repair": "ORIGINAL_ONLY",
+      "deployable": false
+    },
+    {
+      "file": "資料ファイル登録.gs",
+      "source": "staging/資料ファイル登録.gs",
+      "git_blob_sha": "23e26dfe61f13e0f9678d5149c87d16b96fca913",
+      "lines": 579,
+      "status": "PRESERVED_SNAPSHOT",
+      "repair": "ORIGINAL_ONLY",
+      "deployable": false
+    },
+    {
+      "file": "自動バックアップ.gs",
+      "source": "staging/自動バックアップ.gs",
+      "git_blob_sha": "e322e004c1a22855b6d9e5659d77c849883b3da2",
+      "lines": 96,
+      "status": "PRESERVED_SNAPSHOT",
+      "repair": "ORIGINAL_ONLY",
+      "deployable": false
+    },
+    {
+      "file": "Stripe連携.gs",
+      "source": "staging/Stripe連携.gs",
+      "git_blob_sha": "64ee3e18a12cd8b7235dc49ba303996d9e3324b6",
+      "lines": 806,
+      "status": "PRESERVED_SNAPSHOT",
+      "repair": "ORIGINAL_ONLY",
+      "deployable": false
+    },
+    {
+      "file": "回答確認.gs",
+      "source": "staging/回答確認.gs",
+      "git_blob_sha": "248d39a48c052f64b5f0dd7668ad0a0843b1de2f",
+      "lines": 1001,
+      "status": "TRUNCATED",
+      "repair": "ORIGINAL_ONLY",
+      "deployable": false
+    },
+    {
+      "file": "内申点自動判定.gs",
+      "source": "staging/内申点自動判定.gs",
+      "git_blob_sha": "d6b73a669bd555301b199b0797bf62d533b8b6da",
+      "lines": 1001,
+      "status": "TRUNCATED",
+      "repair": "ORIGINAL_ONLY",
+      "deployable": false
+    },
+    {
+      "file": "回答モード切替.gs",
+      "source": "staging/回答モード切替.gs",
+      "git_blob_sha": "96a177c6949b02be988ff907646443461b64ac75",
+      "lines": 1001,
+      "status": "TRUNCATED",
+      "repair": "ORIGINAL_ONLY",
+      "deployable": false
+    },
+    {
+      "file": "AI修正反映.gs",
+      "source": null,
+      "git_blob_sha": null,
+      "lines": null,
+      "status": "ORIGINAL_NOT_FOUND",
+      "repair": "ORIGINAL_ONLY",
+      "deployable": false
+    }
+  ]
+}
