@@ -5,6 +5,10 @@ const app = express();
 const port = process.env.PORT || 10000;
 const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET;
 const gasWebAppUrl = process.env.GAS_WEB_APP_URL;
+// This legacy QA webhook cannot be activated until the isolated GAS
+// confirmCheckout receiver, authentication and Payments mapping are verified.
+// A deployment or an accidentally populated GAS URL must never activate it.
+const qaWebhookEnabled = false;
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || "sk_test_placeholder");
 
 app.get("/health", (req,res) =>
@@ -76,6 +80,7 @@ async function confirmCheckoutInGas(sessionId, eventId) {
 }
 
 app.post("/stripe/webhook", express.raw({type:"application/json"}), async (req,res) => {
+  if (!qaWebhookEnabled) return res.status(503).send("isolated_qa_webhook_disabled");
   if (!webhookSecret) return res.status(503).send("webhook secret not configured");
 
   let event;
