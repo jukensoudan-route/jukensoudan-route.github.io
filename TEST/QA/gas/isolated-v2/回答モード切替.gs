@@ -1105,7 +1105,9 @@ function processOneRouteDelayedReply_(
      */
     if (
       sendStatus ===
-      '送信済'
+      '送信済' ||
+      sendStatus === '送信結果不明' ||
+      sendStatus === '送信処理中'
     ) {
 
       props
@@ -1328,7 +1330,7 @@ function processOneRouteDelayedReply_(
             c.SEND_STATUS
           )
           .setValue(
-            '送信エラー'
+            '送信結果不明'
           );
 
 
