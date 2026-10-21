@@ -1,7 +1,9 @@
 # ROUTEQ Q&A isolated-v2 完了条件ステータス（2026-10-21）
 
-対象ブランチ：`test/qa-full-copy-isolated-20261021`  
-対象：`TEST/QA/gas/isolated-v2/`  
+対象ブランチ：`test/qa-full-copy-isolated-20261021`
+
+対象：`TEST/QA/gas/isolated-v2/`
+
 判定：**未完／GAS配置・公開デプロイ禁止を継続**
 
 ## 自動検査基盤
