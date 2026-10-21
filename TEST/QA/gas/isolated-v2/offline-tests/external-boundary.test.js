@@ -75,6 +75,15 @@ assert.throws(
   () => context.routeqQaRejectOAuthTokenAccess_(),
   /OAuth token access disabled/
 );
+assert.throws(
+  () => context.routeqQaRejectExternalFetch_('https://api.stripe.com/v1/checkout/sessions', {}),
+  /outbound HTTP disabled \\(STRIPE\\)/
+);
+assert.throws(
+  () => context.routeqQaRejectExternalFetch_('https://api.openai.com/v1/responses', {}),
+  /outbound HTTP disabled \\(OPENAI\\)/
+);
+
 assert.equal(directNetworkCalls, 0);
 
 properties.set('ROUTEQ_QA_EXTERNAL_SEND', 'ENABLED');
@@ -83,4 +92,4 @@ assert.throws(
   /external send must remain DISABLED/
 );
 
-console.log('External boundary and LINE-safe mock: 8/8 PASS; network requests: 0');
+console.log('External boundary and LINE-safe mock: 10/10 PASS; network requests: 0');
