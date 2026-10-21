@@ -67,3 +67,13 @@ Prohibited without further validation: GAS code deployment, enabling Web endpoin
 - Queried the named release branch `release/qa-copy-current-production-20261015` for each missing module at the staging paths; none was found.
 - This does NOT prove source is unavailable in other historical branches, external backups or the original GAS project.
 - IMPORTANT: The previous 10/13 JavaScript syntax pass does not imply Apps Script runtime compatibility or isolation completeness. The three incomplete modules remain BLOCKERS. Do not deploy this bundle.
+
+## Recovery of complete declarations from truncated archived modules
+- Constructed **three non-deployable recovery-prefix files** under `TEST/QA/gas/recovery/` without fabricating missing source:
+  - `回答確認.gs`: first 10 complete declarations retained; truncated `loadLatestUnconfirmedQuestion_` omitted.
+  - `内申点自動判定.gs`: first 11 complete declarations retained; truncated `getRouteCandidateSchoolContext_` omitted.
+  - `回答モード切替.gs`: first 12 complete declarations retained; truncated `processOneRouteDelayedReply_` omitted.
+- Each prefix individually compiled as ordinary JavaScript without executing GAS calls, then was committed and re-fetched byte-for-byte.
+- The **13-file composite**, substituting these recovery prefixes for the three truncated candidates, now passes an ordinary V8 JavaScript compile check (228591 characters); **194 named function definitions and zero duplicate named functions** in this limited scan.
+- **Not a functional PASS:** the 3 omitted implementations are needed for behavior parity; the composite has unresolved calls including `getRouteCandidateSchoolContext_` and `getRouteTopPriorityContext_`, and its GAS services and external integration are untested. Prefix variants must **not** be deployed or presented as complete replacements.
+- Next required source decision is factual, not design: locate the actual full original versions of the truncated modules. Do not infer or fabricate their missing bodies.
