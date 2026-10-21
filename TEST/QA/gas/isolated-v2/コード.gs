@@ -360,7 +360,7 @@ function routeqQaArchived_autoSendRouteAnswerIfEnabled_(
 ) {
 
   const mode =
-    getRouteReplyMode_(
+    routeqQaArchived_getRouteReplyMode_(
       questions
     );
 
@@ -402,7 +402,7 @@ function routeqQaArchived_autoSendRouteAnswerIfEnabled_(
    * ここでは sendLinePushMessage_ を呼ばない。
    * 即時送信を完全に防ぐ。
    */
-  return scheduleRouteDelayedReply_(
+  return routeqQaArchived_scheduleRouteDelayedReply_(
     questions,
     questionRow
   );
