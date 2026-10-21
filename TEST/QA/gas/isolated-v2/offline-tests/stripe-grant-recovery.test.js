@@ -227,7 +227,8 @@ function paymentSheet(rawJournal = journal(
     id: 'cs_test_full_retry',
     payment_intent: 'pi_test_full_retry',
     payment_status: 'paid',
-    metadata: { line_user_id: 'U_TEST', ticket_code: 'ticket3' }
+    amount_total: 1500,
+    metadata: { line_user_id: 'U_TEST', ticket_code: 'ticket3', grant_count: '3' }
   };
   const payments = new Sheet([
     Array(13).fill('header'),

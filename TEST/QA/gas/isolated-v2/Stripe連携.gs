@@ -307,6 +307,18 @@ function applyPaidStripeSession_(session) {
       session.id
     );
 
+    // Never treat a recorded Session as an idempotent success until every
+    // immutable grant identity agrees with the paid Stripe Session.  A blank
+    // value is ambiguous too: it must be resolved manually, not backfilled.
+    assertStripePaymentIdentity_(
+      payments,
+      paymentRow,
+      session,
+      lineUserId,
+      ticketCode,
+      def
+    );
+
     // Session IDで二重付与防止
     if (paymentRow > 0) {
       const already = String(
@@ -839,6 +851,60 @@ function findPaymentRowByPaymentIntent_(
     8,
     paymentIntentId
   );
+}
+
+
+function assertStripePaymentIdentity_(
+  payments,
+  paymentRow,
+  session,
+  lineUserId,
+  ticketCode,
+  def
+) {
+  const paymentIntentId = String(session.payment_intent || '').trim();
+  const amountTotal = Number(session.amount_total);
+  const grantCount = Number((session.metadata || {}).grant_count);
+
+  if (paymentRow <= 0 || !paymentIntentId ||
+      !Number.isSafeInteger(amountTotal) || amountTotal < 0 ||
+      !Number.isSafeInteger(grantCount) || grantCount < 0) {
+    throw new Error(
+      'Stripe決済識別情報が不足しています。Usersを更新せず手動整合確認してください。'
+    );
+  }
+
+  const lastRow = payments.getLastRow();
+  const rows = payments.getRange(2, 1, lastRow - 1, 13).getValues();
+  const sessionId = String(session.id || '').trim();
+  let sessionMatches = 0;
+  let intentMatches = 0;
+
+  rows.forEach(function(values) {
+    if (String(values[6] || '').trim() === sessionId) sessionMatches += 1;
+    if (String(values[7] || '').trim() === paymentIntentId) intentMatches += 1;
+  });
+
+  const saved = rows[paymentRow - 2] || [];
+  const exact =
+    sessionMatches === 1 &&
+    intentMatches === 1 &&
+    String(saved[6] || '').trim() === sessionId &&
+    String(saved[7] || '').trim() === paymentIntentId &&
+    String(saved[1] || '').trim() === lineUserId &&
+    String(saved[3] || '').trim() === ticketCode &&
+    Number.isSafeInteger(Number(saved[4])) &&
+    Number(saved[4]) === amountTotal &&
+    amountTotal === def.amount &&
+    Number.isSafeInteger(Number(saved[5])) &&
+    Number(saved[5]) === grantCount &&
+    grantCount === def.count;
+
+  if (!exact) {
+    throw new Error(
+      'Payments登録値とStripe Sessionが一致しません。Usersを更新せず手動整合確認してください。'
+    );
+  }
 }
 
 
