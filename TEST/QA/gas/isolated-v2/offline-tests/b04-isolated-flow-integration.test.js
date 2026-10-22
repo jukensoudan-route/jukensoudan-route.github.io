@@ -39,6 +39,7 @@ class Sheet {
     this.rows[row - 1][column - 1] = value;
   }
   getLastRow() { return this.rows.length; }
+  getMaxColumns() { return Math.max(0, ...this.rows.map((row) => row.length)); }
   getRange(row, column, rowCount = 1, columnCount = 1) {
     if (typeof row === 'string') {
       const match = /^([A-Z]+)(\d+)$/.exec(row);
@@ -69,7 +70,13 @@ const payments = new Sheet([
   ['', 'U_B04', 'B04 Tester', 'ticket3', 1500, 3,
     'cs_b04', '', '作成', '未付与', '', '', '']
 ]);
-const questions = new Sheet([Array(18).fill('header')]);
+const questionHeaders = [
+  '受付日時', 'LINEユーザーID', '表示名', '大項目', '質問テーマ', '学区',
+  '高校名', '質問内容', 'AI回答案', '最終回答', 'AI生成状態', '確認済み',
+  '送信状態', 'LINE送信日時', '最終更新日時', '利用チケット', '質問後残り回数',
+  '訂正後回答', '訂正理由', '共通ルール候補', 'ルール案', 'ルール承認', ''
+];
+const questions = new Sheet([questionHeaders]);
 const review = new Sheet(Array.from({ length: 50 }, () => []));
 const sheets = { Users: users, Payments: payments, Questions: questions, '回答確認': review };
 const spreadsheet = { getSheetByName(name) { return sheets[name] || null; } };
@@ -106,12 +113,14 @@ context.autoSendRouteAnswerIfEnabled_ = () => {};
 context.loadQuestionToReview_ = () => {};
 const questionColumns = vm.runInContext('ROUTE_QA.QUESTION_COL', context);
 
-const mismatchedQuestionsHeader = new Sheet([Array(17).fill('header').concat('訂正後回答')]);
+context.assertRouteQuestionSchemaReady_(questions);
+const mismatchedQuestionsHeader = new Sheet([questionHeaders.slice()]);
+mismatchedQuestionsHeader.set(1, 18, '質問送信ID');
 assert.throws(
-  () => context.assertRouteQuestionSubmissionColumnReady_(mismatchedQuestionsHeader),
+  () => context.assertRouteQuestionSchemaReady_(mismatchedQuestionsHeader),
   /管理者による列移行と整合確認が必要/
 );
-assert.equal(mismatchedQuestionsHeader.value(1, 18), '訂正後回答', 'mismatched header is preserved');
+assert.equal(mismatchedQuestionsHeader.value(1, 18), '質問送信ID', 'mismatched header is preserved');
 
 const paid = context.applyPaidStripeSession_({
   id: 'cs_b04', payment_intent: 'pi_b04', payment_status: 'paid', amount_total: 1500,
@@ -133,6 +142,8 @@ assert.equal(submission.remainingCount, 2);
 assert.equal(users.value(2, 7), 1, 'usage count increments once');
 assert.equal(users.value(2, 8), 2, 'remaining count decrements once');
 assert.equal(questions.value(2, questionColumns.AI_ANSWER), '隔離TESTのAI回答案');
+assert.equal(Array.from(questions.rows[1].slice(17, 22)).join('|'), '||||', 'existing R:V fields remain untouched');
+assert.equal(questions.value(2, questionColumns.SUBMISSION_ID), '1.b04-submission.' + 'a'.repeat(64));
 
 review.set(3, 3, 2);
 review.set(34, 1, '経営者本人が確認した最終回答（模擬）');
@@ -148,4 +159,4 @@ assert.throws(() => context.sendCurrentAnswerToLine(), /sensitive entry blocked:
 assert.equal(questions.writes, writesBeforeLineGate, 'LINE gate blocks before sheet mutation');
 assert.equal(externalRequests, 0, 'no external transport is attempted');
 
-console.log('B-04 isolated flow integration: 19/19 PASS; external requests: 0');
+console.log('B-04 isolated flow integration: 22/22 PASS; external requests: 0');

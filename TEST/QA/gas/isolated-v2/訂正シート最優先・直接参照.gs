@@ -44,7 +44,13 @@ const ROUTE_QA = {
     SENT_AT: 14,
     UPDATED_AT: 15,
     TICKET_LABEL: 16,
-    REMAINING_AFTER: 17
+    REMAINING_AFTER: 17,
+    CORRECTED_ANSWER: 18,
+    CORRECTION_REASON: 19,
+    COMMON_RULE_CANDIDATE: 20,
+    RULE_DRAFT: 21,
+    RULE_APPROVAL: 22,
+    SUBMISSION_ID: 23
   },
 
   USER_COL: {
@@ -202,7 +208,7 @@ function setupSheets() {
     questions
   );
 
-  assertRouteQuestionSubmissionColumnReady_(
+  assertRouteQuestionSchemaReady_(
     questions
   );
 
@@ -224,6 +230,11 @@ function setupSheets() {
     '最終更新日時',
     '利用チケット',
     '質問後残り回数',
+    '訂正後回答',
+    '訂正理由',
+    '共通ルール候補',
+    'ルール案',
+    'ルール承認',
     '質問送信ID'
   ]);
 
@@ -250,17 +261,30 @@ function setupSheets() {
 }
 
 
-function assertRouteQuestionSubmissionColumnReady_(questions) {
-  const expectedHeader = '質問送信ID';
-  const currentHeader = String(
-    questions.getRange(1, 18).getValue() || ''
-  ).trim();
+function assertRouteQuestionSchemaReady_(questions) {
+  const expectedHeaders = [
+    '受付日時', 'LINEユーザーID', '表示名', '大項目', '質問テーマ',
+    '学区', '高校名', '質問内容', 'AI回答案', '最終回答',
+    'AI生成状態', '確認済み', '送信状態', 'LINE送信日時',
+    '最終更新日時', '利用チケット', '質問後残り回数', '訂正後回答',
+    '訂正理由', '共通ルール候補', 'ルール案', 'ルール承認', '質問送信ID'
+  ];
+  const existingWidth = Math.min(
+    questions.getMaxColumns(),
+    expectedHeaders.length
+  );
+  const currentHeaders = existingWidth > 0
+    ? questions.getRange(1, 1, 1, existingWidth).getValues()[0]
+    : [];
 
-  if (currentHeader && currentHeader !== expectedHeader) {
-    throw new Error(
-      'Questions R列は「' + currentHeader + '」です。' +
-      '質問送信ID列として上書きせず、管理者による列移行と整合確認が必要です。'
-    );
+  for (let index = 0; index < currentHeaders.length; index++) {
+    const currentHeader = String(currentHeaders[index] || '').trim();
+    if (currentHeader && currentHeader !== expectedHeaders[index]) {
+      throw new Error(
+        'Questions ' + String.fromCharCode(65 + index) + '列は「' + currentHeader + '」です。' +
+        '既存列を上書きせず、管理者による列移行と整合確認が必要です。'
+      );
+    }
   }
 }
 
@@ -3452,7 +3476,12 @@ function saveQuestionForWeb_(p) {
     // is unavailable or later cleaned up. Check under the same Script Lock.
     const existingQuestionCount = questions.getLastRow() - 1;
     if (existingQuestionCount > 0) {
-      const submissionTokens = questions.getRange(2, 18, existingQuestionCount, 1).getValues();
+      const submissionTokens = questions.getRange(
+        2,
+        ROUTE_QA.QUESTION_COL.SUBMISSION_ID,
+        existingQuestionCount,
+        1
+      ).getValues();
       for (let index = 0; index < submissionTokens.length; index++) {
         if (String(submissionTokens[index][0] || '') !== validationToken) continue;
         const existingQuestionRow = index + 2;
@@ -3466,7 +3495,12 @@ function saveQuestionForWeb_(p) {
         if (existingUserRow === -1) {
           throw new Error('受付記録とUsersが一致しません。管理者による整合確認が必要です。');
         }
-        const existingQuestion = questions.getRange(existingQuestionRow, 1, 1, 18).getValues()[0];
+        const existingQuestion = questions.getRange(
+          existingQuestionRow,
+          1,
+          1,
+          ROUTE_QA.QUESTION_COL.SUBMISSION_ID
+        ).getValues()[0];
         const existingUser = users.getRange(existingUserRow, 1, 1, 12).getValues()[0];
         const recordedRemaining = Number(existingQuestion[ROUTE_QA.QUESTION_COL.REMAINING_AFTER - 1]);
         const currentRemaining = Number(existingUser[ROUTE_QA.USER_COL.REMAINING - 1]);
@@ -3644,7 +3678,7 @@ function saveQuestionForWeb_(p) {
         questionRow,
         1,
         1,
-        18
+        ROUTE_QA.QUESTION_COL.SUBMISSION_ID
       )
       .setValues([[
         new Date(),                // A 受付日時
@@ -3667,7 +3701,12 @@ function saveQuestionForWeb_(p) {
         new Date(),                // O 最終更新日時
         ticketLabel,               // P 利用チケット
         newRemaining,              // Q 質問後残り回数
-        validationToken             // R 同一送信の二重受付防止ID
+        '',                        // R 訂正後回答（既存用途を保持）
+        '',                        // S 訂正理由（既存用途を保持）
+        '',                        // T 共通ルール候補（既存用途を保持）
+        '',                        // U ルール案（既存用途を保持）
+        '',                        // V ルール承認（既存用途を保持）
+        validationToken            // W 同一送信の二重受付防止ID
       ]]);
 
     questionPersisted = true;

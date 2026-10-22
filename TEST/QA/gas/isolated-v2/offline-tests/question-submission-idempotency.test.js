@@ -120,6 +120,8 @@ assert.equal(replay.questionRow, 2);
 assert.equal(questionWrites, 1);
 assert.equal(userValues[6], 1);
 assert.equal(userValues[7], 2);
+assert.equal(Array.from(questionRows[0].slice(17, 22)).join('|'), '||||');
+assert.equal(questionRows[0][22], tokenA);
 
 propertyData.delete(context.getRouteQuestionSubmissionKey_(tokenA));
 const replayFromSheet = context.saveQuestionForWeb_({ ...baseParams, validationToken: tokenA });
