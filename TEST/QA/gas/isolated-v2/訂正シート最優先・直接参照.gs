@@ -202,6 +202,10 @@ function setupSheets() {
     questions
   );
 
+  assertRouteQuestionSubmissionColumnReady_(
+    questions
+  );
+
   ensureHeaders_(questions, [
     '受付日時',
     'LINEユーザーID',
@@ -243,6 +247,21 @@ function setupSheets() {
     '付与復旧ジャーナル'
   ]);
 
+}
+
+
+function assertRouteQuestionSubmissionColumnReady_(questions) {
+  const expectedHeader = '質問送信ID';
+  const currentHeader = String(
+    questions.getRange(1, 18).getValue() || ''
+  ).trim();
+
+  if (currentHeader && currentHeader !== expectedHeader) {
+    throw new Error(
+      'Questions R列は「' + currentHeader + '」です。' +
+      '質問送信ID列として上書きせず、管理者による列移行と整合確認が必要です。'
+    );
+  }
 }
 
 
