@@ -61,7 +61,8 @@ const baseSession = {
 function paymentRow(overrides = {}) {
   const values = ['', 'U_PAID', '', 'ticket3', 1500, 3, 'cs_paid_replay',
     'pi_paid_replay', '支払済', '付与済', '', '', ''];
-  const columns = { user: 1, product: 3, amount: 4, count: 5, session: 6, intent: 7, state: 9 };
+  const columns = { user: 1, product: 3, amount: 4, count: 5, session: 6,
+    intent: 7, paymentStatus: 8, state: 9 };
   Object.entries(overrides).forEach(([key, value]) => { values[columns[key]] = value; });
   return values;
 }
@@ -96,6 +97,17 @@ function run(rows, input) {
   assert.equal(outcome.users.writes, 0);
 }
 
+{
+  const outcome = run([paymentRow({ intent: '', state: '未付与', paymentStatus: '作成' })], session());
+  assert.equal(outcome.error, undefined);
+  assert.equal(outcome.result.granted, true);
+  assert.equal(outcome.payments.rows[1][7], 'pi_paid_replay');
+  assert.equal(outcome.payments.rows[1][9], '付与済');
+  assert.equal(outcome.users.rows[1][4], 3000);
+  assert.equal(outcome.users.rows[1][5], 6);
+  assert.equal(outcome.users.rows[1][7], 6);
+}
+
 const mismatchCases = [
   ['Session ID', [paymentRow({ session: 'cs_other' })], session()],
   ['Payment Intent ID', [paymentRow({ intent: 'pi_other' })], session()],
@@ -105,7 +117,11 @@ const mismatchCases = [
   ['付与回数', [paymentRow({ count: 10 })], session()],
   ['Session金額', [paymentRow()], session({ amount_total: 3500 })],
   ['Session付与回数', [paymentRow()], session({ count: '10' })],
-  ['Intent欠落', [paymentRow({ intent: '' })], session()],
+  ['Intent欠落・付与済', [paymentRow({ intent: '' })], session()],
+  ['Intent欠落・処理中', [paymentRow({ intent: '', state: '付与処理中', paymentStatus: '支払済' })], session()],
+  ['Intent欠落・不整合', [paymentRow({ intent: '', state: '要整合確認', paymentStatus: '支払済' })], session()],
+  ['Intent別注文使用済み', [paymentRow({ intent: '', state: '未付与', paymentStatus: '作成' }),
+    paymentRow({ session: 'cs_other', intent: 'pi_paid_replay' })], session()],
   ['重複Session', [paymentRow(), paymentRow({ intent: 'pi_second' })], session()]
 ];
 
@@ -118,4 +134,4 @@ for (const [label, rows, input] of mismatchCases) {
   assert.equal(outcome.payments.rows[1][7], rows[0][7], label + ' must preserve saved Intent');
 }
 
-console.log('Stripe paid replay integrity: 11/11 PASS');
+console.log('Stripe paid replay integrity: 15/15 PASS');

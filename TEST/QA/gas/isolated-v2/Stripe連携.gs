@@ -308,8 +308,10 @@ function applyPaidStripeSession_(session) {
     );
 
     // Never treat a recorded Session as an idempotent success until every
-    // immutable grant identity agrees with the paid Stripe Session.  A blank
-    // value is ambiguous too: it must be resolved manually, not backfilled.
+    // immutable grant identity agrees with the paid Stripe Session. The only
+    // permitted repair is the first Intent write for an untouched Checkout
+    // row (作成／未付与); assertStripePaymentIdentity_ performs it under this
+    // ScriptLock after all identity and uniqueness checks have passed.
     assertStripePaymentIdentity_(
       payments,
       paymentRow,
@@ -886,11 +888,10 @@ function assertStripePaymentIdentity_(
   });
 
   const saved = rows[paymentRow - 2] || [];
-  const exact =
+  const savedIntentId = String(saved[7] || '').trim();
+  const coreIdentityMatches =
     sessionMatches === 1 &&
-    intentMatches === 1 &&
     String(saved[6] || '').trim() === sessionId &&
-    String(saved[7] || '').trim() === paymentIntentId &&
     String(saved[1] || '').trim() === lineUserId &&
     String(saved[3] || '').trim() === ticketCode &&
     Number.isSafeInteger(Number(saved[4])) &&
@@ -900,10 +901,23 @@ function assertStripePaymentIdentity_(
     Number(saved[5]) === grantCount &&
     grantCount === def.count;
 
-  if (!exact) {
+  const recordedIntentMatches =
+    savedIntentId === paymentIntentId && intentMatches === 1;
+  const canBindInitialIntent =
+    !savedIntentId &&
+    intentMatches === 0 &&
+    String(saved[8] || '').trim() === '作成' &&
+    String(saved[9] || '').trim() === '未付与';
+
+  if (!coreIdentityMatches ||
+      (!recordedIntentMatches && !canBindInitialIntent)) {
     throw new Error(
       'Payments登録値とStripe Sessionが一致しません。Usersを更新せず手動整合確認してください。'
     );
+  }
+
+  if (canBindInitialIntent) {
+    payments.getRange(paymentRow, 8).setValue(paymentIntentId);
   }
 }
 
