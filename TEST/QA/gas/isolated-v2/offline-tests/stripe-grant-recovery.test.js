@@ -227,12 +227,12 @@ function paymentSheet(rawJournal = journal(
     id: 'cs_test_full_retry',
     payment_intent: 'pi_test_full_retry',
     payment_status: 'paid',
-    amount_total: 1500,
+    amount_total: 1000,
     metadata: { line_user_id: 'U_TEST', ticket_code: 'ticket3', grant_count: '3' }
   };
   const payments = new Sheet([
     Array(13).fill('header'),
-    ['', 'U_TEST', '', 'ticket3', 1500, 3, retrySession.id,
+    ['', 'U_TEST', '', 'ticket3', 1000, 3, retrySession.id,
       retrySession.payment_intent, '支払済', '未付与', '', '', '']
   ]);
   const users = new Sheet([Array(12).fill('header'), userRow(0, 0, 0)]);

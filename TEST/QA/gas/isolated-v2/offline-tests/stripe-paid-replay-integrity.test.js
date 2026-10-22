@@ -54,12 +54,12 @@ const baseSession = {
   id: 'cs_paid_replay',
   payment_intent: 'pi_paid_replay',
   payment_status: 'paid',
-  amount_total: 1500,
+  amount_total: 1000,
   metadata: { line_user_id: 'U_PAID', ticket_code: 'ticket3', grant_count: '3' }
 };
 
 function paymentRow(overrides = {}) {
-  const values = ['', 'U_PAID', '', 'ticket3', 1500, 3, 'cs_paid_replay',
+  const values = ['', 'U_PAID', '', 'ticket3', 1000, 3, 'cs_paid_replay',
     'pi_paid_replay', '支払済', '付与済', '', '', ''];
   const columns = { user: 1, product: 3, amount: 4, count: 5, session: 6,
     intent: 7, paymentStatus: 8, state: 9 };
@@ -81,7 +81,7 @@ function session(overrides = {}) {
 function run(rows, input) {
   const payments = new Sheet([Array(13).fill('header'), ...rows]);
   const users = new Sheet([Array(12).fill('header'),
-    ['U_PAID', 'Test', '有効', '', 1500, 3, 0, 3, '', '', '', '']]);
+    ['U_PAID', 'Test', '有効', '', 1000, 3, 0, 3, '', '', '', '']]);
   context.spreadsheet = { getSheetByName(name) { return name === 'Payments' ? payments : users; } };
   let result;
   let error;
@@ -103,7 +103,7 @@ function run(rows, input) {
   assert.equal(outcome.result.granted, true);
   assert.equal(outcome.payments.rows[1][7], 'pi_paid_replay');
   assert.equal(outcome.payments.rows[1][9], '付与済');
-  assert.equal(outcome.users.rows[1][4], 3000);
+  assert.equal(outcome.users.rows[1][4], 2000);
   assert.equal(outcome.users.rows[1][5], 6);
   assert.equal(outcome.users.rows[1][7], 6);
 }
@@ -113,9 +113,9 @@ const mismatchCases = [
   ['Payment Intent ID', [paymentRow({ intent: 'pi_other' })], session()],
   ['ユーザーID', [paymentRow({ user: 'U_OTHER' })], session()],
   ['商品コード', [paymentRow({ product: 'ticket10' })], session()],
-  ['金額', [paymentRow({ amount: 3500 })], session()],
+  ['金額', [paymentRow({ amount: 3000 })], session()],
   ['付与回数', [paymentRow({ count: 10 })], session()],
-  ['Session金額', [paymentRow()], session({ amount_total: 3500 })],
+  ['Session金額', [paymentRow()], session({ amount_total: 3000 })],
   ['Session付与回数', [paymentRow()], session({ count: '10' })],
   ['Intent欠落・付与済', [paymentRow({ intent: '' })], session()],
   ['Intent欠落・処理中', [paymentRow({ intent: '', state: '付与処理中', paymentStatus: '支払済' })], session()],

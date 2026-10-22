@@ -14,13 +14,13 @@
 
 const ROUTE_STRIPE_TICKETS = {
   ticket3: {
-    label: '1,500円／3回',
-    amount: 1500,
+    label: '1,000円／3回',
+    amount: 1000,
     count: 3
   },
   ticket10: {
-    label: '3,500円／10回',
-    amount: 3500,
+    label: '3,000円／10回',
+    amount: 3000,
     count: 10
   }
 };

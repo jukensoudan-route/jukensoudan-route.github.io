@@ -42,7 +42,7 @@ vm.createContext(context);
 vm.runInContext(fs.readFileSync(path.join(__dirname, '..', 'Stripe連携.gs'), 'utf8'),
   context, { filename:'Stripe連携.gs' });
 function row(user='U_A', session='cs_A', intent='pi_A', state='付与済') {
-  return ['', user, '', 'ticket3', 1500, 3, session, intent,
+  return ['', user, '', 'ticket3', 1000, 3, session, intent,
     '支払済', state, '', '', ''];
 }
 function session(user='U_A', sid='cs_A', intent='pi_A', product='ticket3') {
@@ -52,7 +52,7 @@ function session(user='U_A', sid='cs_A', intent='pi_A', product='ticket3') {
 function test(label, paymentRows, input) {
   const payments = new Sheet([Array(13).fill('header'), ...paymentRows]);
   const users = new Sheet([Array(12).fill('header'),
-    ['U_A','Test','有効','',1500,3,0,3,'','','','']]);
+    ['U_A','Test','有効','',1000,3,0,3,'','','','']]);
   context.spreadsheet = { getSheetByName(name) {
     return name === 'Payments' ? payments : users;
   }};

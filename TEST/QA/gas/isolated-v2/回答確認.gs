@@ -67,12 +67,12 @@ function onOpen() {
     .addSeparator()
 
     .addItem(
-      '選択ユーザーに1,500円／3回を手動付与',
+      '選択ユーザーに1,000円／3回を手動付与',
       'grant1500TicketToSelectedUser'
     )
 
     .addItem(
-      '選択ユーザーに3,500円／10回を手動付与',
+      '選択ユーザーに3,000円／10回を手動付与',
       'grant3500TicketToSelectedUser'
     )
 
@@ -2004,9 +2004,9 @@ function grant1500TicketToSelectedUser() {
   routeqQaBlockSensitiveEntry_('grant1500TicketToSelectedUser');
 
   grantRouteTicket_(
-    1500,
+    1000,
     3,
-    '1,500円／3回'
+    '1,000円／3回'
   );
 
 }
@@ -2017,9 +2017,9 @@ function grant3500TicketToSelectedUser() {
   routeqQaBlockSensitiveEntry_('grant3500TicketToSelectedUser');
 
   grantRouteTicket_(
-    3500,
+    3000,
     10,
-    '3,500円／10回'
+    '3,000円／10回'
   );
 
 }

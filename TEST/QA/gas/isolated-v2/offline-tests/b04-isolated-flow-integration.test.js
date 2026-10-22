@@ -67,7 +67,7 @@ const users = new Sheet([
 ]);
 const payments = new Sheet([
   Array(13).fill('header'),
-  ['', 'U_B04', 'B04 Tester', 'ticket3', 1500, 3,
+  ['', 'U_B04', 'B04 Tester', 'ticket3', 1000, 3,
     'cs_b04', '', '作成', '未付与', '', '', '']
 ]);
 const questionHeaders = [
@@ -123,7 +123,7 @@ assert.throws(
 assert.equal(mismatchedQuestionsHeader.value(1, 18), '質問送信ID', 'mismatched header is preserved');
 
 const paid = context.applyPaidStripeSession_({
-  id: 'cs_b04', payment_intent: 'pi_b04', payment_status: 'paid', amount_total: 1500,
+  id: 'cs_b04', payment_intent: 'pi_b04', payment_status: 'paid', amount_total: 1000,
   metadata: { line_user_id: 'U_B04', ticket_code: 'ticket3', grant_count: '3' }
 });
 assert.equal(paid.granted, true);
