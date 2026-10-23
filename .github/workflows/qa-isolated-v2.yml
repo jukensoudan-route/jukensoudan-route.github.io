@@ -45,6 +45,9 @@ jobs:
       - name: Test Stripe interrupted-grant recovery
         run: node TEST/QA/gas/isolated-v2/offline-tests/stripe-grant-recovery.test.js
 
+      - name: Test owner-run Stripe Sheets acceptance boundary
+        run: node TEST/QA/gas/isolated-v2/offline-tests/stripe-sheets-acceptance-boundary.test.js
+
       - name: Test question submission idempotency
         run: node TEST/QA/gas/isolated-v2/offline-tests/question-submission-idempotency.test.js
 

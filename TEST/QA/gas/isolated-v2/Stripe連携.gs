@@ -25,6 +25,18 @@ const ROUTE_STRIPE_TICKETS = {
   }
 };
 
+// Object-identity capability used only by the owner-run Sheets acceptance.
+// Web requests and ordinary application entry points cannot construct it.
+const ROUTEQ_QA_STRIPE_GRANT_ACCEPTANCE_PERMIT_ = Object.freeze({
+  purpose: 'ISOLATED_TEST_STRIPE_GRANT_SHEETS_ACCEPTANCE'
+});
+
+function assertRouteqQaStripeGrantEntry_(permit) {
+  assertRouteqQaTestEnvironment_();
+  if (permit === ROUTEQ_QA_STRIPE_GRANT_ACCEPTANCE_PERMIT_) return true;
+  routeqQaBlockSensitiveEntry_('applyPaidStripeSession_');
+}
+
 
 /* =========================================================
    Checkout Session作成
@@ -251,9 +263,9 @@ function reconcileStripePayments() {
    支払済Session → Usersへ回数付与
 ========================================================= */
 
-function applyPaidStripeSession_(session) {
+function applyPaidStripeSession_(session, acceptancePermit) {
   assertRouteqQaTestEnvironment_();
-  routeqQaBlockSensitiveEntry_('applyPaidStripeSession_');
+  assertRouteqQaStripeGrantEntry_(acceptancePermit);
   if (!session || !session.id) {
     throw new Error('Stripe Session情報がありません。');
   }
