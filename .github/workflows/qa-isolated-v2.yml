@@ -63,6 +63,9 @@ jobs:
       - name: Test B-03A formal prices and hard stops
         run: node TEST/QA/gas/isolated-v2/offline-tests/b03a-prices-and-hard-stops.test.js
 
+      - name: Ensure offline control is disconnected from GAS entry points
+        run: node TEST/QA/gas/isolated-v2/offline-tests/b03a-offline-isolation.test.js
+
       - name: Test B-03A outbound request preflight
         run: node TEST/QA/gas/isolated-v2/offline-tests/b03a-test-request-preflight.test.js
 
