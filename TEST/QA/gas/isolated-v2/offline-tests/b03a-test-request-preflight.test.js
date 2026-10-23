@@ -54,4 +54,40 @@ test(() => {
   assert.throws(() => ctx.routeqQaInspectTestRequest_('stripe_test', valid[0][1], 'POST'), /ISOLATED_TEST/);
   props.set('ROUTEQ_QA_ENVIRONMENT', 'ISOLATED_TEST');
 });
+// A gate enabled for one service must never authorize a different service.
+for (const [feature, url] of valid) {
+  for (const [otherFeature, otherUrl] of valid) {
+    if (feature === otherFeature) continue;
+    test(() => assert.throws(
+      () => ctx.routeqQaInspectTestRequest_(feature, otherUrl, 'POST'),
+      /rejected/
+    ));
+  }
+}
+for (const [feature, url, gateKey] of [
+  ['stripe_test', valid[0][1], 'ROUTEQ_QA_TEST_ALLOW_STRIPE'],
+  ['ai', valid[2][1], 'ROUTEQ_QA_TEST_ALLOW_AI'],
+  ['line_manual_test', valid[3][1], 'ROUTEQ_QA_TEST_ALLOW_LINE_MANUAL']
+]) {
+  test(() => {
+    props.delete(gateKey);
+    assert.throws(() => ctx.routeqQaInspectTestRequest_(feature, url, 'POST'), /gate OFF/);
+    props.set(gateKey, 'ON');
+  });
+  test(() => {
+    props.set(gateKey, 'INVALID');
+    assert.throws(() => ctx.routeqQaInspectTestRequest_(feature, url, 'POST'), /invalid feature gate/);
+    props.set(gateKey, 'ON');
+  });
+}
+test(() => {
+  props.set('ROUTEQ_QA_SHEET_ID', '12QPlcvkLLVFStZ9bMahpfQvMo1mpwSxUB41el7rTQTE');
+  assert.throws(() => ctx.routeqQaInspectTestRequest_('ai', valid[2][1], 'POST'), /spreadsheet mismatch/);
+  props.set('ROUTEQ_QA_SHEET_ID', sheetId);
+});
+test(() => {
+  props.set('ROUTEQ_QA_LIVE_PAYMENT', 'ENABLED');
+  assert.throws(() => ctx.routeqQaInspectTestRequest_('stripe_test', valid[0][1], 'POST'), /live payments/);
+  props.set('ROUTEQ_QA_LIVE_PAYMENT', 'DISABLED');
+});
 console.log('B-03A TEST request preflight: ' + cases + '/' + cases + ' PASS; external requests: 0');
