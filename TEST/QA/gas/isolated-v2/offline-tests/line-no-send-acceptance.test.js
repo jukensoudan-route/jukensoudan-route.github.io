@@ -78,6 +78,13 @@ for(const state of ['送信済','送信結果不明','送信処理中','重複�
 }
 q[12]='';
 q[22]='';expectReject(check,'LINE_MOCK_SUBMISSION_ID_INVALID');q[22]='question-id-test-001';
+q[22]='1761217200000.routeq-qa-isolated-acceptance.a7c9e2b41d86f5039a8c728f8ab2e60b9c96f0cdd52703d7fd56cdf918594a31';
+assert.equal(check().result,'MOCK_VALIDATED_NOT_SENT');
+for (const invalidId of ['.bad', 'bad.', 'bad..double']) {
+  q[22]=invalidId;
+  expectReject(check,'LINE_MOCK_SUBMISSION_ID_INVALID');
+}
+q[22]='question-id-test-001';
 questionRows.push([...q]);expectReject(check,'LINE_MOCK_DUPLICATE_QUESTION_ID');questionRows.pop();
 userRows.push(['U_ROUTEQ_USER_123']);expectReject(check,'LINE_MOCK_USER_NOT_UNIQUE');userRows.pop();
 userRows.pop();expectReject(check,'LINE_MOCK_USER_MISSING');userRows.push(['U_ROUTEQ_USER_123']);
