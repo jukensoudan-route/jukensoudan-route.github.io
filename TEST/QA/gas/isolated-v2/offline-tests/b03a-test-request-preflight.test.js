@@ -90,4 +90,18 @@ test(() => {
   assert.throws(() => ctx.routeqQaInspectTestRequest_('stripe_test', valid[0][1], 'POST'), /live payments/);
   props.set('ROUTEQ_QA_LIVE_PAYMENT', 'DISABLED');
 });
+// Preflight is deliberately non-executing even when all TEST feature flags are ON.
+test(() => {
+  const result = ctx.routeqQaInspectTestRequest_('stripe_test', valid[0][1], 'POST');
+  assert.equal(result.executionAuthorized, false);
+  assert.equal(result.externalExecutionPermitted, false);
+  assert.equal(Object.isFrozen(result), true);
+  assert.throws(() => ctx.routeqQaBlockSensitiveEntry_('createStripeCheckoutForWeb_'), /sensitive entry blocked/);
+});
+test(() => {
+  const result = ctx.routeqQaInspectTestRequest_('line_manual_test', valid[3][1], 'POST');
+  assert.equal(result.executionAuthorized, false);
+  assert.equal(result.externalExecutionPermitted, false);
+  assert.throws(() => ctx.routeqQaBlockSensitiveEntry_('sendLinePushMessage_'), /sensitive entry blocked/);
+});
 console.log('B-03A TEST request preflight: ' + cases + '/' + cases + ' PASS; external requests: 0');
