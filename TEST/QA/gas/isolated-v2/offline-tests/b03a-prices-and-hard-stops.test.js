@@ -10,8 +10,8 @@ const boundary = load('02_external_boundary.gs');
 const stops = load('03_isolated_v2_stops.gs');
 let checks = 0;
 const pass = check => { check(); checks++; };
-pass(() => assert.match(stripe, /ticket3:\s*\{\s*amount:\s*1000,/));
-pass(() => assert.match(stripe, /ticket10:\s*\{\s*amount:\s*3000,/));
+pass(() => assert.match(stripe, /ticket3:\s*\{[^}]*amount:\s*1000,/));
+pass(() => assert.match(stripe, /ticket10:\s*\{[^}]*amount:\s*3000,/));
 pass(() => assert.match(admin, /grantRouteTicket_\(\s*1000,\s*3,\s*'1,000円／3回'/));
 pass(() => assert.match(admin, /grantRouteTicket_\(\s*3000,\s*10,\s*'3,000円／10回'/));
 for (const [name, code] of [['Stripe', stripe], ['admin', admin], ['question', core], ['boundary', boundary], ['stops', stops]]) {
