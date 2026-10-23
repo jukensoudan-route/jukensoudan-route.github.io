@@ -92,3 +92,6 @@ jobs:
 
       - name: Test LINE delivery safety regression
         run: node TEST/QA/gas/isolated-v2/offline-tests/line-delivery-regression.test.js
+
+      - name: Test read-only LINE no-send acceptance against mocked TEST Sheets
+        run: node TEST/QA/gas/isolated-v2/offline-tests/line-no-send-acceptance.test.js
