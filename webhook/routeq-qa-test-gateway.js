@@ -26,6 +26,11 @@ const SAFE_GAS_FAILURE_REASONS = new Set([
   "STRIPE_TEST_INTENT_CONFLICT", "STRIPE_TEST_EXISTING_PAYMENT_CONFLICT",
   "STRIPE_TEST_GRANT_NOT_CONFIRMED", "STRIPE_TEST_INGRESS_REJECTED"
 ]);
+const SAFE_GATEWAY_FAILURE_STAGES = new Set([
+  "gateway_stripe_construct_failed", "gateway_stripe_retrieve_failed",
+  "gateway_gas_fetch_failed", "gateway_gas_http_failed",
+  "gateway_gas_json_failed", "gateway_gas_validation_failed"
+]);
 const asString = x => typeof x === "string" ? x.trim() : "";
 
 export function validateIsolatedTestSession(session) {
@@ -88,6 +93,7 @@ export function createRouteqQaTestGateway({
   app.post("/stripe/webhook", express.raw({type:"application/json",limit:"64kb"}), async (req,res) => {
     if (!ready) return res.status(503).json({ok:false, reason:"test_gateway_disabled"});
     let stripe;
+    let failureStage = "gateway_stripe_construct_failed";
     try {
       stripe = stripeClient || new Stripe(stripeTestKey);
       const event = stripe.webhooks.constructEvent(req.body, req.headers["stripe-signature"], webhookSecret);
@@ -101,6 +107,7 @@ export function createRouteqQaTestGateway({
       }
       // Never trust a fixture merely because the event body claims payment.
       // Retrieve the authoritative Checkout Session using a TEST-only key.
+      failureStage = "gateway_stripe_retrieve_failed";
       const retrieved = await stripe.checkout.sessions.retrieve(id);
       if (retrieved.id !== id) throw new Error("retrieved_session_mismatch");
       const checked = validateIsolatedTestSession(retrieved);
@@ -111,13 +118,17 @@ export function createRouteqQaTestGateway({
       });
       const timestamp = Math.floor(clock() / 1000);
       const signature = createHmac("sha256",sharedSecret).update(timestamp+"."+payload,"utf8").digest("hex");
+      failureStage = "gateway_gas_fetch_failed";
       const response = await fetchImpl(gasUrl,{
         method:"POST",headers:{"Content-Type":"text/plain;charset=UTF-8"},
         body:JSON.stringify({timestamp,payload,signature}),
         redirect:"follow", signal:AbortSignal.timeout(20000)
       });
+      failureStage = "gateway_gas_http_failed";
       if (!response.ok) throw new Error("gas_http_rejected");
+      failureStage = "gateway_gas_json_failed";
       const decoded = await response.json();
+      failureStage = "gateway_gas_validation_failed";
       if (!decoded || decoded.ok !== true || decoded.environment !== "ISOLATED_TEST") {
         const reason = asString(decoded?.reason);
         throw new Error(SAFE_GAS_FAILURE_REASONS.has(reason) ? reason : "gas_grant_not_confirmed");
@@ -130,7 +141,8 @@ export function createRouteqQaTestGateway({
       const signatureFailed = /signature/i.test(errorMessage);
       return res.status(signatureFailed?400:500).json({
         ok:false, reason:signatureFailed?"invalid_stripe_signature":
-          (SAFE_GAS_FAILURE_REASONS.has(errorMessage) ? errorMessage : "test_processing_failed")
+          (SAFE_GAS_FAILURE_REASONS.has(errorMessage) ? errorMessage :
+            (SAFE_GATEWAY_FAILURE_STAGES.has(failureStage) ? failureStage : "test_processing_failed"))
       });
     }
   });

@@ -101,7 +101,7 @@ test("allowlisted GAS failure reason is exposed without leaking arbitrary text",
   const safe=await start({gasResponse:{ok:false,environment:"ISOLATED_TEST",reason:"STRIPE_TEST_FIXTURE_SHEETS_INVALID"}});
   assert.deepEqual(await post(safe.base),{status:500,json:{ok:false,reason:"STRIPE_TEST_FIXTURE_SHEETS_INVALID"}});
   const unsafe=await start({gasResponse:{ok:false,environment:"ISOLATED_TEST",reason:"secret customer detail"}});
-  assert.deepEqual(await post(unsafe.base),{status:500,json:{ok:false,reason:"test_processing_failed"}});
+  assert.deepEqual(await post(unsafe.base),{status:500,json:{ok:false,reason:"gateway_gas_validation_failed"}});
 });
 test("same signed event can be retried; GAS owns durable idempotency",async()=>{
   const {base,getCounts}=await start();
