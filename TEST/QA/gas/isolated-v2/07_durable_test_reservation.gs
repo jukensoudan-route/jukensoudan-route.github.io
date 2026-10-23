@@ -7,7 +7,10 @@ function routeqQaB03ASnapshot_(request) {
   if (!request || typeof request !== 'object' || Array.isArray(request))
     throw new Error('B03A_INVALID_REQUEST');
   const expected = ['id', 'feature', 'fingerprint', 'approved', 'approvedAt', 'expiresAt'].sort();
-  const keys = Reflect.ownKeys(request).sort();
+  const keys = Reflect.ownKeys(request);
+  if (keys.some(function(k) { return typeof k !== 'string'; }))
+    throw new Error('B03A_INVALID_REQUEST');
+  keys.sort();
   const descriptors = Object.getOwnPropertyDescriptors(request);
   if (keys.length !== expected.length || keys.some(function(k, i) {
     return typeof k !== 'string' || k !== expected[i] ||
