@@ -2410,7 +2410,9 @@
             document.getElementById("loginStatus").innerHTML =
               '<button type="button" id="lineManualLogin" style="display:block;width:100%;padding:18px 20px;border:0;border-radius:14px;background:#06C755;color:#fff;text-align:center;font-size:22px;font-weight:900;cursor:pointer;">LINEでログイン</button>';
             document.getElementById("lineManualLogin").addEventListener("click", function() {
-              liff.login({ redirectUri: location.origin + location.pathname });
+              // Use the exact current URL as the LIFF OAuth callback target.
+              // Keep any LIFF-generated callback parameters intact until liff.init() finishes.
+              liff.login({ redirectUri: location.href });
             });;
             document.getElementById("usageStatus").textContent = "";
             setLoading(false);
