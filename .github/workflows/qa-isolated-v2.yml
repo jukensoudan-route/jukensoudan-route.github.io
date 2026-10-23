@@ -54,6 +54,9 @@ jobs:
       - name: Test GAS and Sheets identity boundary
         run: node TEST/QA/gas/isolated-v2/offline-tests/test-environment-boundary.test.js
 
+      - name: Test B-03A outbound request preflight
+        run: node TEST/QA/gas/isolated-v2/offline-tests/b03a-test-request-preflight.test.js
+
       - name: Test B-03A fail-closed feature gates
         run: node TEST/QA/gas/isolated-v2/offline-tests/b03a-feature-gates.test.js
 
