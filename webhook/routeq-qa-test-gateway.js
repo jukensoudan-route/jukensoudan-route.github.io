@@ -17,6 +17,15 @@ const TICKETS = Object.freeze({
   ticket3: Object.freeze({amount: 1000, count: 3}),
   ticket10: Object.freeze({amount: 3000, count: 10})
 });
+const SAFE_GAS_FAILURE_REASONS = new Set([
+  "STRIPE_TEST_INGRESS_DISABLED", "STRIPE_TEST_SHARED_SECRET_MISSING",
+  "STRIPE_TEST_ENVELOPE_INVALID", "STRIPE_TEST_ENVELOPE_EXPIRED",
+  "STRIPE_TEST_ENVELOPE_SIGNATURE_INVALID", "STRIPE_TEST_PACKET_INVALID",
+  "STRIPE_TEST_PACKET_IDENTITY_INVALID", "STRIPE_TEST_SESSION_IDENTITY_INVALID",
+  "STRIPE_TEST_SESSION_PRODUCT_INVALID", "STRIPE_TEST_FIXTURE_SHEETS_INVALID",
+  "STRIPE_TEST_INTENT_CONFLICT", "STRIPE_TEST_EXISTING_PAYMENT_CONFLICT",
+  "STRIPE_TEST_GRANT_NOT_CONFIRMED", "STRIPE_TEST_INGRESS_REJECTED"
+]);
 const asString = x => typeof x === "string" ? x.trim() : "";
 
 export function validateIsolatedTestSession(session) {
@@ -110,15 +119,18 @@ export function createRouteqQaTestGateway({
       if (!response.ok) throw new Error("gas_http_rejected");
       const decoded = await response.json();
       if (!decoded || decoded.ok !== true || decoded.environment !== "ISOLATED_TEST") {
-        throw new Error("gas_grant_not_confirmed");
+        const reason = asString(decoded?.reason);
+        throw new Error(SAFE_GAS_FAILURE_REASONS.has(reason) ? reason : "gas_grant_not_confirmed");
       }
       // No ephemeral in-memory idempotency: GAS Payments state is the durable source.
       return res.status(200).json({received:true, verified:true, accepted:true});
     } catch (error) {
       // No request body, token, signing secret or customer details in logs.
-      const signatureFailed = /signature/i.test(asString(error?.message));
+      const errorMessage = asString(error?.message);
+      const signatureFailed = /signature/i.test(errorMessage);
       return res.status(signatureFailed?400:500).json({
-        ok:false, reason:signatureFailed?"invalid_stripe_signature":"test_processing_failed"
+        ok:false, reason:signatureFailed?"invalid_stripe_signature":
+          (SAFE_GAS_FAILURE_REASONS.has(errorMessage) ? errorMessage : "test_processing_failed")
       });
     }
   });

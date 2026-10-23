@@ -346,8 +346,25 @@ function doPost(e) {
       );
     } catch (error) {
       // Do not leak a signature, Stripe object, secret, or customer data.
+      var safeReasons = [
+        'STRIPE_TEST_INGRESS_DISABLED',
+        'STRIPE_TEST_SHARED_SECRET_MISSING',
+        'STRIPE_TEST_ENVELOPE_INVALID',
+        'STRIPE_TEST_ENVELOPE_EXPIRED',
+        'STRIPE_TEST_ENVELOPE_SIGNATURE_INVALID',
+        'STRIPE_TEST_PACKET_INVALID',
+        'STRIPE_TEST_PACKET_IDENTITY_INVALID',
+        'STRIPE_TEST_SESSION_IDENTITY_INVALID',
+        'STRIPE_TEST_SESSION_PRODUCT_INVALID',
+        'STRIPE_TEST_FIXTURE_SHEETS_INVALID',
+        'STRIPE_TEST_INTENT_CONFLICT',
+        'STRIPE_TEST_EXISTING_PAYMENT_CONFLICT',
+        'STRIPE_TEST_GRANT_NOT_CONFIRMED'
+      ];
+      var message = error && error.message ? String(error.message) : '';
       reply = {ok:false, environment:'ISOLATED_TEST',
-        reason:'STRIPE_TEST_INGRESS_REJECTED'};
+        reason:safeReasons.indexOf(message) >= 0 ? message :
+          'STRIPE_TEST_INGRESS_REJECTED'};
     }
     return ContentService.createTextOutput(JSON.stringify(reply))
       .setMimeType(ContentService.MimeType.JSON);
