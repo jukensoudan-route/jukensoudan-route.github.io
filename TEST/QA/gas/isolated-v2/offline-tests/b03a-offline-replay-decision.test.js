@@ -10,7 +10,11 @@ let n=0;
 const check=(request,saved,now,decision,reason) => {
   const actual=decide(request,saved,now);
   assert.equal(actual.decision,decision); assert.equal(actual.reason,reason);
-  assert.equal(actual.executionAuthorized,false); assert.equal(Object.isFrozen(actual),true); n++;
+  assert.equal(actual.executionAuthorized,false);
+  assert.equal(actual.externalExecutionPermitted,false);
+  assert.equal(actual.retryAllowed,false);
+  assert.equal(actual.networkRequests,0);
+  assert.equal(Object.isFrozen(actual),true); n++;
 };
 check(basic,null,100,'RESERVE_ONLY','OFFLINE_CANDIDATE');
 check(basic,null,60099,'RESERVE_ONLY','OFFLINE_CANDIDATE');
@@ -30,9 +34,28 @@ check({...basic,feature:'unknown'},null,200,'STOP','INVALID_FEATURE');
 check({...basic,fingerprint:'unsafe'},null,200,'STOP','INVALID_FINGERPRINT');
 check({...basic,id:'short'},null,200,'STOP','INVALID_ID');
 check({...basic,approvedAt:400},null,200,'STOP','EXPIRED');
+check({...basic,approvedAt:-1,expiresAt:100},null,0,'STOP','EXPIRED');
 check(basic,null,50,'STOP','EXPIRED');
 check(null,null,200,'STOP','INVALID_INPUT');
 check(basic,null,Number.NaN,'STOP','INVALID_INPUT');
+for(const extra of [
+  {payload:'secret'}, {credentials:'secret'}, {url:'https://example.invalid'},
+  {executor:function(){}}, {retry:true}
+]) check({...basic,...extra},null,200,'STOP','INVALID_INPUT');
+const accessorRequest={...basic};
+Object.defineProperty(accessorRequest,'feature',{enumerable:true,get(){return 'stripe_test';}});
+check(accessorRequest,null,200,'STOP','INVALID_INPUT');
+const hiddenRequest={...basic};
+Object.defineProperty(hiddenRequest,'payload',{enumerable:false,value:'secret'});
+check(hiddenRequest,null,200,'STOP','INVALID_INPUT');
+check(Object.assign({...basic},{[Symbol('payload')]:'secret'}),null,200,'STOP','INVALID_INPUT');
+check(basic,{...savedBase,payload:'secret'},200,'STOP','LEDGER_MISMATCH');
+const accessorSaved={...savedBase};
+Object.defineProperty(accessorSaved,'state',{enumerable:true,get(){return 'UNKNOWN';}});
+check(basic,accessorSaved,200,'STOP','LEDGER_MISMATCH');
+const hiddenSaved={...savedBase};
+Object.defineProperty(hiddenSaved,'credentials',{enumerable:false,value:'secret'});
+check(basic,hiddenSaved,200,'STOP','LEDGER_MISMATCH');
 for(const feature of ['ai','line_manual_test'])
   check({...basic,feature},null,200,'RESERVE_ONLY','OFFLINE_CANDIDATE');
 console.log('B-03A offline replay decisions: '+n+'/'+n+' PASS; external operations: 0');

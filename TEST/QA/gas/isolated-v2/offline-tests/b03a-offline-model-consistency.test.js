@@ -37,7 +37,12 @@ for (const feature of ['stripe_test', 'ai', 'line_manual_test']) {
     assert.equal(decision.expiresAt, journal.expiresAt);
     assert.equal(decision.executionAuthorized, false);
     assert.equal(journal.executionAuthorized, false);
+    assert.equal(decision.externalExecutionPermitted, false);
+    assert.equal(journal.externalExecutionPermitted, false);
+    assert.equal(decision.retryAllowed, false);
     assert.equal(journal.retryAllowed, false);
+    assert.equal(decision.networkRequests, 0);
+    assert.equal(journal.networkRequests, 0);
   });
   for (const now of [999, 61000]) check(() => {
     assert.equal(decide(request, null, now).decision, 'STOP');
@@ -49,6 +54,7 @@ for (const feature of ['stripe_test', 'ai', 'line_manual_test']) {
     assert.equal(decide(request, current, 2000).decision, 'STOP');
     const journal = plan(current, request, 2000);
     assert.equal(journal.action, 'BLOCK_REPLAY');
+    assert.equal(journal.externalExecutionPermitted, false);
     assert.equal(journal.retryAllowed, false);
   });
 }
@@ -59,6 +65,9 @@ for (const approved of [false, undefined, 'true', 1]) check(() => {
   const journal = plan(null, request, 2000);
   assert.equal(decision.reason, 'NOT_APPROVED');
   assert.equal(journal.action, 'DENY_NOT_APPROVED');
+  assert.equal(decision.externalExecutionPermitted, false);
+  assert.equal(journal.externalExecutionPermitted, false);
+  assert.equal(decision.retryAllowed, false);
   assert.equal(journal.retryAllowed, false);
 });
 
@@ -72,6 +81,12 @@ for (const mutate of [
   const request = mutate(base);
   assert.equal(decide(request, null, 2000).decision, 'STOP');
   assert.throws(() => plan(null, request, 2000), /invalid request/);
+});
+
+check(() => {
+  const request = {...base, approvedAt:-1, expiresAt:100};
+  assert.equal(decide(request, null, 0).decision, 'STOP');
+  assert.equal(plan(null, request, 0).action, 'DENY_EXPIRED');
 });
 
 console.log(`B-03A offline model consistency: ${passed}/${passed} PASS; external calls: 0`);

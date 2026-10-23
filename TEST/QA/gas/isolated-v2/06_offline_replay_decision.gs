@@ -5,9 +5,28 @@
  */
 function routeqQaDecideOfflineTransition_(request, saved, now) {
   function stop(reason) {
-    return Object.freeze({ decision: 'STOP', reason: reason, executionAuthorized: false });
+    return Object.freeze({
+      decision: 'STOP', reason: reason,
+      executionAuthorized: false, externalExecutionPermitted: false,
+      retryAllowed: false, networkRequests: 0
+    });
   }
-  if (!request || typeof request !== 'object' || Array.isArray(request) ||
+  function isOfflineDecisionSnapshot_(value, expected) {
+    if (!value || typeof value !== 'object' || Array.isArray(value)) return false;
+    const keys = Reflect.ownKeys(value);
+    if (keys.some(function(key) { return typeof key !== 'string'; })) return false;
+    keys.sort();
+    const wanted = expected.slice().sort();
+    if (keys.length !== wanted.length || keys.some(function(key, index) {
+      return key !== wanted[index];
+    })) return false;
+    const descriptors = Object.getOwnPropertyDescriptors(value);
+    return keys.every(function(key) {
+      return descriptors[key] && Object.prototype.hasOwnProperty.call(descriptors[key], 'value');
+    });
+  }
+  if (!isOfflineDecisionSnapshot_(request,
+      ['id', 'feature', 'fingerprint', 'approved', 'approvedAt', 'expiresAt']) ||
       !Number.isSafeInteger(now) || now < 0) return stop('INVALID_INPUT');
   const id = request.id;
   if (typeof id !== 'string' || !/^[A-Za-z0-9_-]{16,100}$/.test(id)) return stop('INVALID_ID');
@@ -17,12 +36,14 @@ function routeqQaDecideOfflineTransition_(request, saved, now) {
       !/^[a-f0-9]{64}$/.test(request.fingerprint)) return stop('INVALID_FINGERPRINT');
   if (!Number.isSafeInteger(request.approvedAt) ||
       !Number.isSafeInteger(request.expiresAt) ||
+      request.approvedAt < 0 ||
       request.expiresAt <= request.approvedAt ||
       request.expiresAt - request.approvedAt > 60000 ||
       now < request.approvedAt || now >= request.expiresAt) return stop('EXPIRED');
   if (request.approved !== true) return stop('NOT_APPROVED');
   if (saved !== null && saved !== undefined) {
-    if (typeof saved !== 'object' || Array.isArray(saved) ||
+    if (!isOfflineDecisionSnapshot_(saved,
+        ['id', 'feature', 'fingerprint', 'approvedAt', 'expiresAt', 'state']) ||
         saved.id !== id || saved.feature !== request.feature ||
         saved.fingerprint !== request.fingerprint ||
         saved.approvedAt !== request.approvedAt ||
@@ -38,6 +59,7 @@ function routeqQaDecideOfflineTransition_(request, saved, now) {
     decision: 'RESERVE_ONLY', reason: 'OFFLINE_CANDIDATE',
     id: id, feature: request.feature, fingerprint: request.fingerprint,
     approvedAt: request.approvedAt, expiresAt: request.expiresAt,
-    executionAuthorized: false
+    executionAuthorized: false, externalExecutionPermitted: false,
+    retryAllowed: false, networkRequests: 0
   });
 }
