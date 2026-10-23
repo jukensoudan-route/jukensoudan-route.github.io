@@ -107,3 +107,12 @@ jobs:
 
       - name: Test no-charge AI mock and LINE no-send fixture flow
         run: node TEST/QA/gas/isolated-v2/offline-tests/no-charge-qa-line-flow.test.js
+
+      - name: Verify safe non-destructive review UI bootstrap
+        run: node TEST/QA/gas/isolated-v2/offline-tests/review-ui-safe-bootstrap.test.js
+
+      - name: Verify standalone GAS review save and LINE hard-stop
+        run: node TEST/QA/gas/isolated-v2/offline-tests/review-final-save.test.js
+
+      - name: Verify latest AI question selection and reviewed fallback
+        run: node TEST/QA/gas/isolated-v2/offline-tests/review-latest-load.test.js
