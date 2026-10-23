@@ -65,7 +65,7 @@ check(()=>{const f=fixture(),r=f.request();
  assert.throws(()=>f.begin(r),/RESERVATION_MISSING/);
  f.reserve(r);
  for(const bad of [{...r,feature:'ai'},{...r,fingerprint:'b'.repeat(64)},
- {...r,expiresAt:r.expiresAt-1},{...r,approvedAt:r.approvedAt+1}])
+ {...r,expiresAt:r.expiresAt-1},{...r,approvedAt:r.approvedAt-1}])
  assert.throws(()=>f.reserve(bad),/CONFLICT/);
 });
 for(const change of [
