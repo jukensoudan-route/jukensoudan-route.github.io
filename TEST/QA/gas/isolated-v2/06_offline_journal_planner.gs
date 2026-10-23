@@ -16,11 +16,19 @@ function routeqQaPlanOfflineJournalTransition_(current, request, now) {
     if (typeof current !== 'object' || current.id !== request.id ||
         current.feature !== request.feature ||
         current.fingerprint !== request.fingerprint ||
+        current.approvedAt !== request.approvedAt ||
+        current.expiresAt !== request.expiresAt ||
         !['RESERVED', 'UNKNOWN', 'COMPLETED', 'DENIED'].includes(current.state)) {
       throw new Error('B-03A journal: conflict or malformed record');
     }
     return Object.freeze({
       action: 'BLOCK_REPLAY', state: current.state,
+      executionAuthorized: false, retryAllowed: false
+    });
+  }
+  if (request.approved !== true) {
+    return Object.freeze({
+      action: 'DENY_NOT_APPROVED', state: 'DENIED',
       executionAuthorized: false, retryAllowed: false
     });
   }

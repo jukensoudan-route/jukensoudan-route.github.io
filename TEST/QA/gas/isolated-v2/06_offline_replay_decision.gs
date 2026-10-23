@@ -24,7 +24,9 @@ function routeqQaDecideOfflineTransition_(request, saved, now) {
   if (saved !== null && saved !== undefined) {
     if (typeof saved !== 'object' || Array.isArray(saved) ||
         saved.id !== id || saved.feature !== request.feature ||
-        saved.fingerprint !== request.fingerprint) return stop('LEDGER_MISMATCH');
+        saved.fingerprint !== request.fingerprint ||
+        saved.approvedAt !== request.approvedAt ||
+        saved.expiresAt !== request.expiresAt) return stop('LEDGER_MISMATCH');
     if (saved.state === 'UNKNOWN') return stop('UNKNOWN_NO_RETRY');
     if (saved.state === 'CONSUMED' || saved.state === 'SUCCEEDED' ||
         saved.state === 'FAILED' || saved.state === 'RESERVED') return stop('ALREADY_USED');
@@ -35,6 +37,7 @@ function routeqQaDecideOfflineTransition_(request, saved, now) {
   return Object.freeze({
     decision: 'RESERVE_ONLY', reason: 'OFFLINE_CANDIDATE',
     id: id, feature: request.feature, fingerprint: request.fingerprint,
+    approvedAt: request.approvedAt, expiresAt: request.expiresAt,
     executionAuthorized: false
   });
 }

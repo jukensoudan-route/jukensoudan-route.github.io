@@ -33,6 +33,8 @@ for (const feature of ['stripe_test', 'ai', 'line_manual_test']) {
     assert.equal(decision.id, journal.id);
     assert.equal(decision.feature, journal.feature);
     assert.equal(decision.fingerprint, journal.fingerprint);
+    assert.equal(decision.approvedAt, journal.approvedAt);
+    assert.equal(decision.expiresAt, journal.expiresAt);
     assert.equal(decision.executionAuthorized, false);
     assert.equal(journal.executionAuthorized, false);
     assert.equal(journal.retryAllowed, false);
@@ -42,13 +44,23 @@ for (const feature of ['stripe_test', 'ai', 'line_manual_test']) {
     assert.equal(plan(null, request, now).action, 'DENY_EXPIRED');
   });
   for (const state of ['RESERVED', 'UNKNOWN']) check(() => {
-    const current = {id:request.id, feature, fingerprint:request.fingerprint, state};
+    const current = {id:request.id, feature, fingerprint:request.fingerprint,
+      approvedAt:request.approvedAt, expiresAt:request.expiresAt, state};
     assert.equal(decide(request, current, 2000).decision, 'STOP');
     const journal = plan(current, request, 2000);
     assert.equal(journal.action, 'BLOCK_REPLAY');
     assert.equal(journal.retryAllowed, false);
   });
 }
+
+for (const approved of [false, undefined, 'true', 1]) check(() => {
+  const request = {...base, approved};
+  const decision = decide(request, null, 2000);
+  const journal = plan(null, request, 2000);
+  assert.equal(decision.reason, 'NOT_APPROVED');
+  assert.equal(journal.action, 'DENY_NOT_APPROVED');
+  assert.equal(journal.retryAllowed, false);
+});
 
 for (const mutate of [
   request => ({...request, id:'short'}),

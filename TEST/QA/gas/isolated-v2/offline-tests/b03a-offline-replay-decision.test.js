@@ -15,11 +15,14 @@ const check=(request,saved,now,decision,reason) => {
 check(basic,null,100,'RESERVE_ONLY','OFFLINE_CANDIDATE');
 check(basic,null,60099,'RESERVE_ONLY','OFFLINE_CANDIDATE');
 for(const state of ['UNKNOWN','CONSUMED','SUCCEEDED','FAILED','RESERVED','ERROR']) {
-  check(basic,{id:basic.id,feature:basic.feature,fingerprint:basic.fingerprint,state},200,'STOP',state==='UNKNOWN'?'UNKNOWN_NO_RETRY':state==='ERROR'?'INVALID_LEDGER_STATE':'ALREADY_USED');
+  check(basic,{id:basic.id,feature:basic.feature,fingerprint:basic.fingerprint,approvedAt:basic.approvedAt,expiresAt:basic.expiresAt,state},200,'STOP',state==='UNKNOWN'?'UNKNOWN_NO_RETRY':state==='ERROR'?'INVALID_LEDGER_STATE':'ALREADY_USED');
 }
-check(basic,{id:'other',feature:basic.feature,fingerprint:basic.fingerprint,state:'UNKNOWN'},200,'STOP','LEDGER_MISMATCH');
-check(basic,{id:basic.id,feature:'ai',fingerprint:basic.fingerprint,state:'RESERVED'},200,'STOP','LEDGER_MISMATCH');
-check(basic,{id:basic.id,feature:basic.feature,fingerprint:'b'.repeat(64),state:'UNKNOWN'},200,'STOP','LEDGER_MISMATCH');
+const savedBase={id:basic.id,feature:basic.feature,fingerprint:basic.fingerprint,approvedAt:basic.approvedAt,expiresAt:basic.expiresAt,state:'UNKNOWN'};
+check(basic,{...savedBase,id:'other'},200,'STOP','LEDGER_MISMATCH');
+check(basic,{...savedBase,feature:'ai',state:'RESERVED'},200,'STOP','LEDGER_MISMATCH');
+check(basic,{...savedBase,fingerprint:'b'.repeat(64)},200,'STOP','LEDGER_MISMATCH');
+check(basic,{...savedBase,approvedAt:101},200,'STOP','LEDGER_MISMATCH');
+check(basic,{...savedBase,expiresAt:60099},200,'STOP','LEDGER_MISMATCH');
 check(basic,null,60100,'STOP','EXPIRED');
 check({...basic,approved:false},null,200,'STOP','NOT_APPROVED');
 check({...basic,expiresAt:60101},null,200,'STOP','EXPIRED');
