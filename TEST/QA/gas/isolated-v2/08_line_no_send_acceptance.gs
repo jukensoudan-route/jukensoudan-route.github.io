@@ -42,7 +42,8 @@ function routeqQaInspectLineNoSend_(questionRow, expectedLineUserId) {
     throw new Error('LINE_MOCK_ALREADY_ATTEMPTED');
 
   const submissionId = String(q[22] || '').trim();
-  if (!/^[A-Za-z0-9:_-]{8,160}$/.test(submissionId))
+  if (submissionId.length < 8 || submissionId.length > 160 ||
+      !/^[A-Za-z0-9:_-]+(?:\.[A-Za-z0-9:_-]+)*$/.test(submissionId))
     throw new Error('LINE_MOCK_SUBMISSION_ID_INVALID');
   const ids = questions.getRange(2, 23, questionLast - 1, 1).getValues();
   if (ids.filter(function(item) { return item[0] === submissionId; }).length !== 1)
