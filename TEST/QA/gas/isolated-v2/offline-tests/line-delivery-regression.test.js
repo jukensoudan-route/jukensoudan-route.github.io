@@ -1,7 +1,7 @@
 'use strict';
 // ROUTEQ LINE delivery regression gate.
 // Offline-only: reads source as text; never opens Google Sheets or calls LINE.
-// Intentionally fails on unresolved safety requirements. Not yet added to CI.
+// Included in CI; unresolved safety requirements must fail the gate.
 const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const path = require('node:path');
@@ -55,7 +55,7 @@ for (const [name, sendBody] of [['manual', manualSendBody], ['delayed', delayedS
     name + ': UNKNOWN send must block later attempts');
   assert.match(sendBody, /sendStatus\s*===\s*'送信処理中'/,
     name + ': IN_PROGRESS must block later attempts');
-  assert.match(sendBody, /catch\s*\(error\)[\s\S]*?\\.setValue\(\s*'送信結果不明'/,
+  assert.match(sendBody, /catch\s*\(error\)[\s\S]*?\.setValue\(\s*'送信結果不明'/,
     name + ': delivery exception must be treated as UNKNOWN');
 }
 assert.match(manualSendBody, /catch\s*\(uiError\)/,
