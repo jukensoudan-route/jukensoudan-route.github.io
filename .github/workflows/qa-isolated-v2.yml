@@ -63,6 +63,9 @@ jobs:
       - name: Test B-03A formal prices and hard stops
         run: node TEST/QA/gas/isolated-v2/offline-tests/b03a-prices-and-hard-stops.test.js
 
+      - name: Test B-03A offline approval and replay decisions
+        run: node TEST/QA/gas/isolated-v2/offline-tests/b03a-offline-replay-decision.test.js
+
       - name: Test B-03A offline journal replay and expiry
         run: node TEST/QA/gas/isolated-v2/offline-tests/b03a-offline-journal-planner.test.js
 
