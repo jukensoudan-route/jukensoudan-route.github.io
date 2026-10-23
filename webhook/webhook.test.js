@@ -101,7 +101,7 @@ test("duplicate Session ID under another event is not resent", async () => {
 test("duplicate Payment Intent under another Session is not resent", async () => {
   const { base, calls } = await start();
   await post(base, event("evt_intent_1"));
-  const result = await post(base, event("evt_intent_2", routeSession({ id: "cs_other" })));
+  const result = await post(base, event("evt_intent_2", routeSession({ id: "cs_test_other" })));
   assert.equal(JSON.parse(result.text).reason, "duplicate_payment_intent");
   assert.equal(calls.length, 1);
 });
