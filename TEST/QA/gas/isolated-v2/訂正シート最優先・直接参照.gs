@@ -3240,7 +3240,11 @@ function testRouteQuestionValidationUnclear() {
    質問保存 + 回数消費 + AI回答案
 ========================================================= */
 
-function saveQuestionForWeb_(p) {
+function saveQuestionForWeb_(p, acceptancePermit) {
+
+  const ownerAcceptance =
+    typeof ROUTEQ_QA_QUESTION_ACCEPTANCE_PERMIT_ !== 'undefined' &&
+    acceptancePermit === ROUTEQ_QA_QUESTION_ACCEPTANCE_PERMIT_;
 
   /*
    * =====================================================
@@ -3261,12 +3265,13 @@ function saveQuestionForWeb_(p) {
   /*
    * LINE認証は外部通信なのでロックの外で行う。
    */
-  const user =
-    verifyLineUser_(
-      String(
-        p.idToken || ''
-      )
-    );
+  const user = ownerAcceptance
+    ? { sub: 'U_ROUTEQ_ISOLATED_MOCK_20261023', name: 'ROUTEQ isolated acceptance' }
+    : verifyLineUser_(
+        String(
+          p.idToken || ''
+        )
+      );
 
   const category =
     String(
@@ -3374,6 +3379,7 @@ function saveQuestionForWeb_(p) {
 
 
   if (
+    !ownerAcceptance &&
     !consumeRouteValidationToken_(
       user.sub,
       validationData,
@@ -3823,8 +3829,9 @@ function saveQuestionForWeb_(p) {
 
   try {
 
-    const draft =
-      generateAiDraft_({
+    const draft = ownerAcceptance
+      ? '【隔離TEST固定回答】実AI・LINE送信なしで質問保存経路を検収しました。'
+      : generateAiDraft_({
         category:
           categoryLabel ||
           category,
@@ -3843,7 +3850,7 @@ function saveQuestionForWeb_(p) {
 
         question:
           question
-      });
+        });
 
 
     questions
