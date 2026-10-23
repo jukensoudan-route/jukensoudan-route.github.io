@@ -54,6 +54,9 @@ jobs:
       - name: Test GAS and Sheets identity boundary
         run: node TEST/QA/gas/isolated-v2/offline-tests/test-environment-boundary.test.js
 
+      - name: Check every isolated GAS module for direct network bypass
+        run: node TEST/QA/gas/isolated-v2/offline-tests/all-gas-network-bypass.test.js
+
       - name: Test B-03A formal prices and hard stops
         run: node TEST/QA/gas/isolated-v2/offline-tests/b03a-prices-and-hard-stops.test.js
 
