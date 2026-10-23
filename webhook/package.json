@@ -1,1 +1,14 @@
-{"name":"kikeroute-stripe-webhook","version":"1.0.0","private":true,"type":"module","scripts":{"start":"node server.js","test":"node --test webhook.test.js"},"dependencies":{"express":"^4.21.2","stripe":"^17.7.0"}}
+{
+  "name": "kikeroute-stripe-webhook",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "node server.js",
+    "test": "node --test webhook.test.js routeq-qa-test-gateway.test.js"
+  },
+  "dependencies": {
+    "express": "^4.21.2",
+    "stripe": "^17.7.0"
+  }
+}

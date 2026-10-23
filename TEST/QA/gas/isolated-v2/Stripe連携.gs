@@ -33,7 +33,9 @@ const ROUTEQ_QA_STRIPE_GRANT_ACCEPTANCE_PERMIT_ = Object.freeze({
 
 function assertRouteqQaStripeGrantEntry_(permit) {
   assertRouteqQaTestEnvironment_();
-  if (permit === ROUTEQ_QA_STRIPE_GRANT_ACCEPTANCE_PERMIT_) return true;
+  if (permit === ROUTEQ_QA_STRIPE_GRANT_ACCEPTANCE_PERMIT_ ||
+      (typeof ROUTEQ_QA_STRIPE_TEST_GATEWAY_PERMIT_ !== 'undefined' &&
+       permit === ROUTEQ_QA_STRIPE_TEST_GATEWAY_PERMIT_)) return true;
   routeqQaBlockSensitiveEntry_('applyPaidStripeSession_');
 }
 

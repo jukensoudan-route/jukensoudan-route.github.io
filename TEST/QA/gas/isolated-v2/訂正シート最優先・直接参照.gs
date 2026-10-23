@@ -337,6 +337,21 @@ function doPost(e) {
       livePayment: false
     });
   }
+  // Independent Stripe TEST gateway. All other POST actions remain stopped.
+  if (String(testParams.action || '') === 'routeqQaStripeTestWebhook') {
+    var reply;
+    try {
+      reply = routeqQaAcceptSignedStripeTestPost_(
+        e && e.postData ? e.postData.contents : ''
+      );
+    } catch (error) {
+      // Do not leak a signature, Stripe object, secret, or customer data.
+      reply = {ok:false, environment:'ISOLATED_TEST',
+        reason:'STRIPE_TEST_INGRESS_REJECTED'};
+    }
+    return ContentService.createTextOutput(JSON.stringify(reply))
+      .setMimeType(ContentService.MimeType.JSON);
+  }
   routeqQaBlockSensitiveEntry_('doPost');
   let requestId = '';
 
