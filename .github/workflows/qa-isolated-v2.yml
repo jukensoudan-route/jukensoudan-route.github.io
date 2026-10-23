@@ -42,6 +42,9 @@ jobs:
       - name: Check GAS syntax and global declarations
         run: node TEST/QA/gas/isolated-v2/offline-tests/syntax.test.js
 
+      - name: Test isolated signed Stripe TEST GAS admission
+        run: node TEST/QA/gas/isolated-v2/offline-tests/stripe-test-signed-ingress.test.js
+
       - name: Test Stripe interrupted-grant recovery
         run: node TEST/QA/gas/isolated-v2/offline-tests/stripe-grant-recovery.test.js
 
