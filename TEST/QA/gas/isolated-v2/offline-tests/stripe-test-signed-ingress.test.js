@@ -64,7 +64,7 @@ assert.equal(good.client_reference_id,uid);
 assert.equal(good.livemode,false);
 assert.throws(()=>validate(signed(payload(),Math.floor(Date.now()/1000)-600)),
   /STRIPE_TEST_ENVELOPE_EXPIRED/);
-assert.throws(()=>validate(signed(payload()).replace(/"signature":"[0-9a-f]/,'"signature":"0')),
+assert.throws(()=>validate(signed(payload()).replace(/("signature":")([0-9a-f])/,(_,prefix,digit)=>prefix+(digit==='0'?'1':'0'))),
   /STRIPE_TEST_ENVELOPE_SIGNATURE_INVALID/);
 assert.throws(()=>validate(signed(payload({stripeAccount:'acct_OTHER'}))),
   /STRIPE_TEST_PACKET_IDENTITY_INVALID/);
