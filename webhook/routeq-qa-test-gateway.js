@@ -138,7 +138,8 @@ export function createRouteqQaTestGateway({
     } catch (error) {
       // No request body, token, signing secret or customer details in logs.
       const errorMessage = asString(error?.message);
-      const signatureFailed = /signature/i.test(errorMessage);
+      const signatureFailed = failureStage === "gateway_stripe_construct_failed" &&
+        /signature/i.test(errorMessage);
       return res.status(signatureFailed?400:500).json({
         ok:false, reason:signatureFailed?"invalid_stripe_signature":
           (SAFE_GAS_FAILURE_REASONS.has(errorMessage) ? errorMessage :
