@@ -88,4 +88,56 @@ assert.equal(grants,0);
 const source=fs.readFileSync(path.join(__dirname,'..','訂正シート最優先・直接参照.gs'),'utf8');
 assert.match(source,/action\s*\|\|\s*''\)\s*===\s*'routeqQaStripeTestWebhook'/);
 assert.match(source,/routeqQaBlockSensitiveEntry_\('doPost'\)/);
+
+// Independently exercise the ingress-to-grant handoff with in-memory Sheets.
+// No Google service or live payment is contacted.
+props.set('ROUTEQ_QA_STRIPE_TEST_GATEWAY_SECRET',secret);
+const rows=[];
+let lockReleases=0;
+const payments={
+  appendRow(v){ rows.push(v); },
+  getRange(row){return {getValues(){return [rows[row-2].slice()];}}}
+};
+context.ROUTE_QA={PAYMENTS:'Payments',USERS:'Users'};
+context.openRouteqQaTestSpreadsheet_=()=>({
+  getSheetByName:name=>name==='Payments'?payments:name==='Users'?{}:null
+});
+context.LockService={getScriptLock:()=>({
+  waitLock(){},releaseLock(){lockReleases++;}
+})};
+context.findRouteUserRow_=()=>2;
+context.findPaymentRowBySessionId_=(_sheet,id)=>{
+  const i=rows.findIndex(row=>row[6]===id);
+  return i<0?-1:i+2;
+};
+context.findPaymentRowByPaymentIntent_=(_sheet,id)=>{
+  const i=rows.findIndex(row=>row[7]===id);
+  return i<0?-1:i+2;
+};
+let mockGrantCalls=0;
+context.applyPaidStripeSession_=(s,permit)=>{
+  assert.strictEqual(permit,vm.runInContext('ROUTEQ_QA_STRIPE_TEST_GATEWAY_PERMIT_',context));
+  assert.equal(s.client_reference_id,uid);
+  mockGrantCalls++;
+  rows[0][7]=s.payment_intent;
+  rows[0][8]='支払済';
+  rows[0][9]='付与済';
+  return {granted:mockGrantCalls===1,alreadyGranted:mockGrantCalls>1};
+};
+const success=context.routeqQaAcceptSignedStripeTestPost_(signed(payload()));
+assert.equal(success.ok,true);
+assert.equal(success.granted,true);
+assert.equal(rows.length,1);
+const repeated=context.routeqQaAcceptSignedStripeTestPost_(signed(payload()));
+assert.equal(repeated.alreadyGranted,true);
+assert.equal(rows.length,1);
+const other={...payload(),session:{...payload().session,id:'cs_test_otherSession1'}};
+assert.throws(()=>context.routeqQaAcceptSignedStripeTestPost_(signed(other)),
+ /STRIPE_TEST_INTENT_CONFLICT/);
+assert.equal(rows.length,1);
+assert.equal(lockReleases,3);
+assert.equal(mockGrantCalls,2);
+// These are mocks, NOT evidence of an actual Stripe or GAS grant.
+console.log('Signed ingress staging/replay mock PASS; total appended Payments 1; no real Stripe calls');
+
 console.log('GAS signed Stripe TEST admission: 12/12 PASS; Sheets writes 0; network 0; grants 0');
