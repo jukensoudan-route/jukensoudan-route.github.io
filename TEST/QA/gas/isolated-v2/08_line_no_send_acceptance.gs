@@ -73,3 +73,11 @@ function routeqQaInspectLineNoSend_(questionRow, expectedLineUserId) {
     additionalApiChargeYen: 0
   });
 }
+
+
+/** GAS editor callable, read-only isolated TEST fixture acceptance. */
+function routeqQaTestLinePreflight() {
+  const evidence = routeqQaInspectLineNoSend_(4, 'U_ROUTEQ_ISOLATED_MOCK_20261023');
+  console.log('ROUTEQ_LINE_PREFLIGHT_TEST ' + JSON.stringify(evidence));
+  return evidence;
+}
