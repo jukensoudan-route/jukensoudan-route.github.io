@@ -51,6 +51,9 @@ jobs:
       - name: Test isolated frontend demo
         run: node TEST/QA/gas/isolated-v2/offline-tests/frontend-isolated-demo.test.js
 
+      - name: Verify Questions and Payments column contract
+        run: node TEST/QA/gas/isolated-v2/offline-tests/sheets-column-contract.test.js
+
       - name: Test GAS and Sheets identity boundary
         run: node TEST/QA/gas/isolated-v2/offline-tests/test-environment-boundary.test.js
 
