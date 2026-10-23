@@ -1527,19 +1527,20 @@ function saveFinalAnswer() {
     );
 
 
-  loadQuestionToReview_(
-    row,
-    true
-  );
+  // The durable save above must remain successful even if a standalone
+  // GAS invocation has no active spreadsheet UI.
+  try {
+    loadQuestionToReview_(row, true);
+  } catch (uiError) {
+    console.log('REVIEW_SAVE_UI_REFRESH_SKIPPED');
+  }
 
-
-  SpreadsheetApp
-    .getActive()
-    .toast(
-      '最終回答を保存しました。',
-      'ROUTE Q&A',
-      3
-    );
+  try {
+    const active = SpreadsheetApp.getActive();
+    if (active) active.toast('最終回答を保存しました。', 'ROUTE Q&A', 3);
+  } catch (uiError) {
+    console.log('REVIEW_SAVE_TOAST_SKIPPED');
+  }
 
 }
 
