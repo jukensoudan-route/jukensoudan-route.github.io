@@ -3,8 +3,8 @@ import Stripe from "stripe";
 import { fileURLToPath } from "node:url";
 
 const DEFAULT_TICKETS = Object.freeze({
-  ticket3: Object.freeze({ amount: 1500, count: 3 }),
-  ticket10: Object.freeze({ amount: 3500, count: 10 })
+  ticket3: Object.freeze({ amount: 1000, count: 3 }),
+  ticket10: Object.freeze({ amount: 3000, count: 10 })
 });
 
 const normalizeId = (value) => String(value || "").trim();
@@ -27,6 +27,10 @@ export function validateRouteSession(session, tickets = DEFAULT_TICKETS) {
   }
   if (metadataUserId && referenceUserId && metadataUserId !== referenceUserId) {
     return { ok: false, reason: "route_user_mismatch" };
+  }
+  // A signed event can still contain non-TEST objects. Refuse any LIVE session.
+  if (session?.livemode !== false || !sessionId.startsWith("cs_test_")) {
+    return { ok: false, reason: "non_test_session_rejected" };
   }
   if (session?.payment_status !== "paid") {
     return { ok: false, reason: "payment_not_paid" };
@@ -102,6 +106,13 @@ export function createWebhookApp({
       return res.status(400).send("invalid signature");
     }
 
+    if (event.livemode !== false) {
+      return res.status(200).json({ received: true, verified: true, ignored: true, reason: "non_test_event_rejected" });
+    }
+    // Validate the account in Connect-style events when the field is present.
+    if (event.account && event.account !== "acct_1TjYNMIRwv4Jy7lt") {
+      return res.status(200).json({ received: true, verified: true, ignored: true, reason: "test_account_mismatch" });
+    }
     const allowed = new Set(["checkout.session.completed", "checkout.session.async_payment_succeeded"]);
     if (!allowed.has(event.type)) {
       return res.status(200).json({ received: true, verified: true, ignored: true });

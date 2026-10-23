@@ -19,7 +19,8 @@ function routeSession(overrides = {}) {
     object: "checkout.session",
     payment_intent: "pi_test_routeq_1",
     payment_status: "paid",
-    amount_total: 1500,
+    amount_total: 1000,
+    livemode: false,
     currency: "jpy",
     client_reference_id: "U_ROUTEQ_1",
     metadata: { line_user_id: "U_ROUTEQ_1", ticket_code: "ticket3", grant_count: "3" },
@@ -28,7 +29,7 @@ function routeSession(overrides = {}) {
 }
 
 function event(id, session = routeSession(), type = "checkout.session.completed") {
-  return { id, object: "event", type, data: { object: session } };
+  return { id, object: "event", livemode: false, type, data: { object: session } };
 }
 
 async function start(options = {}) {
@@ -161,5 +162,44 @@ test("unrelated signed event is ignored with zero outbound calls", async () => {
   const { base, calls } = await start();
   const result = await post(base, event("evt_unrelated", routeSession(), "customer.created"));
   assert.equal(JSON.parse(result.text).ignored, true);
+  assert.equal(calls.length, 0);
+});
+
+test("official TEST prices accept only 1000/3 and 3000/10", async () => {
+  const { base, calls } = await start();
+  const valid10 = routeSession({
+    id: "cs_test_routeq_10", payment_intent: "pi_test_routeq_10",
+    amount_total: 3000,
+    metadata: { line_user_id: "U_ROUTEQ_1", ticket_code: "ticket10", grant_count: "10" }
+  });
+  assert.equal(JSON.parse((await post(base, event("evt_valid_10", valid10))).text).processed, true);
+  assert.equal(calls.length, 1);
+  for (const [suffix, amount, code, count] of [
+    ["old3", 1500, "ticket3", "3"],
+    ["old10", 3500, "ticket10", "10"],
+    ["mismatch3", 3000, "ticket3", "3"],
+    ["mismatch10", 1000, "ticket10", "10"]
+  ]) {
+    const s = routeSession({
+      id: "cs_test_routeq_" + suffix,
+      payment_intent: "pi_test_routeq_" + suffix,
+      amount_total: amount,
+      metadata: { line_user_id: "U_ROUTEQ_1", ticket_code: code, grant_count: count }
+    });
+    const answer = await post(base, event("evt_" + suffix, s));
+    assert.equal(JSON.parse(answer.text).reason, "route_purchase_mismatch");
+  }
+  assert.equal(calls.length, 1);
+});
+test("LIVE event, LIVE session and wrong Stripe account are never forwarded to GAS", async () => {
+  const { base, calls } = await start();
+  const liveEvent = {...event("evt_live"), livemode: true};
+  assert.equal(JSON.parse((await post(base, liveEvent)).text).reason, "non_test_event_rejected");
+  const liveSession = routeSession({ livemode: true });
+  assert.equal(JSON.parse((await post(base, event("evt_live_session", liveSession))).text).reason, "non_test_session_rejected");
+  const liveId = routeSession({ id: "cs_live_unexpected" });
+  assert.equal(JSON.parse((await post(base, event("evt_live_id", liveId))).text).reason, "non_test_session_rejected");
+  const wrongAccount = {...event("evt_wrong_account"), account: "acct_wrong"};
+  assert.equal(JSON.parse((await post(base, wrongAccount)).text).reason, "test_account_mismatch");
   assert.equal(calls.length, 0);
 });
