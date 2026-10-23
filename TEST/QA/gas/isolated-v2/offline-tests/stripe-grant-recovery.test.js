@@ -241,7 +241,7 @@ function paymentSheet(rawJournal = journal(
       return name === 'Payments' ? payments : users;
     }
   };
-  payments.failNextBatchAtColumn = 10;
+  payments.failNextBatchAtColumn = 9;
   assert.throws(
     () => context.applyPaidStripeSession_(retrySession),
     /injected batch failure/

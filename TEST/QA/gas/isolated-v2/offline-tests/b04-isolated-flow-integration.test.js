@@ -129,6 +129,7 @@ const paid = context.applyPaidStripeSession_({
 assert.equal(paid.granted, true);
 assert.equal(users.value(2, 8), 3, 'paid session grants three remaining uses');
 assert.equal(payments.value(2, 8), 'pi_b04', 'Payment Intent is persisted');
+assert.equal(payments.value(2, 9), '支払済', 'paid status is finalized');
 assert.equal(payments.value(2, 10), '付与済', 'grant is finalized');
 
 const submission = context.saveQuestionForWeb_({

@@ -498,8 +498,8 @@ function applyPaidStripeSession_(session, acceptancePermit) {
 
     // Users was updated; never leave a replayable blank marker on failure.
     const grantedAt = new Date();
-    payments.getRange(paymentRow, 10, 1, 3).setValues([[
-      '付与済', grantedAt, grantedAt
+    payments.getRange(paymentRow, 9, 1, 4).setValues([[
+      '支払済', '付与済', grantedAt, grantedAt
     ]]);
 
 
@@ -615,8 +615,8 @@ function recoverInterruptedStripeGrant_(payments, paymentRow, users, session, de
 
   if (stripeGrantCountersEqual_(current, journal.after)) {
     const recoveredAt = new Date();
-    payments.getRange(paymentRow, 10, 1, 3).setValues([[
-      '付与済', recoveredAt, recoveredAt
+    payments.getRange(paymentRow, 9, 1, 4).setValues([[
+      '支払済', '付与済', recoveredAt, recoveredAt
     ]]);
     return {
       granted: false,
@@ -650,8 +650,8 @@ function recoverInterruptedStripeGrant_(payments, paymentRow, users, session, de
   users.getRange(userRow, 1, 1, 12).setValues([updated]);
 
   const recoveredAt = new Date();
-  payments.getRange(paymentRow, 10, 1, 3).setValues([[
-    '付与済', recoveredAt, recoveredAt
+  payments.getRange(paymentRow, 9, 1, 4).setValues([[
+    '支払済', '付与済', recoveredAt, recoveredAt
   ]]);
   return {
     granted: true,
