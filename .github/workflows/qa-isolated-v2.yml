@@ -72,6 +72,9 @@ jobs:
       - name: Test B-03A offline decision and journal consistency
         run: node TEST/QA/gas/isolated-v2/offline-tests/b03a-offline-model-consistency.test.js
 
+      - name: Test B-03A durable reservation and lock fault injection
+        run: node TEST/QA/gas/isolated-v2/offline-tests/b03a-durable-reservation.test.js
+
       - name: Ensure offline control is disconnected from GAS entry points
         run: node TEST/QA/gas/isolated-v2/offline-tests/b03a-offline-isolation.test.js
 
