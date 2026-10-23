@@ -131,6 +131,14 @@ assert.equal(users.value(2, 8), 3, 'paid session grants three remaining uses');
 assert.equal(payments.value(2, 8), 'pi_b04', 'Payment Intent is persisted');
 assert.equal(payments.value(2, 9), '支払済', 'paid status is finalized');
 assert.equal(payments.value(2, 10), '付与済', 'grant is finalized');
+payments.set(2, 9, '作成');
+const replayedPaid = context.applyPaidStripeSession_({
+  id: 'cs_b04', payment_intent: 'pi_b04', payment_status: 'paid', amount_total: 1000,
+  metadata: { line_user_id: 'U_B04', ticket_code: 'ticket3', grant_count: '3' }
+});
+assert.equal(replayedPaid.alreadyGranted, true, 'paid replay is idempotent');
+assert.equal(users.value(2, 8), 3, 'paid replay does not add uses');
+assert.equal(payments.value(2, 9), '支払済', 'paid replay repairs stale payment status');
 
 const submission = context.saveQuestionForWeb_({
   idToken: 'mock-id-token', category: 'school', categoryLabel: '学校',

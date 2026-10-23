@@ -340,6 +340,10 @@ function applyPaidStripeSession_(session, acceptancePermit) {
       );
 
       if (already === '付与済') {
+        if (String(payments.getRange(paymentRow, 9).getValue() || '') !== '支払済') {
+          payments.getRange(paymentRow, 9).setValue('支払済');
+          payments.getRange(paymentRow, 12).setValue(new Date());
+        }
         const userRow = findRouteUserRow_(users, lineUserId);
 
         const remaining = userRow > 0
