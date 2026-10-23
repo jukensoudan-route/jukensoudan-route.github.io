@@ -13,6 +13,8 @@ function routeqQaDecideOfflineTransition_(request, saved, now) {
   if (typeof id !== 'string' || !/^[A-Za-z0-9_-]{16,100}$/.test(id)) return stop('INVALID_ID');
   if (request.feature !== 'stripe_test' && request.feature !== 'ai' &&
       request.feature !== 'line_manual_test') return stop('INVALID_FEATURE');
+  if (typeof request.fingerprint !== 'string' ||
+      !/^[a-f0-9]{64}$/.test(request.fingerprint)) return stop('INVALID_FINGERPRINT');
   if (!Number.isSafeInteger(request.approvedAt) ||
       !Number.isSafeInteger(request.expiresAt) ||
       request.expiresAt <= request.approvedAt ||
@@ -21,7 +23,8 @@ function routeqQaDecideOfflineTransition_(request, saved, now) {
   if (request.approved !== true) return stop('NOT_APPROVED');
   if (saved !== null && saved !== undefined) {
     if (typeof saved !== 'object' || Array.isArray(saved) ||
-        saved.id !== id || saved.feature !== request.feature) return stop('LEDGER_MISMATCH');
+        saved.id !== id || saved.feature !== request.feature ||
+        saved.fingerprint !== request.fingerprint) return stop('LEDGER_MISMATCH');
     if (saved.state === 'UNKNOWN') return stop('UNKNOWN_NO_RETRY');
     if (saved.state === 'CONSUMED' || saved.state === 'SUCCEEDED' ||
         saved.state === 'FAILED' || saved.state === 'RESERVED') return stop('ALREADY_USED');
@@ -31,6 +34,7 @@ function routeqQaDecideOfflineTransition_(request, saved, now) {
   // persist reservation under lock BEFORE any outbound action.
   return Object.freeze({
     decision: 'RESERVE_ONLY', reason: 'OFFLINE_CANDIDATE',
-    id: id, feature: request.feature, executionAuthorized: false
+    id: id, feature: request.feature, fingerprint: request.fingerprint,
+    executionAuthorized: false
   });
 }
