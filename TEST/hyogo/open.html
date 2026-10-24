@@ -11,7 +11,7 @@
 <p>最新のキケルート受験Q&amp;Aを開いています…</p>
 <script>
 (async function(){
-  if (/^\/TEST(?:\/|$)/.test(location.pathname)) {
+  if (location.origin !== "https://kikeroute.jp" || /^\/TEST(?:\/|$)/.test(location.pathname)) {
     location.replace("./?v=20260911-3");
     return;
   }

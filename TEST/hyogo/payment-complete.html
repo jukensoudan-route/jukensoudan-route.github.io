@@ -43,7 +43,7 @@
 
   <script>
     (function(){
-      const ROUTEQ_IS_TEST = /^\/TEST(?:\/|$)/.test(location.pathname);
+      const ROUTEQ_IS_TEST = location.origin !== "https://kikeroute.jp" || /^\/TEST(?:\/|$)/.test(location.pathname);
       const GAS_WEB_APP_URL = ROUTEQ_IS_TEST ? "" : "https://script.google.com/macros/s/AKfycbyAUKGZK_WK8l_bGs0AEWilwP_Z8WKRaeSsX3iP1dijuReeMAF-rVBIZl-CQYcozDCu3A/exec";
       const QNA_URL = "./";
       const pendingRequests = {};

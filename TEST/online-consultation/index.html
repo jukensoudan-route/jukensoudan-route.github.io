@@ -329,7 +329,7 @@
     </footer>
   </div>
 <script>
-if (/^\/TEST(?:\/|$)/.test(location.pathname)) {
+if (location.origin !== "https://kikeroute.jp" || /^\/TEST(?:\/|$)/.test(location.pathname)) {
   document.addEventListener("DOMContentLoaded", function () {
     document.querySelectorAll('a[href^="https://cal.com/"], a[href^="https://lin.ee/"]').forEach(function (a) {
       a.removeAttribute("href");
