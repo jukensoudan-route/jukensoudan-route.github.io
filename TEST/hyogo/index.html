@@ -715,11 +715,12 @@
   <iframe name="backendFrame" class="backend-frame"></iframe>
 
   <script>
-    const GAS_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbyAUKGZK_WK8l_bGs0AEWilwP_Z8WKRaeSsX3iP1dijuReeMAF-rVBIZl-CQYcozDCu3A/exec";
-    const QUESTION_OPTIONS_URL = "https://script.google.com/macros/s/AKfycbwH9FJsaxcbahXTBpEm1Hh7f3Tqzrul7sUyuZRAuY-TMXXE-5hXlPnzGGXN-MDiZAh6/exec";
+    const ROUTEQ_IS_TEST = /^\/TEST(?:\/|$)/.test(location.pathname);
+    const GAS_WEB_APP_URL = ROUTEQ_IS_TEST ? "" : "https://script.google.com/macros/s/AKfycbyAUKGZK_WK8l_bGs0AEWilwP_Z8WKRaeSsX3iP1dijuReeMAF-rVBIZl-CQYcozDCu3A/exec";
+    const QUESTION_OPTIONS_URL = ROUTEQ_IS_TEST ? "" : "https://script.google.com/macros/s/AKfycbwH9FJsaxcbahXTBpEm1Hh7f3Tqzrul7sUyuZRAuY-TMXXE-5hXlPnzGGXN-MDiZAh6/exec";
     const QUESTION_OPTIONS_CACHE_KEY = "route_hyogo_question_options_v3";
     const QUESTION_OPTIONS_CACHE_MS = 0;
-    const LIFF_ID = "2011985705-R2Sn0vkO";
+    const LIFF_ID = ROUTEQ_IS_TEST ? "" : "2011985705-R2Sn0vkO";
     const CONSENT_POLICY_VERSION = "2026-09-11-v1";
     const CONSENT_SUMMARY = "ご利用ルール／返金・キャンセルについて／回答内容についての免責";
 
@@ -1457,6 +1458,7 @@
     }
 
     function fetchQuestionOptions() {
+      if (ROUTEQ_IS_TEST && !QUESTION_OPTIONS_URL) return Promise.reject(new Error("TEST用GASが未設定です。"));
       return new Promise(function(resolve, reject) {
         const callbackName = "routeQuestionOptions_" + Date.now() + "_" + Math.random().toString(36).slice(2);
         const script = document.createElement("script");
@@ -1529,6 +1531,7 @@
     }
 
     function postToGas(data) {
+      if (ROUTEQ_IS_TEST && !GAS_WEB_APP_URL) return Promise.reject(new Error("TEST用GASが未設定です。"));
       return new Promise(function(resolve, reject) {
         const requestId = "route_" + Date.now() + "_" + Math.random().toString(36).slice(2);
         pendingRequests[requestId] = { resolve:resolve, reject:reject };
@@ -2362,6 +2365,7 @@
         let startupFailed = false;
         try {
           if (!window.liff) throw new Error("LINEの読み込みに失敗しました。ページを再読み込みしてください。");
+          if (ROUTEQ_IS_TEST && !LIFF_ID) throw new Error("TEST用LIFFが未設定です。");
           await liff.init({ liffId:LIFF_ID });
           timings.liffInitMs = Math.round(performance.now() - startedAt);
 

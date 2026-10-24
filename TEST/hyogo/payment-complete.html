@@ -34,17 +34,18 @@
     <p id="text">Stripeの決済状況を確認し、質問回数を反映しています。画面を閉じずにそのままお待ちください。</p>
     <div class="note" id="note">確認が完了するまでLINEは開きません。</div>
     <div class="remaining" id="remaining"></div>
-   <a class="btn" id="backBtn" href="https://kikeroute.jp/QA/hyogo/">LINEでQ&Aに戻る</a>
+   <a class="btn" id="backBtn" href="../QA/hyogo/">LINEでQ&Aに戻る</a>
     <button class="retry" id="retryBtn" type="button">決済確認をもう一度行う</button>
-    <a class="subbtn" href="https://kikeroute.jp/">キケルート公式HPへ戻る</a>
+    <a class="subbtn" href="..">キケルート公式HPへ戻る</a>
   </main></div>
 
   <iframe name="backendFrame" class="backend-frame"></iframe>
 
   <script>
     (function(){
-      const GAS_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbyAUKGZK_WK8l_bGs0AEWilwP_Z8WKRaeSsX3iP1dijuReeMAF-rVBIZl-CQYcozDCu3A/exec";
-      const QNA_URL = "https://kikeroute.jp/hyogo/";
+      const ROUTEQ_IS_TEST = /^\/TEST(?:\/|$)/.test(location.pathname);
+      const GAS_WEB_APP_URL = ROUTEQ_IS_TEST ? "" : "https://script.google.com/macros/s/AKfycbyAUKGZK_WK8l_bGs0AEWilwP_Z8WKRaeSsX3iP1dijuReeMAF-rVBIZl-CQYcozDCu3A/exec";
+      const QNA_URL = "./";
       const pendingRequests = {};
 
       const mark = document.getElementById('mark');
@@ -104,6 +105,7 @@
       }
 
       function postToGas(data){
+        if (ROUTEQ_IS_TEST && !GAS_WEB_APP_URL) return Promise.reject(new Error("TEST用GASが未設定です。"));
         return new Promise(function(resolve,reject){
           const requestId = 'route_payment_' + Date.now() + '_' + Math.random().toString(36).slice(2);
           pendingRequests[requestId] = {resolve:resolve,reject:reject};

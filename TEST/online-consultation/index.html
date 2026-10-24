@@ -316,7 +316,7 @@
       </section>
 
       <div class="return">
-        <a class="cta" href="/QA/">
+        <a class="cta" href="../QA/">
           <img class="cta-logo" src="../assets/kikeroute-logo.webp" alt="キケルート">
           <span>キケルートのQ&amp;Aサービスを見る</span>
         </a>
@@ -325,8 +325,20 @@
 
     <footer class="kikeroute-footer">
       <span class="kikeroute-footer__copy">© 2026 キケルート</span>
-      <a class="kikeroute-footer__about" href="/ROUTEQ/about.html#tokusho">運営者情報・特定商取引法</a>
+      <a class="kikeroute-footer__about" href="../ROUTEQ/about.html#tokusho">運営者情報・特定商取引法</a>
     </footer>
   </div>
+<script>
+if (/^\/TEST(?:\/|$)/.test(location.pathname)) {
+  document.addEventListener("DOMContentLoaded", function () {
+    document.querySelectorAll('a[href^="https://cal.com/"], a[href^="https://lin.ee/"]').forEach(function (a) {
+      a.removeAttribute("href");
+      a.removeAttribute("target");
+      a.setAttribute("aria-disabled", "true");
+      a.title = "TEST環境のため本番予約・LINEへの移動は無効です";
+    });
+  });
+}
+</script>
 </body>
 </html>

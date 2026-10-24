@@ -446,7 +446,7 @@
 <body><header class="hero image-hero" aria-label="キケルート高校受験Q&A"><img src="qalogo.png" width="1443" height="1090" alt="キケルート兵庫県版。高校受験で気になった事をここから質問。" fetchpriority="high" decoding="async"><img src="qa-four-steps.webp" width="2172" height="563" alt="チケット購入、ここで質問、専門家が回答、LINEで受け取る、の4工程。" loading="lazy" decoding="async"></header>
 
 <nav class="qa-back-nav" aria-label="Q&A案内ページへ戻る">
-  <a href="/QA/">← Q&Aに戻る</a>
+  <a href="../">← Q&Aに戻る</a>
 </nav>
 
   <main class="page">
@@ -655,7 +655,7 @@
 <footer class="routeq-site-footer" aria-label="運営者情報">
   <div class="routeq-site-footer__inner">
     <small>© 2026 ROUTEQ</small>
-    <a href="/QA/">高校受験Q&amp;A キケルート</a>
+    <a href="../">高校受験Q&amp;A キケルート</a>
   </div>
 </footer>
 
@@ -753,11 +753,12 @@
   <iframe name="backendFrame" class="backend-frame"></iframe>
 
   <script>
-    const GAS_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbyAUKGZK_WK8l_bGs0AEWilwP_Z8WKRaeSsX3iP1dijuReeMAF-rVBIZl-CQYcozDCu3A/exec";
-    const QUESTION_OPTIONS_URL = "https://script.google.com/macros/s/AKfycbwH9FJsaxcbahXTBpEm1Hh7f3Tqzrul7sUyuZRAuY-TMXXE-5hXlPnzGGXN-MDiZAh6/exec";
+    const ROUTEQ_IS_TEST = /^\/TEST(?:\/|$)/.test(location.pathname);
+    const GAS_WEB_APP_URL = ROUTEQ_IS_TEST ? "" : "https://script.google.com/macros/s/AKfycbyAUKGZK_WK8l_bGs0AEWilwP_Z8WKRaeSsX3iP1dijuReeMAF-rVBIZl-CQYcozDCu3A/exec";
+    const QUESTION_OPTIONS_URL = ROUTEQ_IS_TEST ? "" : "https://script.google.com/macros/s/AKfycbwH9FJsaxcbahXTBpEm1Hh7f3Tqzrul7sUyuZRAuY-TMXXE-5hXlPnzGGXN-MDiZAh6/exec";
     const QUESTION_OPTIONS_CACHE_KEY = "route_hyogo_question_options_v3";
     const QUESTION_OPTIONS_CACHE_MS = 0;
-    const LIFF_ID = "2011985705-R2Sn0vkO";
+    const LIFF_ID = ROUTEQ_IS_TEST ? "" : "2011985705-R2Sn0vkO";
     const CONSENT_POLICY_VERSION = "2026-09-11-v1";
     const CONSENT_SUMMARY = "ご利用ルール／返金・キャンセルについて／回答内容についての免責";
 
@@ -1493,6 +1494,7 @@
     }
 
     function fetchQuestionOptions() {
+      if (ROUTEQ_IS_TEST && !QUESTION_OPTIONS_URL) return Promise.reject(new Error("TEST用GASが未設定です。"));
       return new Promise(function(resolve, reject) {
         const callbackName = "routeQuestionOptions_" + Date.now() + "_" + Math.random().toString(36).slice(2);
         const script = document.createElement("script");
@@ -1565,6 +1567,7 @@
     }
 
     function postToGas(data) {
+      if (ROUTEQ_IS_TEST && !GAS_WEB_APP_URL) return Promise.reject(new Error("TEST用GASが未設定です。"));
       return new Promise(function(resolve, reject) {
         const requestId = "route_" + Date.now() + "_" + Math.random().toString(36).slice(2);
         pendingRequests[requestId] = { resolve:resolve, reject:reject };
@@ -2403,6 +2406,7 @@
           // iOS Safari can return from LINE Login to the external browser repeatedly.
           // Require an explicit login gesture on iOS instead of an automatic redirect loop.
           const isIOSExternalBrowser = /iPad|iPhone|iPod/.test(navigator.userAgent);
+          if (ROUTEQ_IS_TEST && !LIFF_ID) throw new Error("TEST用LIFFが未設定です。");
           await liff.init({ liffId:LIFF_ID, withLoginOnExternalBrowser:!isIOSExternalBrowser });
           timings.liffInitMs = Math.round(performance.now() - startedAt);
 
