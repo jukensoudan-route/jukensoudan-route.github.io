@@ -9,6 +9,8 @@
   <title>KIKEROUTE（キケルート）受験Q&A｜ROUTEQ</title>
   <meta name="robots" content="index,follow">
   <script>
+    // TEST must not modify the production origin service worker or cache state.
+    if (location.origin === "https://kikeroute.jp" && !/^\/TEST(?:\/|$)/.test(location.pathname)) {
     if ("serviceWorker" in navigator) {
       navigator.serviceWorker.getRegistrations().then(registrations => {
         registrations.forEach(registration => registration.unregister());
@@ -16,6 +18,7 @@
     }
     if ("caches" in window) {
       caches.keys().then(keys => keys.forEach(key => caches.delete(key)));
+    }
     }
   </script>
   <link rel="preconnect" href="https://static.line-scdn.net">
