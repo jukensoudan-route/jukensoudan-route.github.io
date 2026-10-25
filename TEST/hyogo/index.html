@@ -9,7 +9,7 @@
   <title>KIKEROUTE（キケルート）受験Q&A｜ROUTEQ</title>
   <meta name="robots" content="index,follow">
   <script>
-    // TEST must not modify the production origin service worker or cache state.
+    // Avoid modifying production origin caches from TEST.
     if (location.origin === "https://kikeroute.jp" && !/^\/TEST(?:\/|$)/.test(location.pathname)) {
     if ("serviceWorker" in navigator) {
       navigator.serviceWorker.getRegistrations().then(registrations => {
