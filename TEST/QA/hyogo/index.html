@@ -755,7 +755,7 @@
   <script>
     const ROUTEQ_IS_TEST = location.origin !== "https://kikeroute.jp" || /^\/TEST(?:\/|$)/.test(location.pathname);
     const GAS_WEB_APP_URL = ROUTEQ_IS_TEST ? "https://script.google.com/macros/s/AKfycby2essSvwGTDiMhyULuii0tE8XlQlwsjsbKGen_78FcfyQVOaf_05JW6L4mLMUQ5DUNQA/exec" : "https://script.google.com/macros/s/AKfycbyAUKGZK_WK8l_bGs0AEWilwP_Z8WKRaeSsX3iP1dijuReeMAF-rVBIZl-CQYcozDCu3A/exec";
-    const QUESTION_OPTIONS_URL = ROUTEQ_IS_TEST ? "https://script.google.com/macros/s/AKfycbwH9FJsaxcbahXTBpEm1Hh7f3Tqzrul7sUyuZRAuY-TMXXE-5hXlPnzGGXN-MDiZAh6/exec" : "https://script.google.com/macros/s/AKfycbwH9FJsaxcbahXTBpEm1Hh7f3Tqzrul7sUyuZRAuY-TMXXE-5hXlPnzGGXN-MDiZAh6/exec";
+    const QUESTION_OPTIONS_URL = ROUTEQ_IS_TEST ? "" : "https://script.google.com/macros/s/AKfycbwH9FJsaxcbahXTBpEm1Hh7f3Tqzrul7sUyuZRAuY-TMXXE-5hXlPnzGGXN-MDiZAh6/exec";
     const QUESTION_OPTIONS_CACHE_KEY = "route_hyogo_question_options_v3";
     const QUESTION_OPTIONS_CACHE_MS = 0;
     const LIFF_ID = ROUTEQ_IS_TEST ? "2012200375-aNYX8Etg" : "2011985705-R2Sn0vkO";
@@ -2503,7 +2503,7 @@
 
     document.addEventListener("DOMContentLoaded", async function() {
       try {
-        await loadQuestionOptions();
+        if (!ROUTEQ_IS_TEST) await loadQuestionOptions();
       } catch (error) {
         console.warn("シートの質問選択項目を取得できないため、内蔵データを使用します。", error);
       }
