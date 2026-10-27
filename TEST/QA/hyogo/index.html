@@ -2425,7 +2425,8 @@
           authenticated = true;
           timings.authReadyMs = Math.round(performance.now() - startedAt);
           document.getElementById("loginStatus").innerHTML =
-            '<div class="status-icon is-authenticated">✓</div><div class="status-text">LINE認証済み</div>';
+            '<div class="status-icon is-authenticated">✓</div><div class="status-text">' +
+            (ROUTEQ_IS_TEST ? 'LINEログイン済み（GAS本人確認は未検証）' : 'LINE認証済み') + '</div>';
           document.getElementById("usageStatus").textContent = "最新の利用状況を確認しています。";
 
           // The LINE profile request can run alongside GAS; GAS requests stay sequential
@@ -2434,7 +2435,8 @@
             if (startupFailed) return;
             lineProfile = profile;
             document.getElementById("loginStatus").innerHTML =
-              '<div class="status-icon is-authenticated">✓</div><div class="status-text">LINE認証済み　' +
+              '<div class="status-icon is-authenticated">✓</div><div class="status-text">' +
+              (ROUTEQ_IS_TEST ? 'LINEログイン済み（GAS本人確認は未検証）　' : 'LINE認証済み　') +
               escapeHtml(profile.displayName || "") + '</div>';
             const cached = getCachedUsage(profile.userId);
             if (cached) {
@@ -2503,7 +2505,7 @@
 
     document.addEventListener("DOMContentLoaded", async function() {
       try {
-        if (!ROUTEQ_IS_TEST) await loadQuestionOptions();
+        if (!ROUTEQ_IS_TEST || QUESTION_OPTIONS_URL) await loadQuestionOptions();
       } catch (error) {
         console.warn("シートの質問選択項目を取得できないため、内蔵データを使用します。", error);
       }
