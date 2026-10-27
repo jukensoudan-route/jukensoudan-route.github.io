@@ -2509,7 +2509,7 @@
       }
       changeTheme(false);
       renderSchoolTypeButtons("schoolTypeGrid", "", 1);
-      if (location.origin === "https://kikeroute.jp" && !/^(localhost|127\.0\.0\.1)$/.test(location.hostname)) initializeLiff();
+      if ((location.origin === "https://kikeroute.jp" || /^kikeroute-web-isolated-preview-[a-z0-9]+-route-q\.vercel\.app$/.test(location.hostname)) && !/^(localhost|127\.0\.0\.1)$/.test(location.hostname)) initializeLiff();
     });
   </script>
 
