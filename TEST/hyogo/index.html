@@ -720,7 +720,7 @@
   <script>
     const ROUTEQ_IS_TEST = location.origin !== "https://kikeroute.jp" || /^\/TEST(?:\/|$)/.test(location.pathname);
     const GAS_WEB_APP_URL = ROUTEQ_IS_TEST ? "https://script.google.com/macros/s/AKfycby2essSvwGTDiMhyULuii0tE8XlQlwsjsbKGen_78FcfyQVOaf_05JW6L4mLMUQ5DUNQA/exec" : "https://script.google.com/macros/s/AKfycbyAUKGZK_WK8l_bGs0AEWilwP_Z8WKRaeSsX3iP1dijuReeMAF-rVBIZl-CQYcozDCu3A/exec";
-    const QUESTION_OPTIONS_URL = ROUTEQ_IS_TEST ? "https://script.google.com/macros/s/AKfycbwH9FJsaxcbahXTBpEm1Hh7f3Tqzrul7sUyuZRAuY-TMXXE-5hXlPnzGGXN-MDiZAh6/exec" : "https://script.google.com/macros/s/AKfycbwH9FJsaxcbahXTBpEm1Hh7f3Tqzrul7sUyuZRAuY-TMXXE-5hXlPnzGGXN-MDiZAh6/exec";
+    const QUESTION_OPTIONS_URL = ROUTEQ_IS_TEST ? "" : "https://script.google.com/macros/s/AKfycbwH9FJsaxcbahXTBpEm1Hh7f3Tqzrul7sUyuZRAuY-TMXXE-5hXlPnzGGXN-MDiZAh6/exec";
     const QUESTION_OPTIONS_CACHE_KEY = "route_hyogo_question_options_v3";
     const QUESTION_OPTIONS_CACHE_MS = 0;
     const LIFF_ID = ROUTEQ_IS_TEST ? "2012200375-aNYX8Etg" : "2011985705-R2Sn0vkO";
@@ -755,8 +755,7 @@
         "通学・立地":["{school}への通学や立地について教えてください。"],
         "学校設備":["{school}の学校設備について教えてください。"],
         "学校行事":["{school}の主な学校行事を教えてください。"],
-        "制服・学校生活費":["{school}の制服や学校生活で必要になる費用を教えてください。"],
-        "学校同士の客観比較":["A高校とB高校の特徴を客観的に比較してください。"]
+        "制服・学校生活費":["{school}の制服や学校生活で必要になる費用を教えてください。"]
       },
       score:{
         "内申点":["兵庫県公立高校入試の内申点の仕組みを教えてください。","{school}の受験で内申点はどのように扱われますか？"],
@@ -2462,7 +2461,7 @@
 
     document.addEventListener("DOMContentLoaded", async function() {
       try {
-        await loadQuestionOptions();
+        if (!ROUTEQ_IS_TEST) await loadQuestionOptions();
       } catch (error) {
         console.warn("シートの質問選択項目を取得できないため、内蔵データを使用します。", error);
       }
