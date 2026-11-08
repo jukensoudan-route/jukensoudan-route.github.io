@@ -774,6 +774,57 @@
     let validatedQuestionSignature = "";
     let scrollTopAfterMessage = false;
     const pendingRequests = {};
+    // Isolated TEST submission journal; never store the signed validation token.
+    const QA_SUBMIT_KEY = "routeq_qa_isolated_submit_v1";
+    let qaSubmitState = "READY";
+    let qaSubmitRequestId = "";
+    try {
+      const saved = sessionStorage.getItem(QA_SUBMIT_KEY);
+      if (saved) {
+        const previous = JSON.parse(saved);
+        qaSubmitRequestId = typeof previous?.requestId === "string" ? previous.requestId : "";
+        qaSubmitState = "UNKNOWN"; // A reload cannot prove a previous write failed.
+      }
+    } catch (_) { qaSubmitState = "UNKNOWN"; }
+    function qaPersist_(state, requestId) {
+      try {
+        if (state === "READY") {
+          sessionStorage.removeItem(QA_SUBMIT_KEY);
+          qaSubmitState = "READY";
+          qaSubmitRequestId = "";
+        } else {
+          const id = requestId || qaSubmitRequestId;
+          if (!/^route_[A-Za-z0-9_]{6,100}$/.test(id)) throw new Error("Bad request ID");
+          sessionStorage.setItem(QA_SUBMIT_KEY, JSON.stringify({state:state, requestId:id}));
+          qaSubmitState = state;
+          qaSubmitRequestId = id;
+        }
+        return true;
+      } catch (_) { qaSubmitState = "UNKNOWN"; return false; }
+    }
+    function qaUnknown_(requestId) {
+      qaPersist_("UNKNOWN", requestId);
+      updateSubmitState();
+      updateConfirmConsent();
+    }
+    function qaReceiptValid_(pending, reply) {
+      if (!reply || reply.ok !== true || reply.type !== pending.action) return false;
+      const result = reply.result;
+      if (pending.action === "validateQuestion")
+        return !!result && result.allowed === true &&
+          typeof result.validationToken === "string" &&
+          result.validationToken.length > 0 &&
+          result.validationToken.trim() === result.validationToken &&
+          result.validationToken !== pending.requestId;
+      if (pending.action === "submit")
+        return !!result && pending.validationToken && pending.validationToken !== pending.requestId &&
+          result.submissionId === pending.validationToken &&
+          Number.isSafeInteger(result.questionRow) && result.questionRow >= 2 &&
+          Number.isSafeInteger(result.usedCount) && result.usedCount >= 0 &&
+          Number.isSafeInteger(result.remainingCount) && result.remainingCount >= 0 &&
+          (result.alreadyAccepted === undefined || typeof result.alreadyAccepted === "boolean");
+      return true; // Preserve existing usage/Checkout handling.
+    }
 
     function clearApprovedValidation_() {
       validatedQuestionToken = "";
@@ -1568,9 +1619,17 @@
 
     function postToGas(data) {
       if (ROUTEQ_IS_TEST && !GAS_WEB_APP_URL) return Promise.reject(new Error("TEST用GASが未設定です。"));
+      if (data.action === "submit" && qaSubmitState !== "READY")
+        return Promise.reject(new Error("受付状態が不明です。再送を停止しました。"));
       return new Promise(function(resolve, reject) {
         const requestId = "route_" + Date.now() + "_" + Math.random().toString(36).slice(2);
-        pendingRequests[requestId] = { resolve:resolve, reject:reject };
+        // requestId: transport correlation; validationToken: persistent GAS submission identity.
+        if (data.action === "submit" && !qaPersist_("IN_FLIGHT", requestId)) {
+          reject(new Error("受付状態を記録できないため送信を停止しました。"));
+          return;
+        }
+        pendingRequests[requestId] = {resolve:resolve,reject:reject,
+          action:data.action,requestId:requestId,validationToken:data.validationToken || ""};
 
         const form = document.createElement("form");
         form.method = "POST";
@@ -1588,7 +1647,12 @@
         });
 
         document.body.appendChild(form);
-        form.submit();
+        try { form.submit(); } catch (_) {
+          delete pendingRequests[requestId];
+          if (data.action === "submit") qaUnknown_(requestId);
+          reject(new Error("送信結果が不明です。再送を停止しました。"));
+          return;
+        }
 
         const timeoutMs =
           data.action === "submit"
@@ -1597,8 +1661,10 @@
 
         setTimeout(function() {
           if (pendingRequests[requestId]) {
+            if (data.action === "submit") qaUnknown_(requestId);
             delete pendingRequests[requestId];
-            reject(new Error("サーバーからの応答がありませんでした。"));
+            reject(new Error(data.action === "submit" ? "受付結果が不明です。再送を停止しました。"
+              : "サーバーからの応答がありませんでした。"));
           }
           if (form.parentNode) form.remove();
         }, timeoutMs);
@@ -1690,22 +1756,18 @@
       ];
 
 
-      if (data.ok) {
-
-        pending.resolve(
-          data.result
-        );
-
-      }
-      else {
-
-        pending.reject(
-          new Error(
-            data.message ||
-            "処理に失敗しました。"
-          )
-        );
-
+      if (data.ok === true && qaReceiptValid_(pending, data)) {
+        if (pending.action === "submit" && !qaPersist_("READY", "")) {
+          pending.reject(new Error("受付の確定に失敗しました。再送を停止しました。"));
+          return;
+        }
+        pending.resolve(data.result);
+      } else if (pending.action === "submit") {
+        // GAS may return ok:false after writing Questions/Users: not proof of failed persistence.
+        qaUnknown_(pending.requestId);
+        pending.reject(new Error("質問保存の成否が不明です。再送せず受付記録を確認してください。"));
+      } else {
+        pending.reject(new Error(data.ok === false && data.message ? data.message : "処理を確認できませんでした。"));
       }
     });
 
@@ -1716,13 +1778,15 @@
         !usageData.canSubmit ||
         !agreed ||
         isValidatingQuestion ||
-        isSending;
+        isSending ||
+        qaSubmitState !== "READY";
     }
 
     function updateConfirmConsent() {
       document.getElementById("confirmSendBtn").disabled =
         !document.getElementById("confirmRulesAgree").checked ||
-        isSending;
+        isSending ||
+        qaSubmitState !== "READY";
     }
 
 
@@ -1888,6 +1952,10 @@
 
 
     async function openConfirm() {
+      if (qaSubmitState !== "READY") {
+        showMessage("受付状況未確認", "前回の質問受付が確認できないため新規受付を停止しています。", "!");
+        return;
+      }
 
       if (!document.getElementById("rulesAgree").checked) {
         showMessage(
@@ -2126,6 +2194,10 @@
     }
 
     async function sendQuestion() {
+      if (qaSubmitState !== "READY") {
+        showMessage("受付状況未確認", "前回の質問受付が確認できません。二重送信を防ぐため再送停止中です。", "!");
+        return;
+      }
 
       if (isSending) {
         return;
@@ -2291,17 +2363,15 @@
 
       }
       catch(error) {
-
-        validatedQuestionToken = "";
-        validatedQuestionSignature = "";
-
-        showMessage(
-          "送信できませんでした",
-          error.message ||
-          String(error),
-          "!"
-        );
-
+        if (qaSubmitState === "IN_FLIGHT") qaUnknown_(qaSubmitRequestId);
+        if (qaSubmitState !== "READY") {
+          showMessage("受付状況未確認・再送停止",
+            "質問保存・回数消費が完了している可能性があります。再送せず管理者による記録照合が必要です。", "!");
+        } else {
+          validatedQuestionToken = "";
+          validatedQuestionSignature = "";
+          showMessage("送信できませんでした", error.message || String(error), "!");
+        }
       }
       finally {
 
@@ -2313,7 +2383,8 @@
 
         document
           .getElementById("confirmSendBtn")
-          .disabled = false;
+          .disabled = qaSubmitState !== "READY";
+        updateSubmitState();
       }
     }
 
