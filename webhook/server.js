@@ -1,5 +1,6 @@
 import express from "express";
 import Stripe from "stripe";
+import { verifyGasConfirmationResponse } from "./gas-confirmation.mjs";
 import { fileURLToPath } from "node:url";
 
 const DEFAULT_TICKETS = Object.freeze({
@@ -78,20 +79,9 @@ export function createWebhookApp({
     });
     const text = await response.text();
     if (!response.ok) throw new Error("GAS HTTP " + response.status);
-    const decoded = text
-      .replace(/\\x([0-9a-fA-F]{2})/g, (_, hex) => String.fromCharCode(parseInt(hex, 16)))
-      .replace(/\\u([0-9a-fA-F]{4})/g, (_, hex) => String.fromCharCode(parseInt(hex, 16)))
-      .replace(/\\+(?=["'])/g, "")
-      .replace(/&quot;|&#34;|&#x22;/gi, '"')
-      .replace(/&#39;|&#x27;|&apos;/gi, "'")
-      .replace(/&amp;/gi, "&")
-      .replace(/&lt;/gi, "<")
-      .replace(/&gt;/gi, ">");
-    if (!/["']?ok["']?\s*:\s*true\b/.test(decoded)) {
-      const match = decoded.match(/["']?message["']?\s*:\s*["']([^"'<>]*)["']/);
-      throw new Error("GAS confirmCheckout failed: " + (match ? match[1] : "unknown GAS error"));
-    }
-    return decoded;
+    // Only structured, identity-matched paid grant receipts are successful.
+    // Unpaid/UNKNOWN/ambiguous replies throw and remain retryable (HTTP 500).
+    return verifyGasConfirmationResponse(text, eventId);
   }
 
   app.post("/stripe/webhook", express.raw({ type: "application/json" }), async (req, res) => {
