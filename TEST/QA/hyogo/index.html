@@ -776,10 +776,12 @@
     const pendingRequests = {};
     // Isolated TEST submission journal; never store the signed validation token.
     const QA_SUBMIT_KEY = "routeq_qa_isolated_submit_v1";
+    const QA_SHARED_SUBMIT_KEY = "routeq_qa_isolated_shared_submit_v1";
+    const QA_SUBMIT_LOCK = "routeq_qa_isolated_submit_lock_v1";
     let qaSubmitState = "READY";
     let qaSubmitRequestId = "";
     try {
-      const saved = sessionStorage.getItem(QA_SUBMIT_KEY);
+      const saved = sessionStorage.getItem(QA_SUBMIT_KEY) || localStorage.getItem(QA_SHARED_SUBMIT_KEY);
       if (saved) {
         const previous = JSON.parse(saved);
         qaSubmitRequestId = typeof previous?.requestId === "string" ? previous.requestId : "";
@@ -1617,7 +1619,34 @@
       renderQuestionOptions();
     }
 
-    function postToGas(data) {
+    async function postToGas(data) {
+      if (data.action !== "submit") return postToGasUnlocked(data);
+      // Atomic cross-tab exclusion. Unsupported browsers fail closed.
+      if (!navigator.locks || typeof navigator.locks.request !== "function")
+        throw new Error("このブラウザでは二重送信防止を保証できません。送信を停止しました。");
+      return navigator.locks.request(QA_SUBMIT_LOCK, {mode:"exclusive", ifAvailable:true}, async function(lock) {
+        if (!lock) throw new Error("別タブで送信処理中です。再送を停止しました。");
+        let existing;
+        try { existing = localStorage.getItem(QA_SHARED_SUBMIT_KEY); }
+        catch (_) { throw new Error("送信状態を確認できないため送信を停止しました。"); }
+        if (existing) {
+          qaSubmitState = "UNKNOWN";
+          throw new Error("別タブまたは前回の受付状況が不明です。再送を停止しました。");
+        }
+        try { localStorage.setItem(QA_SHARED_SUBMIT_KEY, JSON.stringify({state:"IN_FLIGHT",at:Date.now()})); }
+        catch (_) { throw new Error("送信状態を記録できないため送信を停止しました。"); }
+        try {
+          const result = await postToGasUnlocked(data);
+          localStorage.removeItem(QA_SHARED_SUBMIT_KEY);
+          return result;
+        } catch (error) {
+          qaSubmitState = "UNKNOWN";
+          throw error;
+        }
+      });
+    }
+
+    function postToGasUnlocked(data) {
       if (ROUTEQ_IS_TEST && !GAS_WEB_APP_URL) return Promise.reject(new Error("TEST用GASが未設定です。"));
       if (data.action === "submit" && qaSubmitState !== "READY")
         return Promise.reject(new Error("受付状態が不明です。再送を停止しました。"));
@@ -1672,6 +1701,10 @@
     }
 
     window.addEventListener("message", function(event) {
+      const backendFrame = document.querySelector('iframe[name="backendFrame"]');
+      const allowedGasOrigins = ["https://script.google.com", "https://script.googleusercontent.com"];
+      if (!backendFrame || event.source !== backendFrame.contentWindow ||
+          !allowedGasOrigins.includes(event.origin)) return;
 
       let message =
         event.data;
