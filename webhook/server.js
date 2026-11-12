@@ -6,18 +6,22 @@ import { classifyGasFailure, verifyGasConfirmationResponse } from "./gas-confirm
 const app = express();
 const port = process.env.PORT || 10000;
 const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET;
+const stripeSecretKey = (process.env.STRIPE_SECRET_KEY || "").trim();
+if (!stripeSecretKey) {
+  throw new Error("STRIPE_SECRET_KEY is not configured");
+}
 const TEST_SHEET_ID = "1EdVYzWiiCaqX_3EFrnt6Qw2_XdwIgCtKaMEvogmMwD0";
 const LIVE_DEPLOYMENT_ID = "AKfycbyAUKGZK_WK8l_bGs0AEWilwP_Z8WKRaeSsX3iP1dijuReeMAF-rVBIZl-CQYcozDCu3A";
 const gasWebAppUrl = process.env.ROUTEQ_TEST_GAS_WEB_APP_URL || "";
 const isolatedMode = process.env.ROUTEQ_TEST_ISOLATION_APPROVED === "YES" &&
   process.env.ROUTEQ_TEST_SHEET_ID === TEST_SHEET_ID &&
   (process.env.ROUTEQ_TEST_INTERNAL_SECRET || "").length >= 32 &&
-  /^sk_test_/.test(process.env.STRIPE_SECRET_KEY || "") &&
+  /^sk_test_/.test(stripeSecretKey) &&
   /^whsec_/.test(process.env.STRIPE_WEBHOOK_SECRET || "") &&
   /^https:\/\/script\.google\.com\/macros\/s\/[A-Za-z0-9_-]+\/exec$/.test(gasWebAppUrl) &&
   !gasWebAppUrl.includes(LIVE_DEPLOYMENT_ID);
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || "sk_test_placeholder");
+const stripe = new Stripe(stripeSecretKey);
 
 // Fixed diagnostic codes only: never log GAS response bodies, URLs or credentials.
 function gasContentType_(response) {
