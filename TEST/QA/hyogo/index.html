@@ -1702,9 +1702,27 @@
 
     window.addEventListener("message", function(event) {
       const backendFrame = document.querySelector('iframe[name="backendFrame"]');
-      const allowedGasOrigins = ["https://script.google.com", "https://script.googleusercontent.com"];
-      if (!backendFrame || event.source !== backendFrame.contentWindow ||
-          !allowedGasOrigins.includes(event.origin)) return;
+      // GAS HtmlService may post from a nested googleusercontent sandbox frame.
+      // Require the sender to belong to this backendFrame's frame tree.
+      const allowedGasOrigin = event.origin === "https://script.google.com" ||
+        event.origin === "https://script.googleusercontent.com" ||
+        /^https:\/\/[a-z0-9-]+-script\.googleusercontent\.com$/i.test(event.origin);
+      let fromBackendFrame = false;
+      if (backendFrame && event.source) {
+        try {
+          let sender = event.source;
+          for (let depth = 0; depth < 12; depth++) {
+            if (sender === backendFrame.contentWindow) {
+              fromBackendFrame = true;
+              break;
+            }
+            const parent = sender.parent;
+            if (!parent || parent === sender) break;
+            sender = parent;
+          }
+        } catch (_) { fromBackendFrame = false; }
+      }
+      if (!fromBackendFrame || !allowedGasOrigin) return;
 
       let message =
         event.data;
